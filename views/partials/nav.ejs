@@ -1,0 +1,105 @@
+<div class="dismiss_area"></div>
+
+<div class="preloader-wrapper big circular-preloader">
+    <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div><div class="gap-patch">
+            <div class="circle"></div>
+        </div><div class="circle-clipper right">
+            <div class="circle"></div>
+        </div>
+    </div>
+
+    <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div><div class="gap-patch">
+            <div class="circle"></div>
+        </div><div class="circle-clipper right">
+            <div class="circle"></div>
+        </div>
+    </div>
+
+    <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div><div class="gap-patch">
+            <div class="circle"></div>
+        </div><div class="circle-clipper right">
+            <div class="circle"></div>
+        </div>
+    </div>
+
+    <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div><div class="gap-patch">
+            <div class="circle"></div>
+        </div><div class="circle-clipper right">
+            <div class="circle"></div>
+        </div>
+    </div>
+</div>
+
+<ul id="slide-out" class="sidenav right-aligned flow-text">
+    <li>
+        <div class="user-view">
+            <div class="background">
+                <img src="../images/icare-logo.png" style="width: 100%;">
+            </div>
+        </div>
+    </li>
+    <li>
+        <a href="/dashboard" class="waves-effect" onclick="$('.sidenav').sidenav('close');">
+            <!--<i class="fa fa-suitcase"></i>-->
+            <span>חוו"דים</span>
+        </a>
+    </li>
+    <li>
+        <a href="/users/self" class="waves-effect" onclick="$('.sidenav').sidenav('close');">
+            <!--<i class="fa fa-suitcase"></i>-->
+            <span>הגדרות משתמש</span>
+        </a>
+    </li>
+    <% if (access_level > 1) { %>
+    <li>
+        <a href="/users" class="waves-effect" onclick="$('.sidenav').sidenav('close');">
+            <!--<i class="fa fa-suitcase"></i>-->
+            <span>נהל משתמשים</span>
+        </a>
+        <!--<div class="modal-trigger" onclick="$('.sidenav').sidenav('close');" data-target="user_modal">נהל משתמשים</div>-->
+    </li>
+    <li>
+        <a href="/settings/view" class="waves-effect" onclick="$('.sidenav').sidenav('close');">
+            <!--<i class="fa fa-suitcase"></i>-->
+            <span>פאנל אדמין</span>
+        </a>
+    </li>
+    <% } %>
+</ul>
+
+<nav id="page_sticky_header">
+    <div class="nav-wrapper">
+        <ul id="nav-mobile">
+            <li id="side-nav-button">
+                <a href="#" data-target="slide-out" class="sidenav-trigger">
+                    <div class="menu-icon-2">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/disconnect" style="width: 100%">התנתקות</a>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-content">
+        <a id="plus_sticky_header_button" class="btn-floating btn-large halfway-fab waves-effect waves-light blue darken-4">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+</nav>
