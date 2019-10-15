@@ -17,7 +17,7 @@ let app = express()
 
     .use(session({
         cookieName: 'session',
-        secret: 'd28d6:9;\'\'b5cca15aaa5987ee68{1b^64*5c]fe*e~f93!@%665_)98!@#aef0^*28184!@#23225~`1|da6089cd2e0a64b8adb4455a703c8f92a8f8865d7asfd4',
+        secret: 'd28d6:9;\'\'d"vnjdsvcnjnck&I*(O[\'-[9_){_+5161}#f4rt5f%$g4})"5g64"&^h76kj6&Jj677h#@1hg8489@#$G34t45g54%$y450-{0-P)(P)(*()7865g54409=[gofvg[[ggfry',
         duration: 30 * 60 * 1000,
         activeDuration: 5 * 60 * 1000,
         httpOnly: true,

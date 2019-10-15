@@ -1,18 +1,18 @@
 const responses_gen = require('../helpers/responses');
-let settings_model = require('../models/global_settings');
+let versions_model = require('../models/versions');
 
-exports.get_settings = async (req, res, next) => {
+exports.get_versions = async (req, res, next) => {
     try {
-        let settings = await settings_model.get(req, res, next);
-        return responses_gen.generate_response(res, 200, settings, "Settings restored successfully");
+        let versions = await versions_model.get(req, res, next);
+        return responses_gen.generate_response(res, 200, versions, "Settings restored successfully");
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
     }
 };
 
-exports.view_settings = async (req, res, next) => {
+exports.view_versions = async (req, res, next) => {
     try {
-        res.render("pages/home", {access_level: req.session.user.role});
+        res.render("pages/home"/*, {access_level: req.session.user.role}*/);
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
     }
