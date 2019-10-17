@@ -4,21 +4,76 @@ const util = require('util');
 
 let _db;
 
+let init_schema = () => {
+    let schema = mongoose.Schema({
+        version: {
+            type: String,
+            required: true
+        },
+        prev_version: {
+            type: String,
+            required: true
+        },
+        details: String,
+        downloader: String,
+        release_date: {
+            type: Date,
+            default: Date.now
+        },
+        known_issues: String,
+        properties: [
+            {
+                id: {
+                    type: Number,
+                    required: true
+                },
+                type: {
+                    type: String,
+                    enum: ['Feature', 'Fix Bug', 'Change', 'Deprecated'],
+                    default: 'Feature',
+                    required: true
+                },
+                description: {
+                    type: String,
+                    required: true
+                },
+                tests_scope: {
+                    type: String,
+                    enum: ['None', 'Partial', 'Large', 'Full'],
+                    default: 'Partial',
+                    required: true
+                },
+                known_issues: String
+            }
+        ]
+    });
+    _db = mongoose.model('versions', schema);
+};
+
 let initDB = (callback) => {
-    if (_db) {
+    if (mongoose.connection) {
         console.warn("Trying to init DB again!");
         return;
     }
 
-    _db = mysql.createPool({
+    /*_db = mysql.createPool({
         connectionLimit: 10,
         host: "remotemysql.com",
         user: "SOWDwU4DKo",
         password: "GCdniRGRuz",
         database: "SOWDwU4DKo"
-    });
+    });*/
+    mongoose.connect('mongodb://localhost/resthub', { useNewUrlParser: true});
 
-    _db.getConnection((err, connection) => {
+    if(!mongoose.connection)
+        console.error("Error connecting db");
+    else
+        console.log("Db connected successfully");
+
+    init_schema();
+
+    callback();
+    /*_db.getConnection((err, connection) => {
         if (err) {
             if (err.code === 'PROTOCOL_CONNECTION_LOST') {
                 console.error('Database connection was closed.')
@@ -36,14 +91,7 @@ let initDB = (callback) => {
         callback();
     });
 
-    _db.query = util.promisify(_db.query);
-
-    /*_db.connect(function(err) {
-        if (err) throw err;
-        _db.query = util.promisify(_db.query);
-        console.log("DB Connected!");
-        callback();
-    });*/
+    _db.query = util.promisify(_db.query);*/
 };
 
 let getDB = () => {

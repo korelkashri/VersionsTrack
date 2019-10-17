@@ -36,9 +36,9 @@ let app = express()
 
 // Setup routes
 app
-    .use(con_validator.test_session_connection)
+    // .use(con_validator.test_session_connection)
 
-    .all("*self*", con_validator.require_login, (req, res, next) => {
+    /*.all("*self*", con_validator.require_login, (req, res, next) => {
         let route = req.originalUrl;
         route = route.replace("self", req.user.id);
         if (req.method === "POST") {
@@ -46,10 +46,9 @@ app
         } else {
             res.redirect(route); // redirect to new route with GET request
         }
-    })
+    })*/
 
     .use("/", router);
-
 
 // Initialize application
 db.initDB(() => {
