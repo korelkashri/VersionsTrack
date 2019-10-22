@@ -5,7 +5,7 @@ const versions_middleware = require("../../middlewares/versions");
 
 // GET routes
 
-router.get("/", (req, res) => res.redirect('./all'));
+router.get("/", (req, res) => res.redirect('/api/versions/all'));
 
 router.get("/all", versions_controller.get_versions); // Display all versions
 

@@ -1,7 +1,5 @@
 const assert = require("assert");
-const mysql = require('mysql');
-const util = require('util');
-
+const mongoose = require("mongoose");
 let _db;
 
 let init_schema = () => {
@@ -51,10 +49,10 @@ let init_schema = () => {
 };
 
 let initDB = (callback) => {
-    if (mongoose.connection) {
+    /*if (mongoose.connection) {
         console.warn("Trying to init DB again!");
         return;
-    }
+    }*/
 
     /*_db = mysql.createPool({
         connectionLimit: 10,
@@ -65,10 +63,10 @@ let initDB = (callback) => {
     });*/
     mongoose.connect('mongodb://localhost/resthub', { useNewUrlParser: true});
 
-    if(!mongoose.connection)
+    /*if(!mongoose.connection)
         console.error("Error connecting db");
-    else
-        console.log("Db connected successfully");
+    else*/
+    console.log("Db connected successfully");
 
     init_schema();
 
@@ -94,12 +92,12 @@ let initDB = (callback) => {
     _db.query = util.promisify(_db.query);*/
 };
 
-let getDB = () => {
+let getVersionsDBModel = () => {
     assert.ok(_db, "Db has not been initialized. Please called init first.");
     return _db;
 };
 
 module.exports = {
-    getDB,
+    getVersionsDBModel,
     initDB
 };

@@ -1,3 +1,10 @@
+/**
+ *
+ * @param req
+ * @param param_type - Options: {post, get, route}
+ * @param param_name
+ * @returns {*}
+ */
 exports.require_param = (req, param_type, param_name) => {
     switch (param_type) {
         case "post": param_type = "body"; break;
@@ -9,6 +16,13 @@ exports.require_param = (req, param_type, param_name) => {
     return value;
 };
 
+/**
+ *
+ * @param req
+ * @param param_type - Options: {post, get, route}
+ * @param param_name
+ * @returns {*}
+ */
 exports.optional_param = (req, param_type, param_name) => {
     switch (param_type) {
         case "post": param_type = "body"; break;

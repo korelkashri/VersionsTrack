@@ -1,48 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="global_app" ng-cloak>
 <head>
-    <% include ../partials/head.ejs %>
     <script type="text/javascript" src="/js/page_init.js"></script>
     <script type="text/javascript" src="/js/home.js"></script>
     <script type="text/javascript" src="/js/services/reports.js"></script>
 </head>
 
 <body class="rtl login-background" ng-controller="body_controller">
-    <% include ../partials/header.ejs %>
     <div id="page_content">
-        <% if (access_level >= 1) { %>
-            <div class="row">
-                <div class="input-field col s12">
-                    <select id="reports_type_filter_select" ng-model="reports_type_filter_select_model" ng-change="update_system_reports()" ng-init="reports_type_filter_select_model='soldiers'">
-                        <option value="soldiers" selected>חוו"דים</option>
-                        <option value="buildings">תקלות בינוי</option>
-                    </select>
-                    <label for="reports_type_filter_select">סוג דיווחים</label>
-                </div>
-                <div class="input-field col s12">
-                    <select id="reports_filter_select" ng-model="reports_filter_select_model" ng-init="reports_filter_select_model='2'">
-                        <option value="0">הצג חוו"דים בטיפול</option>
-                        <option value="2" selected>הצג חוו"דים בהמתנה</option>
-                        <option value="3">הצג חוו"דים ארכיון</option>
-                    </select>
-                    <label for="reports_filter_select">סינון חוו"דים לפי מצב</label>
-                </div>
-                <div class="input-field col s12">
-                    <select id="reports_guidance_bases_filter_select" ng-model="reports_guidance_bases_filter_select_model" ng-init="reports_guidance_bases_filter_select_model='-1'" name="optional_guidance_bases">
-                        <option value="-1">הצג את כל הבה"דים</option>
-                        <option ng-repeat="gb in guidance_bases_list" value="{{gb.id}}">{{gb.name}}</option>
-                    </select>
-                    <label for="reports_guidance_bases_filter_select">סינון חוו"דים לפי בה"דים</label>
-                </div>
-                <!--<div class="input-field col s4" style="padding-top: 2vh;">
-                    <a class="waves-effect waves-light btn">
-                        <i class="hide-on-large-only show-on-medium-and-down material-icons">delete_forever</i>
-                        <i class="hide-on-med-and-down show-on-large material-icons right">delete_forever</i>
-                        <span class="show-on-large hide-on-med-and-down">מחק את כל הדוחות</span>
-                    </a>
-                </div>-->
+        <div class="row">
+            <div class="input-field col s12">
+                <select id="reports_type_filter_select" ng-model="reports_type_filter_select_model" ng-change="update_system_reports()" ng-init="reports_type_filter_select_model='soldiers'">
+                    <option value="soldiers" selected>חוו"דים</option>
+                    <option value="buildings">תקלות בינוי</option>
+                </select>
+                <label for="reports_type_filter_select">סוג דיווחים</label>
             </div>
-        <% } %>
+            <div class="input-field col s12">
+                <select id="reports_filter_select" ng-model="reports_filter_select_model" ng-init="reports_filter_select_model='2'">
+                    <option value="0">הצג חוו"דים בטיפול</option>
+                    <option value="2" selected>הצג חוו"דים בהמתנה</option>
+                    <option value="3">הצג חוו"דים ארכיון</option>
+                </select>
+                <label for="reports_filter_select">סינון חוו"דים לפי מצב</label>
+            </div>
+            <div class="input-field col s12">
+                <select id="reports_guidance_bases_filter_select" ng-model="reports_guidance_bases_filter_select_model" ng-init="reports_guidance_bases_filter_select_model='-1'" name="optional_guidance_bases">
+                    <option value="-1">הצג את כל הבה"דים</option>
+                    <option ng-repeat="gb in guidance_bases_list" value="{{gb.id}}">{{gb.name}}</option>
+                </select>
+                <label for="reports_guidance_bases_filter_select">סינון חוו"דים לפי בה"דים</label>
+            </div>
+            <!--<div class="input-field col s4" style="padding-top: 2vh;">
+                <a class="waves-effect waves-light btn">
+                    <i class="hide-on-large-only show-on-medium-and-down material-icons">delete_forever</i>
+                    <i class="hide-on-med-and-down show-on-large material-icons right">delete_forever</i>
+                    <span class="show-on-large hide-on-med-and-down">מחק את כל הדוחות</span>
+                </a>
+            </div>-->
+        </div>
 
         <table class="highlight responsive-table centered">
             <thead>
@@ -75,18 +71,6 @@
             {{reports_current_page}}/{{reports_pages_count}}
             <a class="waves-effect waves-light btn blue darken-4" ng-disabled="reports_current_page == reports_pages_count" ng-click="reports_current_page = reports_current_page + 1">הבא</a>
         </div>
-
-        <% include ../partials/modals/reports/soldiers.html %>
-
-        <% include ../partials/modals/reports/buildings.html %>
-
-        <% include ../partials/modals/choose_plus_type.html %>
-
-        <% if (access_level > 1) { %>
-            <% include ../partials/modals/new_user.html %>
-        <% } %>
     </div>
-
-    <% include ../partials/footer.html %>
 </body>
 </html>

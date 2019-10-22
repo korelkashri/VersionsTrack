@@ -1,5 +1,3 @@
-const hash = require('../helpers/hash').get_hash_code;
-const mysql = require('mysql');
 const db = require('../helpers/db_controllers/services/db');
 
 let test_session_connection = (req, res, next) => {
