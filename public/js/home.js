@@ -7,7 +7,7 @@ const app = angular.module('global_app', [])
             $('select').formSelect();
             let params = $.param({});
             $http({
-                method: "POST",
+                method: "GET",
                 url: "/api/versions/all",
                 data: params,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}

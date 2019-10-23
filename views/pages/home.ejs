@@ -31,7 +31,8 @@
             </div>
         </div>
 
-        <div ng-repeat="">
+        <div ng-repeat="version in versions_list">
+            From: {{version.prev_version}} To: {{version.version}}<br>
             <table class="highlight responsive-table centered">
                 <thead>
                 <tr>
