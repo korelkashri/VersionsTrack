@@ -41,6 +41,7 @@ let init_schema = () => {
                     default: 'Partial',
                     required: true
                 },
+                tests_details: String,
                 known_issues: String
             }
         ]
