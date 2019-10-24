@@ -2,7 +2,7 @@
 
 const app = angular.module('global_app', [])
 
-    .controller('body_controller', ($scope, $http) => {
+    .controller('body_controller', ($scope, $http, search_s) => {
         $(document).ready(function(){
             $('select').formSelect();
             let params = $.param({});
@@ -13,7 +13,8 @@ const app = angular.module('global_app', [])
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
                 response = response.data;
-                $scope.versions_list = response; // todo check this line
+                $scope.versions_list = response.data; // todo check this line
+                console.log(response)
                 //alertify.success(response.message);
             }, (response) => {
                 response = response.data;
@@ -21,6 +22,7 @@ const app = angular.module('global_app', [])
                 //alertify.error(response.message);
             });
         });
+        search_s.init($scope, $http);
         /*global_reports_s.init($scope, $http, $timeout, $compile, reports_optional_status, preloader, soldiers_reports_s, buildings_reports_s);
         users_s.init($scope, $http, $timeout);
         guidance_bases_s.init($scope, $http, $timeout, $compile);
@@ -58,11 +60,12 @@ const app = angular.module('global_app', [])
         };
     })
 
-    .service("guidance_bases_s", function() {
-        this.init = ($scope, $http, $timeout, $compile) => {
-            $scope.update_user_guidance_base = () => {
+    .service("search_s", function() {
+        this.init = ($scope, $http, $timeout) => {
+            $scope.search = () => {
                 let params = $.param({
-                    guidance_base: $scope.optional_guidance_base_model
+                    version: $scope.version_id_filter_model,
+
                 });
                 $http({
                     method: "POST",
@@ -80,9 +83,9 @@ const app = angular.module('global_app', [])
 
             $http({method: "GET", url: "/guidance_bases"}).then((response) => {
                 $scope.guidance_bases_list = response.data.data;
-                $timeout(() => {
+                /*$timeout(() => {
                     $('[name="optional_guidance_bases"]').formSelect();
-                }, 500);
+                }, 500);*/
             });
         };
     })

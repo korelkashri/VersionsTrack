@@ -17,11 +17,11 @@
             <div class="col s3"></div>
             <div class="col s8">
                 <div class="input-field inline col s3">
-                    <input id="filter_version_id" name="filter_version_id" type="text" placeholder="All">
+                    <input id="filter_version_id" name="filter_version_id" type="text" placeholder="All" ng-model="version_id_filter_model">
                     <label for="filter_version_id">Version ID</label>
                 </div>
                 <div class="input-field inline col s6">
-                    <select id="reports_type_filter_select" ng-model="reports_type_filter_select_model" ng-change="update_system_reports()" ng-init="reports_type_filter_select_model='equal'">
+                    <select id="reports_type_filter_select" ng-model="versions_filter_select_model" ng-change="update_system_reports()" ng-init="versions_filter_select_model='equal'">
                         <option value="before">< [Until this version]</option>
                         <option value="after">> [From this version and on]</option>
                         <option value="equal">= [Only this version]</option>
@@ -32,10 +32,45 @@
         </div>
 
         <div ng-repeat="version in versions_list">
-            From: {{version.prev_version}} To: {{version.version}}<br>
+<!--            todo: Add option to edit this version-->
+            <div class="row">
+                <div class="col s3">
+                    <h3>From: <u>{{version.prev_version}}</u></h3>
+                </div>
+                <div class="col s3">
+                    <h3>To: <u>{{version.version}}</u></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s2">
+                    <b>Details:</b>
+                </div>
+                <div class="col s10">
+                    <span>{{version.details}}</span>
+                </div>
+                <div class="col s2">
+                    <b>Downloader:</b>
+                </div>
+                <div class="col s10">
+                    <span>{{version.downloader}}</span>
+                </div>
+                <div class="col s2">
+                    <b>Release Date:</b>
+                </div>
+                <div class="col s10">
+                    <span>{{version.release_date}}</span>
+                </div>
+                <div class="col s2">
+                    <b>Known Issues:</b>
+                </div>
+                <div class="col s10">
+                    <span>{{version.known_issues}}</span>
+                </div>
+            </div>
             <table class="highlight responsive-table centered">
                 <thead>
                 <tr>
+                    <th>-</th>
                     <th>Type</th>
                     <th>Description</th>
                     <th>Tests Scope</th>
@@ -44,6 +79,16 @@
                 </tr>
                 </thead>
                 <tbody>
+                    <tr ng-repeat="property in version.properties">
+                        <td>
+<!--                            todo: add edit/remove options using property.id-->
+                        </td>
+                        <td>{{property.type}}</td>
+                        <td>{{property.description}}</td>
+                        <td>{{property.tests_scope}}</td>
+                        <td>{{property.tests_details}}</td>
+                        <td>{{property.known_issues}}</td>
+                    </tr>
                 <!--<tr ng-click="open_report(report)" style="cursor: pointer;" ng-class="report.status_id==1 ? 'red' : ''"
                     ng-repeat="report in reports_list
                             | reports_filter:
