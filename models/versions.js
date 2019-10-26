@@ -34,9 +34,21 @@ exports.get = async (req, res, next) => {
                     break;
             }
         } else if (target_version_rel_date) {
-            target_version_rel_date = moment(target_version_rel_date, [
-                "YYYY.MM.DD"
-            ]).startOf('day').toDate();
+            /*target_version_rel_date = moment(target_version_rel_date, [
+                "yyyy-mm-dd"
+            ]).toDate();*/
+            console.log(new Date(target_version_rel_date)); // Currently accepts only yyyy-mm-dd format.
+            /*
+            * Examples for wrong formats:
+            *   dd-mm-yyyy  (15-10-2016)
+            *   yyyy-m-dd   (2010-6-15)
+            *   yyyy-mm-d   (2010-10-5)
+            *
+            * Accepted formats:
+            *   yyyy-mm-dd  (2010-10-06)
+            *               (2010-03-19)
+            *               (2016-12-31)
+            */
             switch (filter) {
                 case "<":
                     versions = await versions_db_model.find( { "release_date": { "$lte": target_version_rel_date } } ).exec();
@@ -55,7 +67,7 @@ exports.get = async (req, res, next) => {
                 prev_version: "0",
                 details: "lala",
                 downloader: "me",
-                release_date: new Date(2010,10,5),
+                release_date: new Date("2010-10-26"),
                 known_issues: "lala",
                 properties: []
             });
