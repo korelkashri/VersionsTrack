@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/css/libs/materialize.css" />
+    <link rel="stylesheet" href="/css/libs/material-icons.css" />
     <script type="text/javascript" src="/js/libs/jquery.js"></script>
     <script type="text/javascript" src="/js/libs/angularjs.js"></script>
     <script type="text/javascript" src="/js/libs/materialize.js"></script>
@@ -17,11 +18,11 @@
             <div class="col s3"></div>
             <div class="col s8">
                 <div class="input-field inline col s3">
-                    <input id="filter_version_id" name="filter_version_id" type="text" placeholder="All" ng-model="version_id_filter_model">
+                    <input id="filter_version_id" name="filter_version_id" type="text" placeholder="All" ng-model="version_id_filter_model" ng-change="search();">
                     <label for="filter_version_id">Version ID</label>
                 </div>
                 <div class="input-field inline col s6">
-                    <select id="reports_type_filter_select" ng-model="versions_filter_select_model" ng-change="update_system_reports()" ng-init="versions_filter_select_model='equal'">
+                    <select id="reports_type_filter_select" ng-model="versions_filter_select_model" ng-change="search();" ng-init="versions_filter_select_model='equal'">
                         <option value="before">< [Until this version]</option>
                         <option value="after">> [From this version and on]</option>
                         <option value="equal">= [Only this version]</option>
@@ -31,14 +32,17 @@
             </div>
         </div>
 
-        <div ng-repeat="version in versions_list">
+        <div style="padding: 0 0.75rem;">
+            <button class="btn-floating"><i class="material-icons">add</i></button>
+        </div>
+        <div ng-repeat="version in versions_list | orderBy: ['-version']">
 <!--            todo: Add option to edit this version-->
             <div class="row">
                 <div class="col s3">
-                    <h3>From: <u>{{version.prev_version}}</u></h3>
+                    <h4>From: <u>{{version.prev_version}}</u></h4>
                 </div>
                 <div class="col s3">
-                    <h3>To: <u>{{version.version}}</u></h3>
+                    <h4>To: <u>{{version.version}}</u></h4>
                 </div>
             </div>
             <div class="row">
@@ -81,6 +85,8 @@
                 <tbody>
                     <tr ng-repeat="property in version.properties">
                         <td>
+                            <button class="btn-small btn-floating"><i class="material-icons">create</i></button> <!--Edit-->
+                            <button class="btn-small btn-floating"><i class="material-icons">delete_forever</i></button> <!--Remove-->
 <!--                            todo: add edit/remove options using property.id-->
                         </td>
                         <td>{{property.type}}</td>
@@ -88,6 +94,49 @@
                         <td>{{property.tests_scope}}</td>
                         <td>{{property.tests_details}}</td>
                         <td>{{property.known_issues}}</td>
+                    </tr>
+                    <tr>
+                        <td><button class="btn-small btn-floating"><i class="material-icons">add</i></button></td>
+                        <td>
+                            <div class="input-field inline">
+                                <select id="new_version_property_type_{{version.version}}">
+                                    <option value="Feature">Feature</option>
+                                    <option value="Fix Bug">Fix Bug</option>
+                                    <option value="Change">Change</option>
+                                    <option value="Deprecated">Deprecated</option>
+                                </select>
+                                <label for="new_version_property_type_{{version.version}}">Type</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field inline">
+                                <input id="filter_version_id" name="filter_version_id" type="text">
+                                <label for="filter_version_id">Description</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field inline">
+                                <select id="new_version_property_tests_scope_{{version.version}}">
+                                    <option value="None">None</option>
+                                    <option value="Partial">Partial</option>
+                                    <option value="Large">Large</option>
+                                    <option value="Full">Full</option>
+                                </select>
+                                <label for="new_version_property_tests_scope_{{version.version}}">Tests Scope</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field inline">
+                                <input id="filter_version_id" name="filter_version_id" type="text">
+                                <label for="filter_version_id">Tests Details</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field inline">
+                                <input id="filter_version_id" name="filter_version_id" type="text">
+                                <label for="filter_version_id">Known Issues</label>
+                            </div>
+                        </td>
                     </tr>
                 <!--<tr ng-click="open_report(report)" style="cursor: pointer;" ng-class="report.status_id==1 ? 'red' : ''"
                     ng-repeat="report in reports_list
@@ -104,6 +153,7 @@
                 </tr>-->
                 </tbody>
             </table>
+            <br><br>
         </div>
         <div class="center" ng-show="reports_pages_count > 1">
 <!--            <a class="waves-effect waves-light btn blue darken-4" ng-disabled="reports_current_page == 1" ng-click="reports_current_page = reports_current_page - 1">הקודם</a>-->

@@ -3,26 +3,11 @@
 const app = angular.module('global_app', [])
 
     .controller('body_controller', ($scope, $http, search_s) => {
+        search_s.init($scope, $http);
         $(document).ready(function(){
             $('select').formSelect();
-            let params = $.param({});
-            $http({
-                method: "GET",
-                url: "/api/versions/all",
-                data: params,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then((response) => {
-                response = response.data;
-                $scope.versions_list = response.data; // todo check this line
-                console.log(response)
-                //alertify.success(response.message);
-            }, (response) => {
-                response = response.data;
-                console.log("Error occurred: " + response.message)
-                //alertify.error(response.message);
-            });
+            $scope.search();
         });
-        search_s.init($scope, $http);
         /*global_reports_s.init($scope, $http, $timeout, $compile, reports_optional_status, preloader, soldiers_reports_s, buildings_reports_s);
         users_s.init($scope, $http, $timeout);
         guidance_bases_s.init($scope, $http, $timeout, $compile);
@@ -64,20 +49,44 @@ const app = angular.module('global_app', [])
         this.init = ($scope, $http, $timeout) => {
             $scope.search = () => {
                 let params = $.param({
-                    version: $scope.version_id_filter_model,
-
                 });
+
+                let route;
+                if ($scope.version_id_filter_model) {
+                    switch ($scope.versions_filter_select_model) {
+                        case "equal":
+                            route = "/api/versions/v";
+                            break;
+
+                        case "after":
+                            route = "/api/versions/gt_v";
+                            break;
+
+                        case "before":
+                            route = "/api/versions/lt_v";
+                            break;
+                    }
+                    route += $scope.version_id_filter_model;
+                } else {
+                    route = "/api/versions/all";
+                }
+
                 $http({
-                    method: "POST",
-                    url: "/users/self/update",
+                    method: "GET",
+                    url: route,
                     data: params,
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 }).then((response) => {
                     response = response.data;
-                    alertify.success(response.message);
+                    $scope.versions_list = response.data;
+                    $scope.versions_list.forEach((version)=>{
+                        let date_info = version.release_date.split('T');
+                        version.release_date = date_info[0];
+                    })
+                    //alertify.success(response.message);
                 }, (response) => {
                     response = response.data;
-                    alertify.error(response.message);
+                    //alertify.error(response.message);
                 });
             };
 

@@ -37,7 +37,8 @@ exports.get = async (req, res, next) => {
             /*target_version_rel_date = moment(target_version_rel_date, [
                 "yyyy-mm-dd"
             ]).toDate();*/
-            console.log(new Date(target_version_rel_date)); // Currently accepts only yyyy-mm-dd format.
+            target_version_rel_date = new Date(target_version_rel_date);
+            //console.log(new Date(target_version_rel_date)); // Currently accepts only yyyy-mm-dd format.
             /*
             * Examples for wrong formats:
             *   dd-mm-yyyy  (15-10-2016)
@@ -62,17 +63,37 @@ exports.get = async (req, res, next) => {
                     throw new Error("Unspecified sign for date filter.");
             }
         } else {
-            /*let new_version = new versions_db_model({
-                version: "0",
-                prev_version: "0",
+            versions_db_model.deleteMany({}, null).exec();
+            let new_version = new versions_db_model({
+                version: "0.0.0",
+                prev_version: "0.0.0",
                 details: "lala",
                 downloader: "me",
                 release_date: new Date("2010-10-26"),
                 known_issues: "lala",
                 properties: []
             });
-
-            new_version = await new_version.save();*/
+            new_version = await new_version.save();
+            new_version = new versions_db_model({
+                version: "0.0.1",
+                prev_version: "0.0.0",
+                details: "lala",
+                downloader: "me",
+                release_date: new Date("2010-11-10"),
+                known_issues: "lala",
+                properties: []
+            });
+            new_version = await new_version.save();
+            new_version = new versions_db_model({
+                version: "0.0.2",
+                prev_version: "0.0.1",
+                details: "lala",
+                downloader: "me",
+                release_date: new Date("2010-12-13"),
+                known_issues: "lala",
+                properties: []
+            });
+            new_version = await new_version.save();
             versions = await versions_db_model.find({}).exec();
         }
     } catch (e) {
