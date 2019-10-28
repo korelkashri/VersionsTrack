@@ -150,7 +150,37 @@ const app = angular.module('global_app', [])
             };
 
             $scope.modify_property = (version_id, property_id) => {
+                let type_field          = $("[id='modify_property_type_" + property_id + "']"),
+                    description_field   = $("[id='modify_property_description_" + property_id + "']"),
+                    tests_scope_field   = $("[id='modify_property_tests_scope_" + property_id + "']"),
+                    tests_details_field = $("[id='modify_property_tests_details_" + property_id + "']"),
+                    known_issues_field  = $("[id='modify_property_known_issues_" + property_id + "']");
+
                 let params = $.param({
+                    type: type_field.val(),
+                    description: description_field.val(),
+                    tests_scope: tests_scope_field.val(),
+                    tests_details: tests_details_field.val(),
+                    known_issues: known_issues_field.val()
+                });
+
+                if (!description_field.val()) {
+                    alertify.error("Please enter description: " + version_id);
+                    return false;
+                }
+
+                $http({
+                    method: "POST",
+                    url: "/api/versions/modify/p" + version_id + "-" + property_id,
+                    data: params,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    alertify.success(response.message);
+                    $scope.search();
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
                 });
             };
 

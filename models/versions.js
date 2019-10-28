@@ -172,6 +172,43 @@ exports.add_property = async (req, res, next) => {
     }
 };
 
+exports.modify_property = async (req, res, next) => {
+    let versions_db_model = versions_db.getVersionsDBModel();
+    try {
+        let version_id = requests_handler.require_param(req, "route", "version_id");
+        let property_id = requests_handler.require_param(req, "route", "property_id");
+        let property_type = requests_handler.require_param(req, "post", "type");
+        let description = requests_handler.require_param(req, "post", "description");
+        let tests_scope = requests_handler.require_param(req, "post", "tests_scope");
+        let tests_details = requests_handler.optional_param(req, "post", "tests_details");
+        let known_issues = requests_handler.optional_param(req, "post", "known_issues");
+
+        let filter = {version: version_id, 'properties._id': property_id};
+        let update = {
+            $set:
+                {
+                    'properties.$.type': property_type,
+                    'properties.$.description': description,
+                    'properties.$.tests_scope': tests_scope,
+                    'properties.$.tests_details': tests_details,
+                    'properties.$.known_issues': known_issues
+                }
+        };
+
+        let new_version = await versions_db_model.updateOne(filter, update, {
+            new: true // Return the new object after the update is applied
+        }).exec();
+
+        if (!new_version) {
+            throw new Error("Target version didn't found.");
+        }
+
+        return new_version;
+    } catch (e) {
+        throw new Error(e)
+    }
+};
+
 exports.remove_property = async (req, res, next) => {
     let versions_db_model = versions_db.getVersionsDBModel();
     try {
