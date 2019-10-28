@@ -11,7 +11,7 @@ Mark and remember old issues with versions/dates oriented search.
 * [mongodb](https://www.mongodb.com/).
 
 ## TO do:
-* *Add property option.* :heavy_check_mark:
+* *~~Add property option.~~* :heavy_check_mark:
 * Add version option.
 * Order properties by type/tests scope.
 * Add generic description options for versions.
