@@ -81,7 +81,7 @@ const app = angular.module('global_app', [])
                 }).then((response) => {
                     response = response.data;
                     $scope.versions_list = response.data;
-                    $scope.versions_list.forEach((version)=>{
+                    $scope.versions_list.forEach((version) => {
                         let date_info = version.release_date.split('T');
                         version.release_date = date_info[0];
                         version.view_state = true;
@@ -120,16 +120,17 @@ const app = angular.module('global_app', [])
             };
 
             $scope.new_property = (version_id) => {
+                let description = $("[id='new_version_property_description_" + version_id + "'").val();
                 let params = $.param({
                     type: $("[id='new_version_property_type_" + version_id + "'").val(),
-                    description: $("[id='new_version_property_description_" + version_id + "'").val(),
+                    description: description,
                     tests_scope: $("[id='new_version_property_tests_scope_" + version_id + "'").val(),
                     tests_details: $("[id='new_version_property_tests_details_" + version_id + "'").val(),
                     known_issues: $("[id='new_version_property_known_issues_" + version_id + "'").val()
                 });
 
-                if (!params.description) {
-                    alertify.error("Please enter description.");
+                if (!description) {
+                    alertify.error("Please enter description: " + version_id);
                     return false;
                 }
 
