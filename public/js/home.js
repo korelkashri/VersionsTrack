@@ -1,13 +1,15 @@
-//todo Add alertify to this project
+angular.element(document).ready(() => {
+    $('select').formSelect();
+});
 
 const app = angular.module('global_app', [])
 
-    .controller('body_controller', ($scope, $http, search_s) => {
+    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s) => {
         search_s.init($scope, $http);
-        $(document).ready(function(){
-            $('select').formSelect();
+        versions_s.init($scope, $http);
+        $(document).ready(() => {
             $scope.search();
-        });
+        })
         /*global_reports_s.init($scope, $http, $timeout, $compile, reports_optional_status, preloader, soldiers_reports_s, buildings_reports_s);
         users_s.init($scope, $http, $timeout);
         guidance_bases_s.init($scope, $http, $timeout, $compile);
@@ -46,7 +48,7 @@ const app = angular.module('global_app', [])
     })
 
     .service("search_s", function() {
-        this.init = ($scope, $http, $timeout) => {
+        this.init = ($scope, $http) => {
             $scope.search = () => {
                 let params = $.param({
                 });
@@ -82,11 +84,15 @@ const app = angular.module('global_app', [])
                     $scope.versions_list.forEach((version)=>{
                         let date_info = version.release_date.split('T');
                         version.release_date = date_info[0];
-                    })
-                    //alertify.success(response.message);
+                        version.view_state = true;
+                        version.properties.forEach((property) => {
+                            property.view_state = true;
+                        });
+                    });
+                    alertify.success(response.message);
                 }, (response) => {
                     response = response.data;
-                    //alertify.error(response.message);
+                    alertify.error(response.message);
                 });
             };
 
@@ -99,72 +105,92 @@ const app = angular.module('global_app', [])
         };
     })
 
-    .service("users_s", function() {
-        this.init = ($scope, $http, $timeout) => {
-            $scope.update_user = () => {
-                let params = $.param({
-                    guidance_base: $scope.new_user_base_model,
-                    password: $scope.new_user_password_model,
-                    role: $scope.new_user_role_model
-                });
-                $http({
-                    method: "POST",
-                    url: "/users/" + $scope.new_user_id_model + "/update",
-                    data: params,
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                }).then((response) => {
-                    response = response.data;
-                    alertify.success(response.message);
-                }, (response) => {
-                    response = response.data;
-                    alertify.error(response.message);
-                }).finally(() => {
-                    $("#user_modal").modal('close');
-                });
-            };
-
-            $scope.create_user = () => {
-                let params = $.param({
-                    id: $scope.new_user_id_model,
-                    guidance_base: $scope.new_user_base_model,
-                    password: $scope.new_user_password_model,
-                    role: $scope.new_user_role_model
-                });
-                $http({
-                    method: "POST",
-                    url: "/users/new",
-                    data: params,
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                }).then((response) => {
-                    response = response.data;
-                    alertify.success(response.message);
-                }, (response) => {
-                    response = response.data;
-                    alertify.error(response.message);
-                }).finally(() => {
-                    $("#user_modal").modal('close');
-                });
-            };
-
-            function get_user_data() {
-                let params = $.param({});
-                $http({
-                    method: "GET",
-                    url: "/users/data/self",
-                    data: params,
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                }).then((response) => {
-                    response = response.data;
-                    $scope.optional_guidance_base_model = String(response.data.default_guidance_base);
-                    $scope.num_reports_for_page_model = response.data.reports_per_page;
-                    $timeout(() => {
-                        $('[name="optional_guidance_bases"]').formSelect();
-                    }, 500);
-                });
+    .directive('versionsUpdateD', function() { // After loading the versions run this directive
+        return function($scope) {
+            if ($scope.$last){
+                $('select').formSelect();
             }
-
-            get_user_data();
         };
+    })
+
+    .service("versions_s", function () {
+        this.init = ($scope, $http) => {
+            $scope.new_version = () => {
+
+            };
+
+            $scope.new_property = (version_id) => {
+                let params = $.param({
+                    type: $("[id='new_version_property_type_" + version_id + "'").val(),
+                    description: $("[id='new_version_property_description_" + version_id + "'").val(),
+                    tests_scope: $("[id='new_version_property_tests_scope_" + version_id + "'").val(),
+                    tests_details: $("[id='new_version_property_tests_details_" + version_id + "'").val(),
+                    known_issues: $("[id='new_version_property_known_issues_" + version_id + "'").val()
+                });
+
+                if (!params.description) {
+                    alertify.error("Please enter description.");
+                    return false;
+                }
+
+                $http({
+                    method: "POST",
+                    url: "/api/versions/add/p" + version_id,
+                    data: params,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    alertify.success(response.message);
+                    $scope.search();
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
+                });
+            };
+
+            $scope.modify_property = (version_id, property_id) => {
+                let params = $.param({
+                });
+            };
+
+            $scope.modify_property_view_state = (property_data, state) => {
+                let property_id = property_data._id;
+                let type_field          = $("[id='modify_property_type_" + property_id + "']"),
+                    description_field   = $("[id='modify_property_description_" + property_id + "']"),
+                    tests_scope_field   = $("[id='modify_property_tests_scope_" + property_id + "']"),
+                    tests_details_field = $("[id='modify_property_tests_details_" + property_id + "']"),
+                    known_issues_field  = $("[id='modify_property_known_issues_" + property_id + "']");
+
+                type_field.val(property_data.type);
+                description_field.val(property_data.description);
+                tests_scope_field.val(property_data.tests_scope);
+                tests_details_field.val(property_data.tests_details);
+                known_issues_field.val(property_data.known_issues);
+
+                type_field.formSelect();
+                tests_scope_field.formSelect();
+                description_field.labels().addClass("active"); // Read About: Materialize input labels active class - https://materializecss.com/text-inputs.html
+                tests_details_field.labels().addClass("active");
+                known_issues_field.labels().addClass("active");
+
+                property_data.view_state = state;
+            };
+
+            $scope.remove_property = (version_id, property_id) => {
+                $http({
+                    method: "POST",
+                    url: "/api/versions/remove/p" + version_id + "-" + property_id,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    alertify.success(response.message);
+                    $scope.search();
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
+                });
+            };
+        }
     })
 
     .service("preloader", function() {
@@ -218,43 +244,6 @@ const app = angular.module('global_app', [])
             };
         }
     ])
-
-    .factory("reports_optional_status", function() {
-        //        0        1          2         3
-        return ["בטיפול", "מתעכב", "ממתין לאישור", "אושר"];
-    })
-
-    .filter("reports_filter", ['reports_optional_status', 'paging', function(reports_optional_status, paging) {
-        let optional_status = reports_optional_status;
-
-        function filter_requirements(report, reports_filter_select_model, reports_guidance_bases_filter_select_model) {
-            let filter_by_status = reports_filter_select_model;
-            let filter_by_guidance_bases = reports_guidance_bases_filter_select_model;
-            let return_value = true;
-            if (filter_by_status) return_value = optional_status[Number(filter_by_status)] === report.status || (report.status === optional_status[1] && optional_status[Number(filter_by_status)] === optional_status[2]); // Filter by status
-            if (filter_by_guidance_bases) return_value = return_value && (Number(filter_by_guidance_bases) === -1 || Number(filter_by_guidance_bases) === Number(report.guidance_base)); // Filter by guidance base
-            return return_value;
-        }
-
-        return function (reports, reports_filter_select_model, reports_guidance_bases_filter_select_model, current_page, num_reports_for_page_model) {
-            let filtered = [];
-            if (reports === undefined) return filtered;
-            num_reports_for_page_model = Number(num_reports_for_page_model);
-            var begin = ((current_page - 1) * num_reports_for_page_model),
-                end = begin + num_reports_for_page_model;
-            for (let i = 0; i < reports.length; i++) {
-                if (filter_requirements(reports[i], reports_filter_select_model, reports_guidance_bases_filter_select_model)) {
-                    filtered.push(reports[i]);
-                }
-            }
-            if (begin > filtered.length) {
-                current_page = 1;
-                begin = 0;
-            }
-            paging.update_reports_paging(filtered, current_page);
-            return filtered.slice(begin, Math.min(end, filtered.length));
-        };
-    }])
 
     .run(function($animate) {
         $animate.enabled(true);

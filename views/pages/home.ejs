@@ -2,16 +2,23 @@
 <html lang="en" ng-app="global_app" ng-cloak>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="/css/libs/materialize.css" />
-    <link rel="stylesheet" href="/css/libs/material-icons.css" />
-    <script type="text/javascript" src="/js/libs/jquery.js"></script>
-    <script type="text/javascript" src="/js/libs/angularjs.js"></script>
-    <script type="text/javascript" src="/js/libs/materialize.js"></script>
+    <link rel="stylesheet" href="/resources/css/materialize.css" />
+    <link rel="stylesheet" href="/resources/css/material-icons.css" />
+    <link rel="stylesheet" href="/resources/css/alertify.core.css" />
+    <link rel="stylesheet" href="/resources/css/alertify.bootstrap.css" />
+    <link rel="stylesheet" href="/resources/css/alertify.lightbox.css" />
+    <link rel="stylesheet" href="/resources/css/alertify.tooltip-classic.css" />
+    <script type="text/javascript" src="/resources/js/jQuery.js"></script>
+    <script type="text/javascript" src="/resources/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/resources/js/angularJS.js"></script>
+    <script type="text/javascript" src="/resources/js/materialize.js"></script>
+    <script type="text/javascript" src="/resources/js/alertify.js"></script>
+    <script type="text/javascript" src="/resources/js/lightbox.js"></script>
     <script type="text/javascript" src="/js/home.js"></script>
-    <!--    <script type="text/javascript" src="/js/services/reports.js"></script>-->
+    <script type="text/javascript" src="/js/init/init.js"></script>
 </head>
 
-<body class="rtl login-background" ng-controller="body_controller">
+<body class="rtl login-background" ng-controller="body_controller" data-ng-init="init()">
     <div id="page_content">
         <br>
         <div class="row">
@@ -33,16 +40,16 @@
         </div>
 
         <div style="padding: 0 0.75rem;">
-            <button class="btn-floating"><i class="material-icons">add</i></button>
+            <button class="btn-large btn-floating"><i class="material-icons">add</i></button>
         </div>
-        <div ng-repeat="version in versions_list | orderBy: ['-version']">
+        <div ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d>
 <!--            todo: Add option to edit this version-->
             <div class="row">
                 <div class="col s3">
-                    <h4>From: <u>{{version.prev_version}}</u></h4>
+                    <h4>From: <u>{{version_data.prev_version}}</u></h4>
                 </div>
                 <div class="col s3">
-                    <h4>To: <u>{{version.version}}</u></h4>
+                    <h4>To: <u>{{version_data.version}}</u></h4>
                 </div>
             </div>
             <div class="row">
@@ -50,25 +57,25 @@
                     <b>Details:</b>
                 </div>
                 <div class="col s10">
-                    <span>{{version.details}}</span>
+                    <span>{{version_data.details}}</span>
                 </div>
                 <div class="col s2">
                     <b>Downloader:</b>
                 </div>
                 <div class="col s10">
-                    <span>{{version.downloader}}</span>
+                    <span>{{version_data.downloader}}</span>
                 </div>
                 <div class="col s2">
                     <b>Release Date:</b>
                 </div>
                 <div class="col s10">
-                    <span>{{version.release_date}}</span>
+                    <span>{{version_data.release_date}}</span>
                 </div>
                 <div class="col s2">
                     <b>Known Issues:</b>
                 </div>
                 <div class="col s10">
-                    <span>{{version.known_issues}}</span>
+                    <span>{{version_data.known_issues}}</span>
                 </div>
             </div>
             <table class="highlight responsive-table centered">
@@ -83,58 +90,131 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="property in version.properties">
+                    <tr ng-repeat="property in version_data.properties">
+                        <!--Options-->
                         <td>
-                            <button class="btn-small btn-floating"><i class="material-icons">create</i></button> <!--Edit-->
-                            <button class="btn-small btn-floating"><i class="material-icons">delete_forever</i></button> <!--Remove-->
-<!--                            todo: add edit/remove options using property.id-->
+                            <div class="row">
+                                <div class="col s4">
+                                    <button class="btn-small blue btn-floating" ng-click="modify_property_view_state(property, false)" ng-show="property.view_state"> <!--Edit-->
+                                        <i class="material-icons">create</i>
+                                    </button>
+                                    <button class="btn-small btn-floating" ng-click="modify_property(version_data.version, property._id)" ng-show="!property.view_state"> <!--Apply modifying-->
+                                        <i class="material-icons">check</i>
+                                    </button>
+                                </div>
+                                <div class="col s4"></div>
+                                <div class="col s4">
+                                    <button class="btn-small red btn-floating" ng-click="remove_property(version_data.version, property._id)" ng-show="property.view_state"> <!--Remove-->
+                                        <i class="material-icons">delete_forever</i>
+                                    </button>
+                                    <button class="btn-small red btn-floating" ng-click="modify_property_view_state(property, true)" ng-show="!property.view_state"> <!--Cancel modifying-->
+                                        <i class="material-icons">clear</i>
+                                    </button>
+                                </div>
+                            </div>
                         </td>
-                        <td>{{property.type}}</td>
-                        <td>{{property.description}}</td>
-                        <td>{{property.tests_scope}}</td>
-                        <td>{{property.tests_details}}</td>
-                        <td>{{property.known_issues}}</td>
-                    </tr>
-                    <tr>
-                        <td><button class="btn-small btn-floating"><i class="material-icons">add</i></button></td>
-                        <td>
+
+                        <!--Type-->
+                        <td ng-show="property.view_state">{{property.type}}</td>
+                        <td ng-show="!property.view_state">
                             <div class="input-field inline">
-                                <select id="new_version_property_type_{{version.version}}">
+                                <select id="modify_property_type_{{property._id}}">
                                     <option value="Feature">Feature</option>
                                     <option value="Fix Bug">Fix Bug</option>
                                     <option value="Change">Change</option>
                                     <option value="Deprecated">Deprecated</option>
                                 </select>
-                                <label for="new_version_property_type_{{version.version}}">Type</label>
+                                <label for="modify_property_type_{{property._id}}">Type</label>
                             </div>
                         </td>
-                        <td>
+
+                        <!--Description-->
+                        <td ng-show="property.view_state">{{property.description}}</td>
+                        <td ng-show="!property.view_state">
                             <div class="input-field inline">
-                                <input id="filter_version_id" name="filter_version_id" type="text">
-                                <label for="filter_version_id">Description</label>
+                                <input id="modify_property_description_{{property._id}}" type="text">
+                                <label for="modify_property_description_{{property._id}}">Description</label>
                             </div>
                         </td>
-                        <td>
+
+                        <!--Tests Scope-->
+                        <td ng-show="property.view_state">{{property.tests_scope}}</td>
+                        <td ng-show="!property.view_state">
                             <div class="input-field inline">
-                                <select id="new_version_property_tests_scope_{{version.version}}">
+                                <select id="modify_property_tests_scope_{{property._id}}">
                                     <option value="None">None</option>
                                     <option value="Partial">Partial</option>
                                     <option value="Large">Large</option>
                                     <option value="Full">Full</option>
                                 </select>
-                                <label for="new_version_property_tests_scope_{{version.version}}">Tests Scope</label>
+                                <label for="modify_property_tests_scope_{{property._id}}">Tests Scope</label>
+                            </div>
+                        </td>
+
+                        <!--Tests Details-->
+                        <td ng-show="property.view_state">{{property.tests_details}}</td>
+                        <td ng-show="!property.view_state">
+                            <div class="input-field inline">
+                                <input id="modify_property_tests_details_{{property._id}}" type="text">
+                                <label for="modify_property_tests_details_{{property._id}}">Tests Details</label>
+                            </div>
+                        </td>
+
+                        <!--Known Issues-->
+                        <td ng-show="property.view_state">{{property.known_issues}}</td>
+                        <td ng-show="!property.view_state">
+                            <div class="input-field inline">
+                                <input id="modify_property_known_issues_{{property._id}}" type="text">
+                                <label for="modify_property_known_issues_{{property._id}}">Known Issues</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!--New Version Property-->
+                    <tr>
+                        <td>
+                            <button class="btn-small btn-floating" ng-click="new_property(version_data.version)">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </td>
+                        <td>
+                            <div class="input-field inline">
+                                <select id="new_version_property_type_{{version_data.version}}">
+                                    <option value="Feature">Feature</option>
+                                    <option value="Fix Bug">Fix Bug</option>
+                                    <option value="Change">Change</option>
+                                    <option value="Deprecated">Deprecated</option>
+                                </select>
+                                <label for="new_version_property_type_{{version_data.version}}">Type</label>
                             </div>
                         </td>
                         <td>
                             <div class="input-field inline">
-                                <input id="filter_version_id" name="filter_version_id" type="text">
-                                <label for="filter_version_id">Tests Details</label>
+                                <input id="new_version_property_description_{{version_data.version}}" type="text">
+                                <label for="new_version_property_description_{{version_data.version}}">Description</label>
                             </div>
                         </td>
                         <td>
                             <div class="input-field inline">
-                                <input id="filter_version_id" name="filter_version_id" type="text">
-                                <label for="filter_version_id">Known Issues</label>
+                                <select id="new_version_property_tests_scope_{{version_data.version}}">
+                                    <option value="None">None</option>
+                                    <option value="Partial">Partial</option>
+                                    <option value="Large">Large</option>
+                                    <option value="Full">Full</option>
+                                </select>
+                                <label for="new_version_property_tests_scope_{{version_data.version}}">Tests Scope</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field inline">
+                                <input id="new_version_property_tests_details_{{version_data.version}}" type="text">
+                                <label for="new_version_property_tests_details_{{version_data.version}}">Tests Details</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field inline">
+                                <input id="new_version_property_known_issues_{{version_data.version}}" type="text">
+                                <label for="new_version_property_known_issues_{{version_data.version}}">Known Issues</label>
                             </div>
                         </td>
                     </tr>
