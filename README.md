@@ -8,7 +8,13 @@ Mark and remember old issues with versions/dates oriented search.
 **Compatible with offline systems.**
 
 ## Dependencies
+* [node.js](https://nodejs.org/en/).
 * [mongodb](https://www.mongodb.com/).
+
+## Run
+```
+node ./app.js
+```
 
 ## TO do:
 * *~~Add property option.~~* :heavy_check_mark:
