@@ -1,14 +1,22 @@
 angular.element(document).ready(() => {
     $('select').formSelect();
+    document.getElementById("new_version_version_release_date").valueAsDate = new Date();
 });
 
 const app = angular.module('global_app', [])
 
-    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s) => {
+    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s) => {
         search_s.init($scope, $http);
         versions_s.init($scope, $http);
+        properties_s.init($scope, $http);
         $(document).ready(() => {
             $scope.search();
+            $('.modal').modal();
+            $("#new_version_modal").modal({
+                onOpenStart: () => {
+                    search_s.update_last_version()
+                }
+            });
             $("#new_version_version_release_date").on("change", function() {
                 this.setAttribute(
                     "data-date",
@@ -54,14 +62,16 @@ const app = angular.module('global_app', [])
     })
 
     .service("search_s", function() {
-        this.init = ($scope, $http) => {
-            $scope.search = () => {
-                let params = $.param({
-                });
+        let _$scope, _$http;
 
+        this.init = ($scope, $http) => {
+            _$http = $http;
+            _$scope = $scope;
+
+            _$scope.search = () => {
                 let route;
-                if ($scope.version_id_filter_model) {
-                    switch ($scope.versions_filter_select_model) {
+                if (_$scope.version_id_filter_model) {
+                    switch (_$scope.versions_filter_select_model) {
                         case "equal":
                             route = "/api/versions/v";
                             break;
@@ -74,20 +84,19 @@ const app = angular.module('global_app', [])
                             route = "/api/versions/lt_v";
                             break;
                     }
-                    route += $scope.version_id_filter_model;
+                    route += _$scope.version_id_filter_model;
                 } else {
                     route = "/api/versions/all";
                 }
 
-                $http({
+                _$http({
                     method: "GET",
                     url: route,
-                    data: params,
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 }).then((response) => {
                     response = response.data;
-                    $scope.versions_list = response.data;
-                    $scope.versions_list.forEach((version) => {
+                    _$scope.versions_list = response.data;
+                    _$scope.versions_list.forEach((version) => {
                         let date_info = version.release_date.split('T');
                         version.release_date = date_info[0];
                         version.view_state = true;
@@ -102,13 +111,33 @@ const app = angular.module('global_app', [])
                 });
             };
 
-            $http({method: "GET", url: "/guidance_bases"}).then((response) => {
-                $scope.guidance_bases_list = response.data.data;
+            _$http({method: "GET", url: "/guidance_bases"}).then((response) => {
+                _$scope.guidance_bases_list = response.data.data;
                 /*$timeout(() => {
                     $('[name="optional_guidance_bases"]').formSelect();
                 }, 500);*/
             });
         };
+
+        this.update_last_version = () => {
+            _$http({
+                method: "GET",
+                url: "/api/versions/all",
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then((response) => {
+                response = response.data;
+                let versions_list = response.data;
+                versions_list.sort((elem1, elem2) => {
+                    if (elem1.version > elem2.version) return -1;
+                    if (elem1.version < elem2.version) return 1;
+                    return 0;
+                });
+                _$scope.last_version = versions_list[0];
+            }, (response) => {
+                response = response.data;
+                alertify.error(response.message);
+            });
+        }
     })
 
     .directive('versionsUpdateD', function() { // After loading the versions run this directive
@@ -122,9 +151,72 @@ const app = angular.module('global_app', [])
     .service("versions_s", function () {
         this.init = ($scope, $http) => {
             $scope.new_version = () => {
+                let new_version_id = $scope.new_version_version_id;
+                let prev_version_id = $scope.new_version_prev_version_id || $scope.last_version.version;
+
+                let route = "/api/versions/add/v" + new_version_id;
+                let params = $.param({
+                    prev_version_id: prev_version_id,
+                    details: $scope.new_version_version_details,
+                    downloader: $scope.new_version_version_downloader,
+                    release_date: new Date($scope.new_version_version_release_date),
+                    known_issues: $scope.new_version_version_known_issues
+                });
+                console.log(params);
+
+                if ($scope.new_version_version_downloader === "Invalid input") {
+                    alertify.error("Invalid new version release date.");
+                    return false;
+                }
+
+                $http({
+                    method: "POST",
+                    url: route,
+                    data: params,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    alertify.success(response.message);
+                    $scope.clear_new_version_data();
+                    $scope.search();
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
+                });
+            };
+
+            $scope.clear_new_version_data = () => {
+                $scope.new_version_version_id =
+                $scope.new_version_prev_version_id =
+                $scope.new_version_version_details =
+                $scope.new_version_version_downloader =
+                $scope.new_version_version_known_issues = "";
+                $("input")
+                    .filter(function() {
+                        return this.id.match(/new_version*/) && !this.placeholder;
+                    }).each(function() {
+                        $(this).labels().removeClass("active");
+                    }
+                );
+                document.getElementById("new_version_version_release_date").valueAsDate = new Date();
+            };
+
+            $scope.remove_version = (version_id) => {
 
             };
 
+            $scope.modify_version_view_state = (version_data, state) => {
+
+            };
+
+            $scope.modify_version = (version_id) => {
+
+            };
+        }
+    })
+
+    .service("properties_s", function () {
+        this.init = ($scope, $http) => {
             $scope.new_property = (version_id) => {
                 let description = $("[id='new_version_property_description_" + version_id + "'").val();
                 let params = $.param({
