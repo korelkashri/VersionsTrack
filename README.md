@@ -16,9 +16,9 @@ Mark and remember old issues with versions/dates oriented search.
 node ./app.js
 ```
 
-## TO do:
+## To do:
 * *~~Add property option.~~* :heavy_check_mark:
-* Add version option.
+* Version adding option.
 * Order properties by type/tests scope.
 * Add generic description options for versions.
 * Click on version will automatically search it.

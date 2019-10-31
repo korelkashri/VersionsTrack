@@ -9,6 +9,12 @@ const app = angular.module('global_app', [])
         versions_s.init($scope, $http);
         $(document).ready(() => {
             $scope.search();
+            $("#new_version_version_release_date").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY/MM/DD").format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
         })
         /*global_reports_s.init($scope, $http, $timeout, $compile, reports_optional_status, preloader, soldiers_reports_s, buildings_reports_s);
         users_s.init($scope, $http, $timeout);
