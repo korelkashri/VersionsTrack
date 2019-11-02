@@ -12,6 +12,7 @@
     <script type="text/javascript" src="/resources/js/jQuery.js"></script>
     <script type="text/javascript" src="/resources/js/jquery-ui.js"></script>
     <script type="text/javascript" src="/resources/js/angularJS.js"></script>
+    <script type="text/javascript" src="/resources/js/angularjs-sanitize.min.js"></script>
     <script type="text/javascript" src="/resources/js/materialize.js"></script>
     <script type="text/javascript" src="/resources/js/alertify.js"></script>
     <script type="text/javascript" src="/resources/js/lightbox.js"></script>
@@ -139,7 +140,7 @@
                             </td>
 
                             <!--Description-->
-                            <td ng-show="property.view_state">{{property.description}}</td>
+                            <td ng-show="property.view_state" ng-bind-html="property.description"></td>
                             <td ng-show="!property.view_state">
                                 <div class="input-field inline">
                                     <input id="modify_property_description_{{property._id}}" type="text">
@@ -162,7 +163,7 @@
                             </td>
 
                             <!--Tests Details-->
-                            <td ng-show="property.view_state">{{property.tests_details || '-'}}</td>
+                            <td ng-show="property.view_state" ng-bind-html="property.tests_details || '-'"></td>
                             <td ng-show="!property.view_state">
                                 <div class="input-field inline">
                                     <input id="modify_property_tests_details_{{property._id}}" type="text">
@@ -171,7 +172,7 @@
                             </td>
 
                             <!--Known Issues-->
-                            <td ng-show="property.view_state" class="lighten-4" ng-class="[{red: property.known_issues != ''}]">{{property.known_issues || '-'}}</td>
+                            <td ng-show="property.view_state" class="lighten-4" ng-class="[{red: property.known_issues != ''}]" ng-bind-html="property.known_issues || '-'"></td>
                             <td ng-show="!property.view_state">
                                 <div class="input-field inline">
                                     <input id="modify_property_known_issues_{{property._id}}" type="text">

@@ -3,7 +3,7 @@ angular.element(document).ready(() => {
     document.getElementById("new_version_version_release_date").valueAsDate = new Date();
 });
 
-const app = angular.module('global_app', [])
+const app = angular.module('global_app', ['ngSanitize'])
 
     .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s) => {
         search_s.init($scope, $http);
