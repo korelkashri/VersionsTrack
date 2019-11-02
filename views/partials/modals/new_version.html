@@ -1,0 +1,49 @@
+<!--New version-->
+<div id="new_version_modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s5 input-field inline">
+                <input type="text" id="new_version_prev_version_id" ng-model="new_version_prev_version_id" placeholder="Last version [{{last_version.version}}]">
+                <label for="new_version_prev_version_id">From</label>
+            </div>
+            <div class="col s5 input-field inline">
+                <input type="text" id="new_version_version_id" ng-model="new_version_version_id">
+                <label for="new_version_version_id">To</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <b>Details:</b>
+                <div class="input-field inline">
+                    <input type="text" id="new_version_version_details" ng-model="new_version_version_details">
+                    <label for="new_version_version_details">Details</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <b>Downloader:</b>
+                <div class="input-field inline">
+                    <input type="text" id="new_version_version_downloader" ng-model="new_version_version_downloader">
+                    <label for="new_version_version_downloader">Downloader</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <b>Release Date:</b>
+                <div class="input-field inline" style="min-width: 250px;">
+                    <input type="date" id="new_version_version_release_date" ng-model="new_version_version_release_date" data-date-format="DD/MM/YYYY">
+                    <label for="new_version_version_release_date">Release Date</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <b>Known Issues:</b>
+                <div class="input-field inline">
+                    <input type="text" id="new_version_version_known_issues" ng-model="new_version_version_known_issues">
+                    <label for="new_version_version_known_issues">Known Issues</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" ng-click="new_version();">Add Version</a>
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" ng-click="clear_new_version_data();">Cancel</a>
+    </div>
+</div>

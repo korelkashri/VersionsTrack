@@ -42,58 +42,11 @@
         </div>
 
         <div style="padding: 0 0.75rem;">
-            <a class="btn-large btn-floating modal-trigger" href="#new_version_modal"><i class="material-icons">add</i></a>
-            <input type="checkbox" class="hide" ng-model="add_new_version_state" ng-init="add_new_version_state=false;">
 
-            <!--New version-->
-            <div id="new_version_modal" class="modal">
-                <div class="modal-content">
-                    <div class="row">
-                        <div class="col s5 input-field inline">
-                            <input type="text" id="new_version_prev_version_id" ng-model="new_version_prev_version_id" placeholder="Last version [{{last_version.version}}]">
-                            <label for="new_version_prev_version_id">From</label>
-                        </div>
-                        <div class="col s5 input-field inline">
-                            <input type="text" id="new_version_version_id" ng-model="new_version_version_id">
-                            <label for="new_version_version_id">To</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <b>Details:</b>
-                            <div class="input-field inline">
-                                <input type="text" id="new_version_version_details" ng-model="new_version_version_details">
-                                <label for="new_version_version_details">Details</label>
-                            </div>
-                        </div>
-                        <div class="col s12">
-                            <b>Downloader:</b>
-                            <div class="input-field inline">
-                                <input type="text" id="new_version_version_downloader" ng-model="new_version_version_downloader">
-                                <label for="new_version_version_downloader">Downloader</label>
-                            </div>
-                        </div>
-                        <div class="col s12">
-                            <b>Release Date:</b>
-                            <div class="input-field inline" style="min-width: 250px;">
-                                <input type="date" id="new_version_version_release_date" ng-model="new_version_version_release_date" data-date-format="DD/MM/YYYY">
-                                <label for="new_version_version_release_date">Release Date</label>
-                            </div>
-                        </div>
-                        <div class="col s12">
-                            <b>Known Issues:</b>
-                            <div class="input-field inline">
-                                <input type="text" id="new_version_version_known_issues" ng-model="new_version_version_known_issues">
-                                <label for="new_version_version_known_issues">Known Issues</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="#!" class="modal-close waves-effect waves-green btn-flat" ng-click="new_version();">Add Version</a>
-                    <a href="#!" class="modal-close waves-effect waves-red btn-flat" ng-click="clear_new_version_data();">Cancel</a>
-                </div>
-            </div>
+            <!--Open a version addition form [modal]-->
+            <a class="btn-large btn-floating modal-trigger" href="#new_version_modal"><i class="material-icons">add</i></a>
+
+            <!--All versions-->
             <div ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d>
                 <div class="row">
                     <div class="col s3">
@@ -209,7 +162,7 @@
                             </td>
 
                             <!--Tests Details-->
-                            <td ng-show="property.view_state">{{property.tests_details}}</td>
+                            <td ng-show="property.view_state">{{property.tests_details || '-'}}</td>
                             <td ng-show="!property.view_state">
                                 <div class="input-field inline">
                                     <input id="modify_property_tests_details_{{property._id}}" type="text">
@@ -218,7 +171,7 @@
                             </td>
 
                             <!--Known Issues-->
-                            <td ng-show="property.view_state" ng-class="[{red: property.known_issues != ''}]">{{property.known_issues}}</td>
+                            <td ng-show="property.view_state" class="lighten-4" ng-class="[{red: property.known_issues != ''}]">{{property.known_issues || '-'}}</td>
                             <td ng-show="!property.view_state">
                                 <div class="input-field inline">
                                     <input id="modify_property_known_issues_{{property._id}}" type="text">
@@ -299,5 +252,7 @@
             </div>
         </div>
     </div>
+
+    <%include ../partials/modals/new_version.html%>
 </body>
 </html>
