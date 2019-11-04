@@ -23,7 +23,7 @@ const app = angular.module('global_app', ['ngSanitize'])
                     moment(this.value, "YYYY/MM/DD").format(this.getAttribute("data-date-format"))
                 )
             }).trigger("change");
-        })
+        });
         /*global_reports_s.init($scope, $http, $timeout, $compile, reports_optional_status, preloader, soldiers_reports_s, buildings_reports_s);
         users_s.init($scope, $http, $timeout);
         guidance_bases_s.init($scope, $http, $timeout, $compile);
@@ -208,7 +208,26 @@ const app = angular.module('global_app', ['ngSanitize'])
             };
 
             $scope.modify_version_view_state = (version_data, state) => {
+                let property_id = version_data.version;
+                let type_field          = $("[id='modify_property_type_" + property_id + "']"),
+                    description_field   = $("[id='modify_property_description_" + property_id + "']"),
+                    tests_scope_field   = $("[id='modify_property_tests_scope_" + property_id + "']"),
+                    tests_details_field = $("[id='modify_property_tests_details_" + property_id + "']"),
+                    known_issues_field  = $("[id='modify_property_known_issues_" + property_id + "']");
 
+                type_field.val(version_data.type);
+                description_field.val(version_data.description);
+                tests_scope_field.val(version_data.tests_scope);
+                tests_details_field.val(version_data.tests_details);
+                known_issues_field.val(version_data.known_issues);
+
+                type_field.formSelect();
+                tests_scope_field.formSelect();
+                description_field.labels().addClass("active"); // Read About: Materialize input labels active class - https://materializecss.com/text-inputs.html
+                tests_details_field.labels().addClass("active");
+                known_issues_field.labels().addClass("active");
+
+                version_data.view_state = state;
             };
 
             $scope.modify_version = (version_id) => {

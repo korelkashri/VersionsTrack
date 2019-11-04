@@ -49,12 +49,31 @@
 
             <!--All versions-->
             <div ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d>
-                <div class="row">
+                <!--row: From - To - Actions-->
+                <div class="row"
+                     ng-mouseenter="version_data.show_options = true"
+                     ng-mouseleave="version_data.show_options = false"
+                     ng-init="version_data.show_options = false">
+
+                    <!--From-->
                     <div class="col s3">
                         <h4>From: <u>{{version_data.prev_version}}</u></h4>
                     </div>
+                    <!--To-->
                     <div class="col s3">
                         <h4>To: <u>{{version_data.version}}</u></h4>
+                    </div>
+                    <!--Actions-->
+                    <div class="col 3" ng-show="version_data.show_options">
+                        <h4></h4>
+                        <!--Edit-->
+                        <button class="btn-small blue btn-floating center-align" ng-click="modify_version_view_state(version_data, false)"> <!--Edit-->
+                            <i class="material-icons">create</i>
+                        </button>
+                        <!--Remove-->
+                        <button class="red btn-small btn-floating center-align" ng-click="modify_version(version_data.version)"> <!--Delete  -->
+                            <i class="material-icons">delete_forever</i>
+                        </button>
                     </div>
                 </div>
                 <div class="row">
@@ -63,7 +82,11 @@
                             <b>Details:</b>
                         </div>
                         <div class="col s10">
-                            <span>{{version_data.details}}</span>
+                            <span ng-show="version_data.view_state">{{version_data.details}}</span>
+                            <span ng-hide="version_data.view_state" class="input-field inline">
+                                <input id="modify_version_datails_{{version_data.version}}" type="text">
+                                <label for="modify_property_tests_details_{{version_data.version}}">Version Datails</label>
+                            </span>
                         </div>
                     </div>
                     <div ng-show="version_data.downloader != ''">
@@ -71,14 +94,23 @@
                             <b>Downloader:</b>
                         </div>
                         <div class="col s10">
-                            <span>{{version_data.downloader}}</span>
+                            <span ng-show="version_data.view_state">{{version_data.downloader}}</span>
+                            <span ng-hide="version_data.view_state" class="input-field inline">
+                                <input id="modify_version_downloader_{{version_data.version}}" type="text">
+                                <label for="modify_property_tests_details_{{version_data.version}}">Downloader</label>
+                            </span>
                         </div>
                     </div>
                     <div class="col s2">
                         <b>Release Date:</b>
                     </div>
                     <div class="col s10">
-                        <span>{{version_data.release_date}}</span>
+                        <span ng-show="version_data.view_state">{{version_data.release_date}}</span>
+                        <span ng-hide="version_data.view_state" class="input-field inline">
+                            <input type="date" id="modify_version_release_date" ng-model="new_version_version_release_date" data-date-format="DD/MM/YYYY">
+                            <input id="modify_property_tests_details_{{version_data.version}}" type="text">
+                            <label for="modify_property_tests_details_{{version_data.version}}">Downloader</label>
+                        </span>
                     </div>
                     <div ng-show="version_data.known_issues != ''">
                         <div class="col s2">
@@ -127,7 +159,7 @@
 
                             <!--Type-->
                             <td ng-show="property.view_state">{{property.type}}</td>
-                            <td ng-show="!property.view_state">
+                            <td ng-hide="property.view_state">
                                 <div class="input-field inline">
                                     <select id="modify_property_type_{{property._id}}">
                                         <option value="Feature">Feature</option>
@@ -141,7 +173,7 @@
 
                             <!--Description-->
                             <td ng-show="property.view_state" ng-bind-html="property.description"></td>
-                            <td ng-show="!property.view_state">
+                            <td ng-hide="property.view_state">
                                 <div class="input-field inline">
                                     <input id="modify_property_description_{{property._id}}" type="text">
                                     <label for="modify_property_description_{{property._id}}">Description</label>
@@ -150,7 +182,7 @@
 
                             <!--Tests Scope-->
                             <td ng-show="property.view_state">{{property.tests_scope}}</td>
-                            <td ng-show="!property.view_state">
+                            <td ng-hide="property.view_state">
                                 <div class="input-field inline">
                                     <select id="modify_property_tests_scope_{{property._id}}">
                                         <option value="None">None</option>
@@ -164,7 +196,7 @@
 
                             <!--Tests Details-->
                             <td ng-show="property.view_state" ng-bind-html="property.tests_details || '-'"></td>
-                            <td ng-show="!property.view_state">
+                            <td ng-hide="property.view_state">
                                 <div class="input-field inline">
                                     <input id="modify_property_tests_details_{{property._id}}" type="text">
                                     <label for="modify_property_tests_details_{{property._id}}">Tests Details</label>
@@ -173,7 +205,7 @@
 
                             <!--Known Issues-->
                             <td ng-show="property.view_state" class="lighten-4" ng-class="[{red: property.known_issues != ''}]" ng-bind-html="property.known_issues || '-'"></td>
-                            <td ng-show="!property.view_state">
+                            <td ng-hide="property.view_state">
                                 <div class="input-field inline">
                                     <input id="modify_property_known_issues_{{property._id}}" type="text">
                                     <label for="modify_property_known_issues_{{property._id}}">Known Issues</label>
