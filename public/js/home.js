@@ -102,6 +102,9 @@ const app = angular.module('global_app', ['ngSanitize'])
                         let splitter = '-';
                         version.release_date = date.getDate() + splitter + (date.getMonth() + 1) + splitter + date.getFullYear();
                         version.view_state = true;
+                        version.is_exists = _$scope.versions_list.find((v) => {
+                            return v.version === version.prev_version;
+                        });
                         version.properties.forEach((property) => {
                             property.view_state = true;
                         });
@@ -216,7 +219,18 @@ const app = angular.module('global_app', ['ngSanitize'])
             };
 
             $scope.remove_version = (version_id) => {
-
+                $http({
+                    method: "POST",
+                    url: "/api/versions/remove/v" + version_id,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    alertify.success(response.message);
+                    $scope.search();
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
+                });
             };
 
             $scope.modify_version_view_state = (version_data, state) => {
@@ -224,8 +238,14 @@ const app = angular.module('global_app', ['ngSanitize'])
                 let version_details_field   = $("[id='modify_version_details_" + version_id + "']"),
                     downloader_field   = $("[id='modify_version_downloader_" + version_id + "']"),
                     release_date_field = $("[id='modify_version_release_date_" + version_id + "']"),
-                    known_issues_field  = $("[id='modify_version_known_issues_" + version_id + "']");
+                    known_issues_field  = $("[id='modify_version_known_issues_" + version_id + "']"),
+                    prev_version_field  = $("[id='modify_version_from_" + version_id + "']"),
+                    version_id_field  = $("[id='modify_version_version_id_" + version_id + "']");
 
+                // Prev Version
+                prev_version_field.val(version_data.prev_version)
+                // Version ID
+                version_id_field.val(version_data.version);
                 // Version Details
                 version_details_field.val(version_data.details);
                 // Downloader
@@ -246,6 +266,8 @@ const app = angular.module('global_app', ['ngSanitize'])
                 if (version_data.known_issues)
                     known_issues_field.labels().addClass("active");
                 release_date_field.labels().addClass("active");
+                prev_version_field.labels().addClass("active");
+                version_id_field.labels().addClass("active");
 
                 version_data.view_state = state;
             };
@@ -254,9 +276,13 @@ const app = angular.module('global_app', ['ngSanitize'])
                 let version_details_field   = $("[id='modify_version_details_" + version_id + "']"),
                     downloader_field   = $("[id='modify_version_downloader_" + version_id + "']"),
                     release_date_field = $("[id='modify_version_release_date_" + version_id + "']"),
-                    known_issues_field  = $("[id='modify_version_known_issues_" + version_id + "']");
+                    known_issues_field  = $("[id='modify_version_known_issues_" + version_id + "']"),
+                    prev_version_field  = $("[id='modify_version_from_" + version_id + "']"),
+                    version_id_field  = $("[id='modify_version_version_id_" + version_id + "']");
 
                 let params = $.param({
+                    version_id: version_id_field.val(),
+                    prev_version: prev_version_field.val(),
                     details: version_details_field.val(),
                     downloader: downloader_field.val(),
                     release_date: new Date(release_date_field.val() + " EDT"),
@@ -278,8 +304,8 @@ const app = angular.module('global_app', ['ngSanitize'])
                 });
             };
 
-            $scope.cancel_modify_version = (version_id) => {
-
+            $scope.cancel_modify_version = (version_data) => {
+                $scope.modify_version_view_state(version_data, true);
             };
         }
     })

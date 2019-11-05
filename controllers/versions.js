@@ -58,8 +58,8 @@ exports.add_property = async (req, res, next) => {
 
 exports.remove_version = async (req, res, next) => {
     try {
-        let versions = await versions_model.remove_version(req, res, next);
-        return responses_gen.generate_response(res, 200, versions, "Version successfully removed");
+        await versions_model.remove_version(req, res, next);
+        return responses_gen.generate_response(res, 200, null, "Version successfully removed");
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
     }
@@ -67,8 +67,8 @@ exports.remove_version = async (req, res, next) => {
 
 exports.remove_property = async (req, res, next) => {
     try {
-        let versions = await versions_model.remove_property(req, res, next);
-        return responses_gen.generate_response(res, 200, versions, "Property successfully removed");
+        await versions_model.remove_property(req, res, next);
+        return responses_gen.generate_response(res, 200, null, "Property successfully removed");
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
     }

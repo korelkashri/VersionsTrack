@@ -56,12 +56,30 @@
                      ng-init="version_data.show_options = false">
 
                     <!--From-->
-                    <div class="col s3">
-                        <h4>From: <u>{{version_data.prev_version}}</u></h4>
+                    <div class="col s3" ng-show="version_data.view_state">
+                        <h4>From: <u ng-style="!version_data.is_exists && {'text-decoration-line': 'line-through'}">{{version_data.prev_version}}</u></h4>
+                    </div>
+                    <div class="col s4" ng-hide="version_data.view_state">
+                        <span style="display: inline-block;">
+                            <h4>From:</h4>
+                        </span>
+                        <div class="input-field inline">
+                            <input id="modify_version_from_{{version_data.version}}" type="text">
+                            <label for="modify_version_from_{{version_data.version}}">Previous Version</label>
+                        </div>
                     </div>
                     <!--To-->
-                    <div class="col s3">
+                    <div class="col s4" ng-show="version_data.view_state">
                         <h4>To: <u>{{version_data.version}}</u></h4>
+                    </div>
+                    <div class="col s4" ng-hide="version_data.view_state">
+                        <span style="display: inline-block;">
+                            <h4>To:</h4>
+                        </span>
+                        <div class="input-field inline">
+                            <input id="modify_version_version_id_{{version_data.version}}" type="text">
+                            <label for="modify_version_version_id_{{version_data.version}}">[This] Version ID</label>
+                        </div>
                     </div>
                     <!--Actions-->
                     <div class="col 3" ng-show="version_data.show_options || !version_data.view_state">
@@ -79,7 +97,7 @@
                             <i class="material-icons">check</i>
                         </button>
                         <!--Cancel-->
-                        <button ng-hide="version_data.view_state" class="red btn-small btn-floating center-align" ng-click="cancel_modify_version(version_data.version)"> <!--Cancel-->
+                        <button ng-hide="version_data.view_state" class="red btn-small btn-floating center-align" ng-click="cancel_modify_version(version_data)"> <!--Cancel-->
                             <i class="material-icons">clear</i>
                         </button>
                     </div>

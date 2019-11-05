@@ -1,6 +1,20 @@
 var moment = require('moment');
+const assert = require('assert');
+
 let versions_db = require('../helpers/db_controllers/services/db');
 let requests_handler = require('../helpers/requests_handler');
+
+// req["params"]["version_id"]
+// Return: true if exists, else: false
+let is_version_exists = async (req, res, next) => {
+    let versions_db_model = versions_db.getVersionsDBModel();
+    try {
+        let version_id = requests_handler.require_param(req, "route", "version_id");
+        return (await versions_db_model.find({version: version_id}).exec()).length !== 0;
+    } catch (e) {
+        throw new Error(e)
+    }
+};
 
 exports.get = async (req, res, next) => {
     let versions_db_model = versions_db.getVersionsDBModel();
@@ -109,6 +123,13 @@ exports.add_version = async (req, res, next) => {
     let versions_db_model = versions_db.getVersionsDBModel();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
+        let version_exists = await is_version_exists({ params: { version_id: version_id } });
+        try {
+            assert(!version_exists) // if exists, throw error
+        } catch (e) {
+            throw new Error("Version already exists");
+        }
+
         let prev_version_id = requests_handler.require_param(req, "post", "prev_version_id");
         let details = requests_handler.optional_param(req, "post", "details");
         let downloader = requests_handler.optional_param(req, "post", "downloader");
@@ -176,6 +197,8 @@ exports.modify_version = async (req, res, next) => {
     let versions_db_model = versions_db.getVersionsDBModel();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
+        let new_version_id = requests_handler.optional_param(req, "post", "version_id");
+        let new_prev_version = requests_handler.optional_param(req, "post", "prev_version");
         let details = requests_handler.optional_param(req, "post", "details");
         let downloader = requests_handler.optional_param(req, "post", "downloader");
         let release_date = requests_handler.require_param(req, "post", "release_date");
@@ -186,6 +209,8 @@ exports.modify_version = async (req, res, next) => {
         let update = {
             $set:
                 {
+                    'version': new_version_id,
+                    'prev_version': new_prev_version,
                     'details': details,
                     'downloader': downloader,
                     'release_date': release_date,
@@ -244,6 +269,17 @@ exports.modify_property = async (req, res, next) => {
     }
 };
 
+exports.remove_version = async (req, res, next) => {
+    let versions_db_model = versions_db.getVersionsDBModel();
+    try {
+        let version_id = requests_handler.require_param(req, "route", "version_id");
+
+        return versions_db_model.remove({version: version_id}).exec();
+    } catch (e) {
+        throw new Error(e)
+    }
+};
+
 exports.remove_property = async (req, res, next) => {
     let versions_db_model = versions_db.getVersionsDBModel();
     try {
@@ -273,3 +309,5 @@ exports.remove_property = async (req, res, next) => {
         throw new Error(e)
     }
 };
+
+exports.is_version_exists = is_version_exists;
