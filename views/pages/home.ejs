@@ -64,32 +64,40 @@
                         <h4>To: <u>{{version_data.version}}</u></h4>
                     </div>
                     <!--Actions-->
-                    <div class="col 3" ng-show="version_data.show_options">
+                    <div class="col 3" ng-show="version_data.show_options || !version_data.view_state">
                         <h4></h4>
                         <!--Edit-->
-                        <button class="btn-small blue btn-floating center-align" ng-click="modify_version_view_state(version_data, false)"> <!--Edit-->
+                        <button ng-show="version_data.view_state" class="btn-small blue btn-floating center-align" ng-click="modify_version_view_state(version_data, false)"> <!--Edit-->
                             <i class="material-icons">create</i>
                         </button>
                         <!--Remove-->
-                        <button class="red btn-small btn-floating center-align" ng-click="modify_version(version_data.version)"> <!--Delete  -->
+                        <button ng-show="version_data.view_state" class="red btn-small btn-floating center-align" ng-click="remove_version(version_data.version)"> <!--Delete-->
                             <i class="material-icons">delete_forever</i>
+                        </button>
+                        <!--Save-->
+                        <button ng-hide="version_data.view_state" class="btn-small blue btn-floating center-align" ng-click="modify_version(version_data.version)"> <!--Save-->
+                            <i class="material-icons">check</i>
+                        </button>
+                        <!--Cancel-->
+                        <button ng-hide="version_data.view_state" class="red btn-small btn-floating center-align" ng-click="cancel_modify_version(version_data.version)"> <!--Cancel-->
+                            <i class="material-icons">clear</i>
                         </button>
                     </div>
                 </div>
                 <div class="row">
-                    <div ng-show="version_data.details != ''">
+                    <div ng-show="version_data.details != '' || !version_data.view_state">
                         <div class="col s2">
                             <b>Details:</b>
                         </div>
                         <div class="col s10">
                             <span ng-show="version_data.view_state">{{version_data.details}}</span>
                             <span ng-hide="version_data.view_state" class="input-field inline">
-                                <input id="modify_version_datails_{{version_data.version}}" type="text">
-                                <label for="modify_property_tests_details_{{version_data.version}}">Version Datails</label>
+                                <input id="modify_version_details_{{version_data.version}}" type="text">
+                                <label for="modify_version_details_{{version_data.version}}">Version Details</label>
                             </span>
                         </div>
                     </div>
-                    <div ng-show="version_data.downloader != ''">
+                    <div ng-show="version_data.downloader != '' || !version_data.view_state">
                         <div class="col s2">
                             <b>Downloader:</b>
                         </div>
@@ -97,7 +105,7 @@
                             <span ng-show="version_data.view_state">{{version_data.downloader}}</span>
                             <span ng-hide="version_data.view_state" class="input-field inline">
                                 <input id="modify_version_downloader_{{version_data.version}}" type="text">
-                                <label for="modify_property_tests_details_{{version_data.version}}">Downloader</label>
+                                <label for="modify_version_downloader_{{version_data.version}}">Downloader</label>
                             </span>
                         </div>
                     </div>
@@ -106,18 +114,21 @@
                     </div>
                     <div class="col s10">
                         <span ng-show="version_data.view_state">{{version_data.release_date}}</span>
-                        <span ng-hide="version_data.view_state" class="input-field inline">
-                            <input type="date" id="modify_version_release_date" ng-model="new_version_version_release_date" data-date-format="DD/MM/YYYY">
-                            <input id="modify_property_tests_details_{{version_data.version}}" type="text">
-                            <label for="modify_property_tests_details_{{version_data.version}}">Downloader</label>
+                        <span ng-hide="version_data.view_state" class="input-field inline" style="min-width: 250px;">
+                            <input type="date" id="modify_version_release_date_{{version_data.version}}" data-date-format="DD/MM/YYYY">
+                            <label for="modify_version_release_date_{{version_data.version}}">Release Date</label>
                         </span>
                     </div>
-                    <div ng-show="version_data.known_issues != ''">
+                    <div ng-show="version_data.known_issues != '' || !version_data.view_state">
                         <div class="col s2">
                             <b>Known Issues:</b>
                         </div>
                         <div class="col s10">
-                            <span>{{version_data.known_issues}}</span>
+                            <span ng-show="version_data.view_state">{{version_data.known_issues}}</span>
+                            <span ng-hide="version_data.view_state" class="input-field inline">
+                                <input id="modify_version_known_issues_{{version_data.version}}" type="text">
+                                <label for="modify_version_known_issues_{{version_data.version}}">Known Issues</label>
+                            </span>
                         </div>
                     </div>
                 </div>

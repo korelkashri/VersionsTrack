@@ -1,6 +1,6 @@
 angular.element(document).ready(() => {
     $('select').formSelect();
-    document.getElementById("new_version_version_release_date").valueAsDate = new Date();
+    document.getElementById("new_version_version_release_date").valueAsDate = new Date(new Date() + " EDT");
 });
 
 const app = angular.module('global_app', ['ngSanitize'])
@@ -98,9 +98,9 @@ const app = angular.module('global_app', ['ngSanitize'])
                     _$scope.versions_list = response.data;
                     _$scope.versions_list.forEach((version) => {
                         let date_info = version.release_date.split('T');
-                        let date = new Date(date_info[0]);
+                        let date = new Date(date_info[0] + " EDT");
                         let splitter = '-';
-                        version.release_date = date.getDay() + splitter + date.getMonth() + splitter + date.getFullYear();
+                        version.release_date = date.getDate() + splitter + (date.getMonth() + 1) + splitter + date.getFullYear();
                         version.view_state = true;
                         version.properties.forEach((property) => {
                             property.view_state = true;
@@ -146,6 +146,18 @@ const app = angular.module('global_app', ['ngSanitize'])
         return function($scope) {
             if ($scope.$last){
                 $('select').formSelect();
+                $("input")
+                    .filter(function() {
+                        return this.id.match(/modify_version_release_date_*/);
+                    }).each(function() {
+                        $(this).on("change", function() {
+                            this.setAttribute(
+                                "data-date",
+                                moment(this.value, "YYYY/MM/DD").format(this.getAttribute("data-date-format"))
+                            )
+                        }).trigger("change");
+                    }
+                );
             }
         };
     })
@@ -200,7 +212,7 @@ const app = angular.module('global_app', ['ngSanitize'])
                         $(this).labels().removeClass("active");
                     }
                 );
-                document.getElementById("new_version_version_release_date").valueAsDate = new Date();
+                document.getElementById("new_version_version_release_date").valueAsDate = new Date(new Date() + " EDT");
             };
 
             $scope.remove_version = (version_id) => {
@@ -208,29 +220,65 @@ const app = angular.module('global_app', ['ngSanitize'])
             };
 
             $scope.modify_version_view_state = (version_data, state) => {
-                let property_id = version_data.version;
-                let type_field          = $("[id='modify_property_type_" + property_id + "']"),
-                    description_field   = $("[id='modify_property_description_" + property_id + "']"),
-                    tests_scope_field   = $("[id='modify_property_tests_scope_" + property_id + "']"),
-                    tests_details_field = $("[id='modify_property_tests_details_" + property_id + "']"),
-                    known_issues_field  = $("[id='modify_property_known_issues_" + property_id + "']");
+                let version_id = version_data.version;
+                let version_details_field   = $("[id='modify_version_details_" + version_id + "']"),
+                    downloader_field   = $("[id='modify_version_downloader_" + version_id + "']"),
+                    release_date_field = $("[id='modify_version_release_date_" + version_id + "']"),
+                    known_issues_field  = $("[id='modify_version_known_issues_" + version_id + "']");
 
-                type_field.val(version_data.type);
-                description_field.val(version_data.description);
-                tests_scope_field.val(version_data.tests_scope);
-                tests_details_field.val(version_data.tests_details);
+                // Version Details
+                version_details_field.val(version_data.details);
+                // Downloader
+                downloader_field.val(version_data.downloader);
+                // Release Date
+                let date_info = version_data.release_date.split("-");
+                date_info[1] = date_info[1] <= '9' ? '0' + date_info[1] : date_info[1];
+                date_info[0] = date_info[0] <= '9' ? '0' + date_info[0] : date_info[0];
+                document.getElementById(release_date_field.attr("id")).valueAsDate = new Date(date_info[1] + '/' + date_info[0] + '/' + date_info[2] + " EDT");
+                release_date_field.trigger("change");
+                // Known Issues
                 known_issues_field.val(version_data.known_issues);
 
-                type_field.formSelect();
-                tests_scope_field.formSelect();
-                description_field.labels().addClass("active"); // Read About: Materialize input labels active class - https://materializecss.com/text-inputs.html
-                tests_details_field.labels().addClass("active");
-                known_issues_field.labels().addClass("active");
+                if (version_data.details)
+                    version_details_field.labels().addClass("active"); // Read About: Materialize input labels active class - https://materializecss.com/text-inputs.html
+                if (version_data.downloader)
+                    downloader_field.labels().addClass("active");
+                if (version_data.known_issues)
+                    known_issues_field.labels().addClass("active");
+                release_date_field.labels().addClass("active");
 
                 version_data.view_state = state;
             };
 
             $scope.modify_version = (version_id) => {
+                let version_details_field   = $("[id='modify_version_details_" + version_id + "']"),
+                    downloader_field   = $("[id='modify_version_downloader_" + version_id + "']"),
+                    release_date_field = $("[id='modify_version_release_date_" + version_id + "']"),
+                    known_issues_field  = $("[id='modify_version_known_issues_" + version_id + "']");
+
+                let params = $.param({
+                    details: version_details_field.val(),
+                    downloader: downloader_field.val(),
+                    release_date: new Date(release_date_field.val() + " EDT"),
+                    known_issues: known_issues_field.val()
+                });
+
+                $http({
+                    method: "POST",
+                    url: "/api/versions/modify/v" + version_id,
+                    data: params,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    alertify.success(response.message);
+                    $scope.search();
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
+                });
+            };
+
+            $scope.cancel_modify_version = (version_id) => {
 
             };
         }

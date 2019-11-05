@@ -172,6 +172,41 @@ exports.add_property = async (req, res, next) => {
     }
 };
 
+exports.modify_version = async (req, res, next) => {
+    let versions_db_model = versions_db.getVersionsDBModel();
+    try {
+        let version_id = requests_handler.require_param(req, "route", "version_id");
+        let details = requests_handler.optional_param(req, "post", "details");
+        let downloader = requests_handler.optional_param(req, "post", "downloader");
+        let release_date = requests_handler.require_param(req, "post", "release_date");
+        release_date = new Date(release_date);
+        let known_issues = requests_handler.optional_param(req, "post", "known_issues");
+
+        let filter = {version: version_id};
+        let update = {
+            $set:
+                {
+                    'details': details,
+                    'downloader': downloader,
+                    'release_date': release_date,
+                    'known_issues': known_issues
+                }
+        };
+
+        let new_version = await versions_db_model.updateOne(filter, update, {
+            new: true // Return the new object after the update is applied
+        }).exec();
+
+        if (!new_version) {
+            throw new Error("Target version didn't found.");
+        }
+
+        return new_version;
+    } catch (e) {
+        throw new Error(e)
+    }
+};
+
 exports.modify_property = async (req, res, next) => {
     let versions_db_model = versions_db.getVersionsDBModel();
     try {
