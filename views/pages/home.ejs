@@ -19,9 +19,38 @@
     <script type="text/javascript" src="/resources/js/moment.js"></script>
     <script type="text/javascript" src="/js/home.js"></script>
     <script type="text/javascript" src="/js/init/init.js"></script>
+
+    <style>
+        /*body:before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            z-index: -1;
+            background: url(/resources/images/background4.png) 0 0 repeat;
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }*/
+    </style>
 </head>
 
-<body class="rtl login-background" ng-controller="body_controller" data-ng-init="init()">
+<body class="rtl" ng-controller="body_controller" data-ng-init="init()" style="
+                background-image: url('/resources/images/background5.png');
+                background-size: auto;">
+    <!--<img src="/resources/images/background4.png" style="
+                    background-size: contain;
+                    height: 100vh;
+                    width: 100%;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    z-index: -1;" />-->
+    <!--<video style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" src="/resources/images/background.mp4" autoplay="autoplay" loop="loop"></video>-->
     <div id="page_content">
         <br>
         <div class="row">
@@ -45,7 +74,7 @@
         <div style="padding: 0 0.75rem;">
 
             <!--Open a version addition form [modal]-->
-            <a class="btn-large btn-floating modal-trigger" href="#new_version_modal"><i class="material-icons">add</i></a>
+            <a class="btn-large btn-floating modal-trigger" href="#new_version_modal" ng-hide="version_edit_progress.is_active"><i class="material-icons">add</i></a>
 
             <!--All versions-->
             <div ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d ng-hide="version_edit_progress.is_active && version_data.version != version_edit_progress.version">
