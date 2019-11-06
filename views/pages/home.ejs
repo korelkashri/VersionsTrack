@@ -26,7 +26,7 @@
         <br>
         <div class="row">
             <div class="col s3"></div>
-            <div class="col s8">
+            <div class="col s8" ng-hide="version_edit_progress.is_active">
                 <div class="input-field inline col s3">
                     <input id="filter_version_id" name="filter_version_id" type="text" placeholder="All" ng-model="version_id_filter_model" ng-change="search();">
                     <label for="filter_version_id">Version ID</label>
@@ -48,7 +48,7 @@
             <a class="btn-large btn-floating modal-trigger" href="#new_version_modal"><i class="material-icons">add</i></a>
 
             <!--All versions-->
-            <div ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d>
+            <div ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d ng-hide="version_edit_progress.is_active && version_data.version != version_edit_progress.version">
                 <!--row: From - To - Actions-->
                 <div class="row"
                      ng-mouseenter="version_data.show_options = true"
@@ -57,7 +57,7 @@
 
                     <!--From-->
                     <div class="col s3" ng-show="version_data.view_state">
-                        <h4>From: <u ng-style="!version_data.is_exists && {'text-decoration-line': 'line-through'}">{{version_data.prev_version}}</u></h4>
+                        <h4>From: <u ng-style="!version_data.is_prev_version_exists && {'text-decoration-line': 'line-through'}">{{version_data.prev_version}}</u></h4>
                     </div>
                     <div class="col s4" ng-hide="version_data.view_state">
                         <span style="display: inline-block;">

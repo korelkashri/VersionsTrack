@@ -70,6 +70,7 @@ const app = angular.module('global_app', ['ngSanitize'])
 
             _$scope.search = () => {
                 let route;
+                let deferred = $.Deferred();
                 if (_$scope.version_id_filter_model) {
                     switch (_$scope.versions_filter_select_model) {
                         case "equal":
@@ -96,15 +97,19 @@ const app = angular.module('global_app', ['ngSanitize'])
                 }).then((response) => {
                     response = response.data;
                     _$scope.versions_list = response.data;
+                    $scope.version_edit_progress = {
+                        is_active: false,
+                        version: ""
+                    };
                     _$scope.versions_list.forEach((version) => {
                         let date_info = version.release_date.split('T');
                         let date = new Date(date_info[0] + " EDT");
                         let splitter = '-';
                         version.release_date = date.getDate() + splitter + (date.getMonth() + 1) + splitter + date.getFullYear();
                         version.view_state = true;
-                        version.is_exists = _$scope.versions_list.find((v) => {
+                        /*version.is_exists = _$scope.versions_list.find((v) => {
                             return v.version === version.prev_version;
-                        });
+                        });*/
                         version.properties.forEach((property) => {
                             property.view_state = true;
                         });
@@ -113,7 +118,15 @@ const app = angular.module('global_app', ['ngSanitize'])
                 }, (response) => {
                     response = response.data;
                     alertify.error(response.message);
+                }).finally(() => {
+                    deferred.resolve("Search ended");
+                    /* To wait to finally state, use:
+                    $scope.search()
+                    .done(
+                        after_search.bind(null, param1, param2, ...)
+                    );*/
                 });
+                return deferred.promise();
             };
 
             _$http({method: "GET", url: "/guidance_bases"}).then((response) => {
@@ -235,26 +248,33 @@ const app = angular.module('global_app', ['ngSanitize'])
 
             $scope.modify_version_view_state = (version_data, state) => {
                 let version_id = version_data.version;
-                let version_details_field   = $("[id='modify_version_details_" + version_id + "']"),
-                    downloader_field   = $("[id='modify_version_downloader_" + version_id + "']"),
+                if (!state) {
+                    $scope.version_id_filter_model = version_id;
+                } else {
+                    $scope.version_id_filter_model = "";
+                }
+                let version_details_field = $("[id='modify_version_details_" + version_id + "']"),
+                    downloader_field = $("[id='modify_version_downloader_" + version_id + "']"),
                     release_date_field = $("[id='modify_version_release_date_" + version_id + "']"),
-                    known_issues_field  = $("[id='modify_version_known_issues_" + version_id + "']"),
-                    prev_version_field  = $("[id='modify_version_from_" + version_id + "']"),
-                    version_id_field  = $("[id='modify_version_version_id_" + version_id + "']");
+                    known_issues_field = $("[id='modify_version_known_issues_" + version_id + "']"),
+                    prev_version_field = $("[id='modify_version_from_" + version_id + "']"),
+                    version_id_field = $("[id='modify_version_version_id_" + version_id + "']");
 
                 // Prev Version
-                prev_version_field.val(version_data.prev_version)
+                prev_version_field.val(version_data.prev_version);
                 // Version ID
                 version_id_field.val(version_data.version);
                 // Version Details
                 version_details_field.val(version_data.details);
                 // Downloader
                 downloader_field.val(version_data.downloader);
+
                 // Release Date
                 let date_info = version_data.release_date.split("-");
                 date_info[1] = date_info[1] <= '9' ? '0' + date_info[1] : date_info[1];
                 date_info[0] = date_info[0] <= '9' ? '0' + date_info[0] : date_info[0];
                 document.getElementById(release_date_field.attr("id")).valueAsDate = new Date(date_info[1] + '/' + date_info[0] + '/' + date_info[2] + " EDT");
+
                 release_date_field.trigger("change");
                 // Known Issues
                 known_issues_field.val(version_data.known_issues);
@@ -268,8 +288,11 @@ const app = angular.module('global_app', ['ngSanitize'])
                 release_date_field.labels().addClass("active");
                 prev_version_field.labels().addClass("active");
                 version_id_field.labels().addClass("active");
-
                 version_data.view_state = state;
+                $scope.version_edit_progress = {
+                    is_active: !state,
+                    version: version_id
+                };
             };
 
             $scope.modify_version = (version_id) => {
@@ -280,8 +303,10 @@ const app = angular.module('global_app', ['ngSanitize'])
                     prev_version_field  = $("[id='modify_version_from_" + version_id + "']"),
                     version_id_field  = $("[id='modify_version_version_id_" + version_id + "']");
 
+                let new_version_id = version_id_field.val();
+
                 let params = $.param({
-                    version_id: version_id_field.val(),
+                    version_id: new_version_id,
                     prev_version: prev_version_field.val(),
                     details: version_details_field.val(),
                     downloader: downloader_field.val(),
@@ -297,6 +322,7 @@ const app = angular.module('global_app', ['ngSanitize'])
                 }).then((response) => {
                     response = response.data;
                     alertify.success(response.message);
+                    $scope.version_id_filter_model = new_version_id;
                     $scope.search();
                 }, (response) => {
                     response = response.data;

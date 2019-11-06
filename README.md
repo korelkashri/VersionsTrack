@@ -18,9 +18,9 @@ node ./app.js
 
 ## To do:
 * *~~Add property option.~~* :heavy_check_mark:
-* *~~Version adding option~~* :heavy_check_mark:.
-* Version modifying option.
-* Version deleting option.
+* *~~Version adding option~~* :heavy_check_mark:
+* *~~Version modifying option~~* :heavy_check_mark:
+* *~~Version deleting option~~* :heavy_check_mark:
 * Order properties by type/tests scope.
 * Add search by descriptions keywords (versions & properties).
 * Add generic description options for versions.

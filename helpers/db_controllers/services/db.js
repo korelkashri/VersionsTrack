@@ -43,6 +43,9 @@ let init_schema = () => {
             }
         ]
     });
+    schema.methods.toJSON = function() {
+        return this.toObject();
+    };
     _db = mongoose.model('versions', schema);
 };
 

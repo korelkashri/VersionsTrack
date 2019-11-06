@@ -2,9 +2,17 @@ const responses_gen = require('../helpers/responses');
 let versions_model = require('../models/versions');
 
 // API
+
+let add_is_prev_version_exists_data = async (versions) => {
+    for (let version of versions) {
+        version._doc.is_prev_version_exists = await versions_model.is_version_exists({ params: { version_id: version.prev_version } });
+    }
+};
+
 exports.get_versions = async (req, res, next) => {
     try {
         let versions = await versions_model.get(req, res, next);
+        await add_is_prev_version_exists_data(versions);
         return responses_gen.generate_response(res, 200, versions, "Versions successfully restored");
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
@@ -14,6 +22,7 @@ exports.get_versions = async (req, res, next) => {
 exports.get_version = async (req, res, next) => {
     try {
         let versions = await versions_model.get(req, res, next);
+        await add_is_prev_version_exists_data(versions);
         return responses_gen.generate_response(res, 200, versions, "Versions successfully restored");
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
@@ -23,6 +32,7 @@ exports.get_version = async (req, res, next) => {
 exports.get_versions_by_version = async (req, res, next) => {
     try {
         let versions = await versions_model.get(req, res, next);
+        await add_is_prev_version_exists_data(versions);
         return responses_gen.generate_response(res, 200, versions, "Versions successfully restored");
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
@@ -32,6 +42,7 @@ exports.get_versions_by_version = async (req, res, next) => {
 exports.get_versions_by_date = async (req, res, next) => {
     try {
         let versions = await versions_model.get(req, res, next);
+        await add_is_prev_version_exists_data(versions);
         return responses_gen.generate_response(res, 200, versions, "Versions successfully restored");
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
