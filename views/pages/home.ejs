@@ -1,93 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="global_app" ng-cloak>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="/resources/css/materialize.css" />
-    <link rel="stylesheet" href="/resources/css/material-icons.css" />
-    <link rel="stylesheet" href="/resources/css/alertify.core.css" />
-    <link rel="stylesheet" href="/resources/css/alertify.bootstrap.css" />
-    <link rel="stylesheet" href="/resources/css/alertify.lightbox.css" />
-    <link rel="stylesheet" href="/resources/css/alertify.tooltip-classic.css" />
-    <link rel="stylesheet" href="/css/datetime.css" />
-    <script type="text/javascript" src="/resources/js/jQuery.js"></script>
-    <script type="text/javascript" src="/resources/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="/resources/js/angularJS.js"></script>
-    <script type="text/javascript" src="/resources/js/angularjs-sanitize.min.js"></script>
-    <script type="text/javascript" src="/resources/js/materialize.js"></script>
-    <script type="text/javascript" src="/resources/js/alertify.js"></script>
-    <script type="text/javascript" src="/resources/js/lightbox.js"></script>
-    <script type="text/javascript" src="/resources/js/moment.js"></script>
-    <script type="text/javascript" src="/js/home.js"></script>
-    <script type="text/javascript" src="/js/init/init.js"></script>
 
-    <style>
-        /*body:before {
-            content: "";
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            z-index: -1;
-            background: url(/resources/images/background4.png) 0 0 repeat;
-            -webkit-transform: rotate(180deg);
-            -moz-transform: rotate(180deg);
-            -ms-transform: rotate(180deg);
-            -o-transform: rotate(180deg);
-            transform: rotate(180deg);
-        }*/
-    </style>
-</head>
+<%include ../partials/head.ejs%>
 
 <body class="rtl" ng-controller="body_controller" data-ng-init="init()" style="
                 background-image: url('/resources/images/background5.png');
                 background-size: auto;">
-    <!--<img src="/resources/images/background4.png" style="
-                    background-size: contain;
-                    height: 100vh;
-                    width: 100%;
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    z-index: -1;" />-->
     <!--<video style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" src="/resources/images/background.mp4" autoplay="autoplay" loop="loop"></video>-->
-    <div id="page_content">
-        <br>
-        <div class="row">
-            <div class="col s3"></div>
-            <div class="col s8" ng-hide="version_edit_progress.is_active">
-                <div class="input-field inline col s3">
-                    <input id="filter_version_id" name="filter_version_id" type="text" placeholder="All" ng-model="version_id_filter_model" ng-change="search();">
-                    <label for="filter_version_id">Version ID</label>
-                </div>
-                <div class="input-field inline col s6">
-                    <select id="reports_type_filter_select" ng-model="versions_filter_select_model" ng-change="search();" ng-init="versions_filter_select_model='equal'">
-                        <option value="before">< [Until this version]</option>
-                        <option value="after">> [From this version and on]</option>
-                        <option value="equal">= [Only this version]</option>
-                    </select>
-                    <label for="reports_type_filter_select">Filter</label>
-                </div>
-            </div>
-        </div>
 
+    <%include ../partials/nav.ejs%>
+
+    <div id="page_content">
+        <br><br><br><br>
         <div style="padding: 0 0.75rem;">
 
-            <!--Open a version addition form [modal]-->
-            <a class="btn-large btn-floating modal-trigger" href="#new_version_modal" ng-hide="version_edit_progress.is_active"><i class="material-icons">add</i></a>
-
             <!--All versions-->
-            <div ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d ng-hide="version_edit_progress.is_active && version_data.version != version_edit_progress.version">
-                <!--row: From - To - Actions-->
+            <div id="versions_table" ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d ng-hide="version_edit_progress.is_active && version_data.version != version_edit_progress.version">
+
+                <!--row: From v___ To v___ Actions-->
                 <div class="row"
                      ng-mouseenter="version_data.show_options = true"
                      ng-mouseleave="version_data.show_options = false"
                      ng-init="version_data.show_options = false">
 
-                    <!--From-->
+                    <!--Presentation: From-->
                     <div class="col s3" ng-show="version_data.view_state">
-                        <h4>From: <u ng-style="!version_data.is_prev_version_exists && {'text-decoration-line': 'line-through'}">{{version_data.prev_version}}</u></h4>
+                        <h4>From: <u ng-click="version_data.is_prev_version_exists && search_version(version_data.prev_version);"
+                                     ng-style="!version_data.is_prev_version_exists &&
+                                                    {'text-decoration-line': 'line-through'} ||
+                                                    {'cursor': 'pointer'}">{{version_data.prev_version}}
+                            </u>
+                        </h4>
                     </div>
+                    <!--Modify: From field-->
                     <div class="col s4" ng-hide="version_data.view_state">
                         <span style="display: inline-block;">
                             <h4>From:</h4>
@@ -97,10 +42,12 @@
                             <label for="modify_version_from_{{version_data.version}}">Previous Version</label>
                         </div>
                     </div>
-                    <!--To-->
+
+                    <!--Presentation: To-->
                     <div class="col s4" ng-show="version_data.view_state">
-                        <h4>To: <u>{{version_data.version}}</u></h4>
+                        <h4>To: <u style="cursor: pointer" ng-click="search_version(version_data.version);">{{version_data.version}}</u></h4>
                     </div>
+                    <!--Modify: To field-->
                     <div class="col s4" ng-hide="version_data.view_state">
                         <span style="display: inline-block;">
                             <h4>To:</h4>
@@ -110,28 +57,35 @@
                             <label for="modify_version_version_id_{{version_data.version}}">[This] Version ID</label>
                         </div>
                     </div>
-                    <!--Actions-->
-                    <div class="col 3" ng-show="version_data.show_options || !version_data.view_state">
+
+                    <!--Version Actions-->
+                    <div class="col 3 animated" ng-show="version_data.show_options || !version_data.view_state">
                         <h4></h4>
-                        <!--Edit-->
-                        <button ng-show="version_data.view_state" class="btn-small blue btn-floating center-align" ng-click="modify_version_view_state(version_data, false)"> <!--Edit-->
+
+                        <!--Edit Version-->
+                        <button ng-show="version_data.view_state" class="btn-small blue btn-floating waves-effect waves-light center-align" ng-click="turn_on_version_view_state(version_data, false)"> <!--Edit-->
                             <i class="material-icons">create</i>
                         </button>
-                        <!--Remove-->
-                        <button ng-show="version_data.view_state" class="red btn-small btn-floating center-align" ng-click="remove_version(version_data.version)"> <!--Delete-->
+
+                        <!--Remove Version-->
+                        <button ng-show="version_data.view_state" class="red btn-small btn-floating waves-effect waves-light center-align" ng-click="remove_version(version_data.version)"> <!--Delete-->
                             <i class="material-icons">delete_forever</i>
                         </button>
-                        <!--Save-->
-                        <button ng-hide="version_data.view_state" class="btn-small blue btn-floating center-align" ng-click="modify_version(version_data.version)"> <!--Save-->
+
+                        <!--Save Version After Modification-->
+                        <button ng-hide="version_data.view_state" class="btn-small blue btn-floating waves-effect waves-light center-align" ng-click="modify_version(version_data)"> <!--Save-->
                             <i class="material-icons">check</i>
                         </button>
-                        <!--Cancel-->
-                        <button ng-hide="version_data.view_state" class="red btn-small btn-floating center-align" ng-click="cancel_modify_version(version_data)"> <!--Cancel-->
+
+                        <!--Cancel Version Modification-->
+                        <button ng-hide="version_data.view_state" class="red btn-small btn-floating waves-effect waves-light center-align" ng-click="cancel_modify_version(version_data)"> <!--Cancel-->
                             <i class="material-icons">clear</i>
                         </button>
                     </div>
                 </div>
                 <div class="row">
+
+                    <!--Version Details-->
                     <div ng-show="version_data.details != '' || !version_data.view_state">
                         <div class="col s2">
                             <b>Details:</b>
@@ -144,6 +98,8 @@
                             </span>
                         </div>
                     </div>
+
+                    <!--Version Downloader-->
                     <div ng-show="version_data.downloader != '' || !version_data.view_state">
                         <div class="col s2">
                             <b>Downloader:</b>
@@ -156,6 +112,8 @@
                             </span>
                         </div>
                     </div>
+
+                    <!--Version Release Date-->
                     <div class="col s2">
                         <b>Release Date:</b>
                     </div>
@@ -166,6 +124,8 @@
                             <label for="modify_version_release_date_{{version_data.version}}">Release Date</label>
                         </span>
                     </div>
+
+                    <!--Global Version Known Issues-->
                     <div ng-show="version_data.known_issues != '' || !version_data.view_state">
                         <div class="col s2">
                             <b>Known Issues:</b>
@@ -179,7 +139,9 @@
                         </div>
                     </div>
                 </div>
-                <table class="highlight responsive-table centered">
+
+                <!--Version's Properties-->
+                <table class="highlight responsive-table centered" ng-show="version_data.view_state">
                     <thead>
                     <tr>
                         <th>-</th>
@@ -192,23 +154,24 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="property in version_data.properties">
+
                             <!--Options-->
                             <td>
                                 <div class="row" style="min-width: 90px;">
                                     <div class="col s4">
-                                        <button class="btn-small blue btn-floating" ng-click="modify_property_view_state(property, false)" ng-show="property.view_state"> <!--Edit-->
+                                        <button class="btn-small blue btn-floating waves-effect waves-light" ng-click="modify_property_view_state(property, false)" ng-show="property.view_state"> <!--Edit-->
                                             <i class="material-icons">create</i>
                                         </button>
-                                        <button class="btn-small btn-floating" ng-click="modify_property(version_data.version, property._id)" ng-show="!property.view_state"> <!--Apply modifying-->
+                                        <button class="btn-small btn-floating waves-effect waves-light" ng-click="modify_property(version_data.version, property._id)" ng-show="!property.view_state"> <!--Apply modifying-->
                                             <i class="material-icons">check</i>
                                         </button>
                                     </div>
                                     <div class="col s2"></div>
                                     <div class="col s4">
-                                        <button class="btn-small red btn-floating" ng-click="remove_property(version_data.version, property._id)" ng-show="property.view_state"> <!--Remove-->
+                                        <button class="btn-small red btn-floating waves-effect waves-light" ng-click="remove_property(version_data.version, property._id)" ng-show="property.view_state"> <!--Remove-->
                                             <i class="material-icons">delete_forever</i>
                                         </button>
-                                        <button class="btn-small red btn-floating" ng-click="modify_property_view_state(property, true)" ng-show="!property.view_state"> <!--Cancel modifying-->
+                                        <button class="btn-small red btn-floating waves-effect waves-light" ng-click="modify_property_view_state(property, true)" ng-show="!property.view_state"> <!--Cancel modifying-->
                                             <i class="material-icons">clear</i>
                                         </button>
                                     </div>
@@ -271,13 +234,17 @@
                             </td>
                         </tr>
 
-                        <!--New Version Property-->
+                        <!--New Version's Property-->
                         <tr>
+
+                            <!--New Property Add Button-->
                             <td>
-                                <button class="btn-small btn-floating" ng-click="new_property(version_data.version)">
+                                <button class="btn-small btn-floating waves-effect waves-light" ng-click="new_property(version_data.version)">
                                     <i class="material-icons">add</i>
                                 </button>
                             </td>
+
+                            <!--New Property Type-->
                             <td>
                                 <div class="input-field inline" style="min-width: 90px;">
                                     <select id="new_version_property_type_{{version_data.version}}">
@@ -289,12 +256,16 @@
                                     <label for="new_version_property_type_{{version_data.version}}">Type</label>
                                 </div>
                             </td>
+
+                            <!--New Property Description-->
                             <td>
                                 <div class="input-field inline">
                                     <input id="new_version_property_description_{{version_data.version}}" type="text">
                                     <label for="new_version_property_description_{{version_data.version}}">Description</label>
                                 </div>
                             </td>
+
+                            <!--New Property Tests Scope-->
                             <td>
                                 <div class="input-field inline" style="min-width: 90px;">
                                     <select id="new_version_property_tests_scope_{{version_data.version}}">
@@ -306,12 +277,16 @@
                                     <label for="new_version_property_tests_scope_{{version_data.version}}">Tests Scope</label>
                                 </div>
                             </td>
+
+                            <!--New Property Tests Details-->
                             <td>
                                 <div class="input-field inline">
                                     <input id="new_version_property_tests_details_{{version_data.version}}" type="text">
                                     <label for="new_version_property_tests_details_{{version_data.version}}">Tests Details</label>
                                 </div>
                             </td>
+
+                            <!--New Property Known Issues-->
                             <td>
                                 <div class="input-field inline">
                                     <input id="new_version_property_known_issues_{{version_data.version}}" type="text">
@@ -319,27 +294,9 @@
                                 </div>
                             </td>
                         </tr>
-                    <!--<tr ng-click="open_report(report)" style="cursor: pointer;" ng-class="report.status_id==1 ? 'red' : ''"
-                        ng-repeat="report in reports_list
-                                | reports_filter:
-                                reports_filter_select_model :
-                                reports_guidance_bases_filter_select_model :
-                                reports_current_page :
-                                num_reports_for_page_model
-                                | orderBy: ['status_id', '-date']">
-                        <td>{{report.time + " " + report.date}}</td>
-                        <td>{{report.soldier || report.place}}</td>
-                        <td>{{report.status}}</td>
-                        <td>{{report.guidance_base_name}}</td>
-                    </tr>-->
                     </tbody>
                 </table>
                 <br><br>
-            </div>
-            <div class="center" ng-show="reports_pages_count > 1">
-    <!--            <a class="waves-effect waves-light btn blue darken-4" ng-disabled="reports_current_page == 1" ng-click="reports_current_page = reports_current_page - 1">הקודם</a>-->
-    <!--            {{reports_current_page}}/{{reports_pages_count}}-->
-    <!--            <a class="waves-effect waves-light btn blue darken-4" ng-disabled="reports_current_page == reports_pages_count" ng-click="reports_current_page = reports_current_page + 1">הבא</a>-->
             </div>
         </div>
     </div>

@@ -13,6 +13,7 @@ Mark and remember old issues with versions/dates oriented search.
 
 ## Run
 ```
+sudo service mongod start # make sure to start mongodb sevice
 node ./app.js
 ```
 

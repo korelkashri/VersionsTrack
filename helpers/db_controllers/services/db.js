@@ -1,5 +1,6 @@
 const assert = require("assert");
 const mongoose = require("mongoose");
+const timestamps = require('mongoose-timestamp'); // TODO: consider using this for last update time data.
 let _db;
 
 let init_schema = () => {
@@ -43,9 +44,9 @@ let init_schema = () => {
             }
         ]
     });
-    schema.methods.toJSON = function() {
+    /*schema.methods.toJSON = function() {
         return this.toObject();
-    };
+    };*/
     _db = mongoose.model('versions', schema);
 };
 
