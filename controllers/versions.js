@@ -49,6 +49,16 @@ exports.get_versions_by_date = async (req, res, next) => {
     }
 };
 
+exports.get_versions_by_description = async (req, res, next) => {
+    try {
+        let versions = await versions_model.get(req, res, next);
+        await add_is_prev_version_exists_data(versions);
+        return responses_gen.generate_response(res, 200, versions, "Versions successfully restored");
+    } catch (e) {
+        return responses_gen.generate_response(res, 400, null, e.message);
+    }
+};
+
 exports.add_version = async (req, res, next) => {
     try {
         await versions_model.add_version(req, res, next);

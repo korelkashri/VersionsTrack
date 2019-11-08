@@ -23,10 +23,12 @@ exports.get = async (req, res, next) => {
     // req.params.version_id - if specified check filter (optional)
     // req.params.download_date - if specified check filter (require)
     let target_version;
+    let target_description;
     let target_version_rel_date;
     let filter;
 
     target_version = requests_handler.optional_param(req, 'route','version_id');
+    target_description = requests_handler.optional_param(req, 'route','description');
     target_version_rel_date = requests_handler.optional_param(req, 'route', 'download_date');
     if (target_version) filter = requests_handler.optional_param(req, 'route', 'filter');
     else if (target_version_rel_date) filter = requests_handler.require_param(req, 'route', 'filter');
@@ -34,6 +36,8 @@ exports.get = async (req, res, next) => {
     let versions;
     try {
         if (target_version) {
+            // Search versions by id
+
             switch (filter) {
                 case "<":
                     versions = await versions_db_model.find( { version: { "$lte": target_version } } ).exec();
@@ -48,11 +52,9 @@ exports.get = async (req, res, next) => {
                     break;
             }
         } else if (target_version_rel_date) {
-            /*target_version_rel_date = moment(target_version_rel_date, [
-                "yyyy-mm-dd"
-            ]).toDate();*/
+            // Search versions by date
+
             target_version_rel_date = new Date(target_version_rel_date);
-            //console.log(new Date(target_version_rel_date)); // Currently accepts only yyyy-mm-dd format.
             /*
             * Examples for wrong formats:
             *   dd-mm-yyyy  (15-10-2016)
@@ -76,7 +78,13 @@ exports.get = async (req, res, next) => {
                 default:
                     throw new Error("Unspecified sign for date filter.");
             }
+        } else if (target_description) {
+            // Search versions by description
+
+
         } else {
+            // Get all versions
+
             async function demo_erase_and_create_a_demo_db() {
                 versions_db_model.deleteMany({}, null).exec();
                 let new_version = new versions_db_model({

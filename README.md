@@ -28,6 +28,7 @@ node ./app.js
 * Click on version will automatically search it.
 * Limit versions count in a page.
 * Limit properties count in a page.
+* Properties/Versions short description TAGs.
 
 ### Next
 * Add users privileges.

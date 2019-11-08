@@ -117,6 +117,7 @@ angular.module("searchM", [])
                     case "ver":
                     case "desc":
                         $("#versions_version_type_filter_select").val("equal");
+                        _$scope.versions_filter_select_model = "equal";
                         break;
 
                     case "date":

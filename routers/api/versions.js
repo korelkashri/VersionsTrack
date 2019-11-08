@@ -19,6 +19,8 @@ router.get("/lt_d:download_date", versions_middleware.set_param_lt, versions_con
 
 router.get("/gt_d:download_date", versions_middleware.set_param_gt, versions_controller.get_versions_by_date); // Display after specified date
 
+router.get("/desc-:description", versions_controller.get_versions_by_description); // Display after specified date
+
 // POST routes
 
 router.post("/add/v:version_id", versions_controller.add_version); // Add new version

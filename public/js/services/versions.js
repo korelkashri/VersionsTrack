@@ -69,13 +69,13 @@ angular.module("versionsM", [])
                 });
             };
 
-            $scope.turn_on_version_view_state = (version_data) => {
+            $scope.modify_version_view_state = (version_data, state) => {
                 let version_id = version_data.version;
-                $scope.versions_table_conf.version_update_lock = true;
-                $scope.version_data_filter_model = version_id;
+                $scope.versions_table_conf.version_update_lock = !state;
+                $scope.version_data_filter_model = state ? "" : version_id;
                 $scope.version_edit_progress = {
-                    is_active: true,
-                    version: version_id
+                    is_active: !state,
+                    version: state || version_id
                 };
                 let version_details_field = $("[id='modify_version_details_" + version_id + "']"),
                     downloader_field = $("[id='modify_version_downloader_" + version_id + "']"),
@@ -112,7 +112,7 @@ angular.module("versionsM", [])
                 release_date_field.labels().addClass("active");
                 prev_version_field.labels().addClass("active");
                 version_id_field.labels().addClass("active");
-                version_data.view_state = false;
+                version_data.view_state = state;
             };
 
             $scope.modify_version = (version_data) => {
