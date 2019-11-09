@@ -2,7 +2,7 @@ const assert = require("assert");
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp'); // TODO: consider using this for last update time data.
 let versions_model;
-
+let is_initialize = false;
 let init_versions_schema = () => {
     // Define versions schema
     let schema = mongoose.Schema({
@@ -73,6 +73,7 @@ let init_versions_schema = () => {
 };
 
 let initDB = (callback) => {
+    assert.ok(!is_initialize, "A try to initialize an initialized DB detected.");
     mongoose.connect('mongodb://localhost/resthub', {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -83,15 +84,24 @@ let initDB = (callback) => {
 
     init_versions_schema();
 
+    is_initialize = true;
     callback();
 };
 
+let db_use_pre_conditions = _ => {
+    assert.ok(is_initialize, "Db has not been initialized. Please called init first.");
+};
+
 let getVersionsDBModel = () => {
-    assert.ok(versions_model, "Db has not been initialized. Please called init first.");
+    db_use_pre_conditions();
     return versions_model;
 };
 
 module.exports = {
-    getVersionsDBModel,
+    getDB: _ => {
+        return {
+            versions_model: getVersionsDBModel
+        }
+    },
     initDB
 };
