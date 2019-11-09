@@ -3,7 +3,7 @@ Web-based application for release versions management.
 
 ## Description
 Interactive web-based application to control issues & features, alongside development.
-Mark and remember old issues with versions/dates oriented search.
+Mark and remember old issues with versions/dates/description oriented search.
 
 **Compatible with offline systems.**
 
