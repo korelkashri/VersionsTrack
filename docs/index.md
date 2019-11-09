@@ -1,4 +1,4 @@
-# Description
+# About Versions Track
 Interactive web-based application to control issues & features, alongside development.
 Mark and remember old issues with versions/dates/description oriented search.
 
@@ -13,6 +13,7 @@ Mark and remember old issues with versions/dates/description oriented search.
 sudo service mongod start # make sure to start mongodb sevice
 node ./app.js
 ```
+
 # Features:
 * Versions basic identifires: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
 * Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
