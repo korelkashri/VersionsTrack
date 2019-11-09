@@ -1,37 +1,35 @@
-## Welcome to GitHub Pages
+# Description
+Interactive web-based application to control issues & features, alongside development.
+Mark and remember old issues with versions/dates/description oriented search.
 
-You can use the [editor on GitHub](https://github.com/korelkashri/VersionsTrack/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+**Compatible with offline systems.**
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# Dependencies
+* [node.js](https://nodejs.org/en/).
+* [mongodb](https://www.mongodb.com/).
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+# Run
 ```
+sudo service mongod start # make sure to start mongodb sevice
+node ./app.js
+```
+# Features:
+* Versions basic identifires: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
+* Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
+* Easy to use web-based interface, designed with [MaterializeCSS](https://materializecss.com/)
+* Versions search by version-id, version release date, and versions/properties descriptions.
+* Compatible with offline systems.
+* Cross-Platform application.
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Upcomming features:
+* Order properties by type/tests scope.
+* Add generic description options for versions.
+* Limit versions count in a page.
+* Limit properties count in a page.
+* Properties/Versions short description TAGs.
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/korelkashri/VersionsTrack/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+### Next
+* Add users privileges.
+* Add admin panel.
+    * Users control panel
+    * Background change option.
