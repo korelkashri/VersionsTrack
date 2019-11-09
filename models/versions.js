@@ -1,13 +1,13 @@
 var moment = require('moment');
 const assert = require('assert');
 
-let versions_db = require('../helpers/db_controllers/services/db');
+let database = require('../helpers/db_controllers/services/db').getDB();
 let requests_handler = require('../helpers/requests_handler');
 
 // req["params"]["version_id"]
 // Return: true if exists, else: false
 let is_version_exists = async (req, res, next) => {
-    let versions_db_model = versions_db.getVersionsDBModel();
+    let versions_db_model = database.versions_model();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
         return (await versions_db_model.find({version: version_id}).exec()).length !== 0;
@@ -17,7 +17,7 @@ let is_version_exists = async (req, res, next) => {
 };
 
 exports.get = async (req, res, next) => {
-    let versions_db_model = versions_db.getVersionsDBModel();
+    let versions_db_model = database.versions_model();
 
     // req.params.filter - if set defines lower or bigger then a parameter (version / version release date).
     // req.params.version_id - if specified check filter (optional)
@@ -132,7 +132,7 @@ exports.get = async (req, res, next) => {
 };
 
 exports.add_version = async (req, res, next) => {
-    let versions_db_model = versions_db.getVersionsDBModel();
+    let versions_db_model = database.versions_model();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let version_exists = await is_version_exists({ params: { version_id: version_id } });
@@ -167,7 +167,7 @@ exports.add_version = async (req, res, next) => {
 };
 
 exports.add_property = async (req, res, next) => {
-    let versions_db_model = versions_db.getVersionsDBModel();
+    let versions_db_model = database.versions_model();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let property_type = requests_handler.require_param(req, "post", "type");
@@ -206,7 +206,7 @@ exports.add_property = async (req, res, next) => {
 };
 
 exports.modify_version = async (req, res, next) => {
-    let versions_db_model = versions_db.getVersionsDBModel();
+    let versions_db_model = database.versions_model();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let new_version_id = requests_handler.optional_param(req, "post", "version_id");
@@ -245,7 +245,7 @@ exports.modify_version = async (req, res, next) => {
 };
 
 exports.modify_property = async (req, res, next) => {
-    let versions_db_model = versions_db.getVersionsDBModel();
+    let versions_db_model = database.versions_model();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let property_id = requests_handler.require_param(req, "route", "property_id");
@@ -282,7 +282,7 @@ exports.modify_property = async (req, res, next) => {
 };
 
 exports.remove_version = async (req, res, next) => {
-    let versions_db_model = versions_db.getVersionsDBModel();
+    let versions_db_model = database.versions_model();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
 
@@ -293,7 +293,7 @@ exports.remove_version = async (req, res, next) => {
 };
 
 exports.remove_property = async (req, res, next) => {
-    let versions_db_model = versions_db.getVersionsDBModel();
+    let versions_db_model = database.versions_model();
     try {
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let property_id = requests_handler.require_param(req, "route", "property_id");
