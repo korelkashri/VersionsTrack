@@ -22,7 +22,7 @@ node ./app.js
 * Compatible with offline systems.
 * Cross-Platform application.
 
-## Upcomming features:
+## Upcoming features:
 * Order properties by type/tests scope.
 * Add generic description options for versions.
 * Limit versions count in a page.
