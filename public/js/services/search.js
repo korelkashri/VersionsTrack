@@ -117,12 +117,13 @@ angular.module("searchM", [])
                 switch (_$scope.versions_filter_type_select_model) {
                     case "ver":
                     case "desc":
-                        $("#versions_version_type_filter_select").val("equal");
                         _$scope.versions_filter_select_model = "equal";
+                        $("#versions_version_type_filter_select").val(_$scope.versions_filter_select_model); // should auto update
                         break;
 
                     case "date":
-                        $("#versions_date_type_filter_select").val("before");
+                        _$scope.versions_filter_select_model = "before";
+                        $("#versions_date_type_filter_select").val(_$scope.versions_filter_select_model); // should auto update
                         break;
                 }
                 $('select').formSelect();
