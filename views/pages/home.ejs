@@ -15,6 +15,7 @@
         <div style="padding: 0 0.75rem;">
 
             <!--All versions-->
+            <!--TODO: In description searching, there is a significance to the results order-->
             <div id="versions_table" ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d ng-hide="version_edit_progress.is_active && version_data.version != version_edit_progress.version">
 
                 <!--row: From v___ To v___ Actions-->

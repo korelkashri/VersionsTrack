@@ -47,7 +47,26 @@ let init_schema = () => {
     /*schema.methods.toJSON = function() {
         return this.toObject();
     };*/
+    schema.index({
+        details: 'text',
+        downloader: 'text',
+        known_issues: 'text',
+        "properties.type": 'text',
+        "properties.description": 'text',
+        "properties.known_issues": 'text'
+    }, {
+        weights: {
+            details: 1,
+            downloader: 1,
+            known_issues: 1,
+            "properties.type": 1,
+            "properties.description": 1,
+            "properties.known_issues": 1
+        }
+    });
     _db = mongoose.model('versions', schema);
+
+    _db.on('index', error => { console.log(error) });
 };
 
 let initDB = (callback) => {
@@ -63,7 +82,11 @@ let initDB = (callback) => {
         password: "GCdniRGRuz",
         database: "SOWDwU4DKo"
     });*/
-    mongoose.connect('mongodb://localhost/resthub', { useNewUrlParser: true});
+    mongoose.connect('mongodb://localhost/resthub', {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true
+    });
 
     /*if(!mongoose.connection)
         console.error("Error connecting db");

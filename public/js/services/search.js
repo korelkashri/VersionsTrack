@@ -79,7 +79,8 @@ angular.module("searchM", [])
                     });
                     if (force_update || !$scope.versions_table_conf.version_update_lock && !$scope.versions_table_conf.property_update_lock) {
                         if (force_update || !_$scope.versions_list || new_versions_list.length !== _$scope.versions_list.length ||
-                            new_versions_list[0].version !== _$scope.versions_list[0].version) {
+                            (new_versions_list && new_versions_list.length && new_versions_list[0].version !== _$scope.versions_list[0].version)) {
+                            // TODO: in description search, there is significance to the order, think of a way to detect results order changing
                             versions_table.addClass('animated'); // Apply table animation for new data
                             _$scope.versions_list = new_versions_list;
                             alertify.success(response.message);

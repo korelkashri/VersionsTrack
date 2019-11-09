@@ -81,7 +81,11 @@ exports.get = async (req, res, next) => {
         } else if (target_description) {
             // Search versions by description
 
-
+            versions =
+                await versions_db_model.find(
+                    {$text: {$search: target_description, $language: "en"}},
+                    {score: {$meta: "textScore"}}
+                ).sort({ score: { $meta: "textScore" } }).exec();
         } else {
             // Get all versions
 

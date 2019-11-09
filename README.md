@@ -23,9 +23,9 @@ node ./app.js
 * *~~Version modifying option~~* :heavy_check_mark:
 * *~~Version deleting option~~* :heavy_check_mark:
 * Order properties by type/tests scope.
-* Add search by descriptions keywords (versions & properties).
+* *~~Add search by descriptions keywords (versions & properties).~~* :heavy_check_mark:
 * Add generic description options for versions.
-* Click on version will automatically search it.
+* *~~Click on version will automatically search it.~~* :heavy_check_mark:
 * Limit versions count in a page.
 * Limit properties count in a page.
 * Properties/Versions short description TAGs.

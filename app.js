@@ -1,13 +1,12 @@
 // Import dependencies
 const express = require('express'),
-    //errorHandler = require('express-error-handler'),
-    path = require('path'),
-    PORT = process.env.PORT || 5000,
-    body_parser = require('body-parser'),
-    session = require('client-sessions'),
-    db = require('./helpers/db_controllers/services/db'),
-    router = require("./routers/router"),
-    con_validator = require('./middlewares/validate_connection');
+path = require('path'),
+PORT = process.env.PORT || 5000,
+body_parser = require('body-parser'),
+session = require('client-sessions'),
+db = require('./helpers/db_controllers/services/db'),
+router = require("./routers/router"),
+con_validator = require('./middlewares/validate_connection');
 
 
 // Setup server
