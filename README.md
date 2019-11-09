@@ -17,7 +17,15 @@ sudo service mongod start # make sure to start mongodb sevice
 node ./app.js
 ```
 
-## To do:
+## Features:
+* Versions basic identifires: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
+* Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
+* Easy to use web-based interface, designed with [MaterializeCSS](https://materializecss.com/)
+* Versions search by version-id, version release date, and versions/properties descriptions.
+* Compatible with offline systems.
+* Cross-Platform application.
+
+### To do:
 * *~~Add property option.~~* :heavy_check_mark:
 * *~~Version adding option~~* :heavy_check_mark:
 * *~~Version modifying option~~* :heavy_check_mark:
@@ -30,7 +38,7 @@ node ./app.js
 * Limit properties count in a page.
 * Properties/Versions short description TAGs.
 
-### Next
+#### Next
 * Add users privileges.
 * Add admin panel.
     * Users control panel
