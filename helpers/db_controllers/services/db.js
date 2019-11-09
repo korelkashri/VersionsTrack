@@ -1,9 +1,10 @@
 const assert = require("assert");
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp'); // TODO: consider using this for last update time data.
-let _db;
+let versions_model;
 
-let init_schema = () => {
+let init_versions_schema = () => {
+    // Define versions schema
     let schema = mongoose.Schema({
         version: {
             type: String,
@@ -44,9 +45,8 @@ let init_schema = () => {
             }
         ]
     });
-    /*schema.methods.toJSON = function() {
-        return this.toObject();
-    };*/
+
+    // Text search indexes
     schema.index({
         details: 'text',
         downloader: 'text',
@@ -64,62 +64,31 @@ let init_schema = () => {
             "properties.known_issues": 1
         }
     });
-    _db = mongoose.model('versions', schema);
 
-    _db.on('index', error => { console.log(error) });
+    // Create versions model
+    versions_model = mongoose.model('versions', schema);
+
+    // Make sure the text search indexes are ready
+    versions_model.on('index', error => { if (error) console.log(error) });
 };
 
 let initDB = (callback) => {
-    /*if (mongoose.connection) {
-        console.warn("Trying to init DB again!");
-        return;
-    }*/
-
-    /*_db = mysql.createPool({
-        connectionLimit: 10,
-        host: "remotemysql.com",
-        user: "SOWDwU4DKo",
-        password: "GCdniRGRuz",
-        database: "SOWDwU4DKo"
-    });*/
     mongoose.connect('mongodb://localhost/resthub', {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true
     });
 
-    /*if(!mongoose.connection)
-        console.error("Error connecting db");
-    else*/
     console.log("Db connected successfully");
 
-    init_schema();
+    init_versions_schema();
 
     callback();
-    /*_db.getConnection((err, connection) => {
-        if (err) {
-            if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-                console.error('Database connection was closed.')
-            }
-            if (err.code === 'ER_CON_COUNT_ERROR') {
-                console.error('Database has too many connections.')
-            }
-            if (err.code === 'ECONNREFUSED') {
-                console.error('Database connection was refused.')
-            }
-        } else {
-            console.log("DB Connected!");
-        }
-        if (connection) connection.release();
-        callback();
-    });
-
-    _db.query = util.promisify(_db.query);*/
 };
 
 let getVersionsDBModel = () => {
-    assert.ok(_db, "Db has not been initialized. Please called init first.");
-    return _db;
+    assert.ok(versions_model, "Db has not been initialized. Please called init first.");
+    return versions_model;
 };
 
 module.exports = {
