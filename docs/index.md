@@ -23,14 +23,19 @@ node ./app.js
 * Cross-Platform application.
 
 ## Pictures
+### Versions Overview
 ![Version Overview](./images/VersionsTrack-11.png)
 
+### Search section
 ![Search section](./images/VersionsTrack-12-Search.png)
 
+### Add new version
 ![Add new version](./images/VersionsTrack-13-NewVersion.png)
 
+### Modify version
 ![Modify version](./images/VersionsTrack-14-ModifyVersion.png)
 
+### Modify version's property
 ![Modify version's property](./images/VersionsTrack-15-ModifyProperty.png)
 
 ## Upcoming features
