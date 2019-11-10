@@ -75,7 +75,7 @@ let init_versions_schema = _ => {
 
 let initDB = callback => {
     assert.ok(!is_initialize, "A try to initialize an initialized DB detected.");
-    mongoose.connect('mongodb://localhost/resthub', {
+    let db_new = mongoose.connect('mongodb://localhost/versions_track', {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true
