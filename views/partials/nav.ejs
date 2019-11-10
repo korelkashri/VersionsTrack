@@ -1,13 +1,12 @@
 <div id="page_sticky_header">
-    <div class="row">
+    <div class="row" ng-hide="version_edit_progress.is_active">
 
         <!--Searching Part-->
 
         <div class="col s1 offset-s1" style="text-align: end;">
             <h4></h4>
             <!--Clear Search-->
-            <button ng-hide="version_data.view_state"
-                    class="red btn-small btn-floating waves-effect waves-light center-align"
+            <button class="red btn-small btn-floating waves-effect waves-light center-align"
                     ng-click="clear_search();"> <!--Clear Search-->
                 <i class="material-icons">clear</i>
             </button>

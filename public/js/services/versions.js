@@ -70,6 +70,9 @@ angular.module("versionsM", [])
             };
 
             $scope.modify_version_view_state = (version_data, state) => {
+                $scope.versions_filter_type_select_model = "ver";
+                $("#reports_type_filter_select").val($scope.versions_filter_type_select_model);
+                $('select').formSelect();
                 let version_id = version_data.version;
                 $scope.versions_table_conf.version_update_lock = !state;
                 $scope.version_data_filter_model = state ? "" : version_id;
