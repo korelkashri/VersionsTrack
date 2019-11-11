@@ -1,15 +1,20 @@
 angular.element(document).ready(() => {
-    $('select').formSelect();
+    init_materialize();
     document.getElementById("new_version_version_release_date").valueAsDate = new Date(new Date() + " EDT");
     //document.getElementById("filter_version_release_date").valueAsDate = new Date(new Date() + " EDT");
 });
 
 const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM'])
 
-    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s) => {
+    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s, paging_s) => {
         search_s.init($scope, $http, $timeout);
         versions_s.init($scope, $http);
         properties_s.init($scope, $http);
+
+        $scope.num_versions_for_page_model = 5;
+        $scope.num_properties_for_page_model = 5;
+        paging_s.init($scope);
+
         $scope.versions_table_conf = {
             version_update_lock: false,
             properties_update_lock: false
@@ -54,7 +59,7 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
     .directive('versionsUpdateD', function() { // After loading the versions run this directive
         return function($scope) {
             if ($scope.$last){
-                $('select').formSelect();
+                init_materialize();
                 $("input")
                     .filter(function() {
                         return this.id.match(/modify_version_release_date_*/);

@@ -1,5 +1,10 @@
 function init_materialize() {
     $('select').formSelect();
+    let collapsible = $('.collapsible');
+    collapsible.collapsible();
+    collapsible.filter('.expandable').collapsible({
+        accordion: false
+    });
 }
 
 /**

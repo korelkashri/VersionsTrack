@@ -24,6 +24,10 @@
     <script type="text/javascript" src="/js/init/init.js"></script>
 
     <style>
+        #page_content {
+            min-height: 90vh;
+        }
+
         #page_sticky_header {
             width: 100%;
             background-color: rgba(173, 225, 255, 0.86);
@@ -51,6 +55,26 @@
 
         .ng-enter-active {
             opacity: 1;
+        }
+
+        .page-footer {
+            padding-top: 20px;
+            color: #fff;
+            opacity: 1;
+        }
+        .page-footer .footer-copyright {
+            overflow: hidden;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding: 0 0;
+            color: black;
+            background-color: #0000002b;
+        }
+
+        .light, .page-footer .footer-copyright {
+            font-weight: 100;
         }
 
         @keyframes collapse {
