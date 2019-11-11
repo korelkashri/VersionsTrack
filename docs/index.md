@@ -14,6 +14,11 @@ sudo service mongod start # make sure to start mongodb sevice
 node ./app.js
 ```
 
+### Access Server
+```
+# On browser [chrome recommanded]: localhost:5000
+```
+
 # Features
 * Versions basic identifiers: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
 * Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
