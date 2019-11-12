@@ -6,14 +6,14 @@ angular.element(document).ready(() => {
 
 const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM'])
 
-    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s, paging_s) => {
-        search_s.init($scope, $http, $timeout);
+    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s, paging_s, preloader, dark_area) => {
+        search_s.init($scope, $http, $timeout, preloader);
         versions_s.init($scope, $http);
         properties_s.init($scope, $http);
 
         $scope.num_versions_for_page_model = 2;
         $scope.num_properties_for_page_model = 3;
-        paging_s.init($scope);
+        paging_s.init($scope, preloader, dark_area);
 
         $scope.versions_table_conf = {
             version_update_lock: false,
@@ -57,7 +57,7 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
     })
 
     .directive('versionsUpdateD', function() { // After loading the versions run this directive
-        return function($scope) {
+        return function($scope, preloader) {
             if ($scope.$last){
                 init_materialize();
                 $("input")
