@@ -3,7 +3,9 @@ angular.module("versionsM", [])
         this.init = ($scope, $http) => {
             $scope.new_version = () => {
                 let new_version_id = $scope.new_version_version_id;
-                let prev_version_id = $scope.new_version_prev_version_id || $scope.last_version.version;
+                let prev_version_id =    $scope.new_version_prev_version_id
+                                      || $scope.last_version && $scope.last_version.version
+                                      || "None";
 
                 let route = "/api/versions/add/v" + new_version_id;
                 let params = $.param({

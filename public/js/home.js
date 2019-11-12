@@ -34,6 +34,34 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                 )
             }).trigger("change");
         });
+
+        $scope.toggle_active_class_properties = (version_data) => {
+            let p_data = $("[id='" + version_data.version + "_properties_data']");
+            let p_new = $("[id='" + version_data.version + "_properties_new']");
+            if (version_data.properties.length) {
+                p_data.addClass('active');
+                p_new.removeClass('active');
+            } else {
+                p_data.removeClass('active');
+                p_new.addClass('active');
+            }
+            init_materialize();
+        };
+
+        $scope.$watchGroup(['versions_pages_count', 'versions_current_page'], () => {
+            $("[name='versions_pagination']").materializePagination({
+                align: 'center',
+                lastPage: $scope.versions_pages_count,
+                firstPage:  1,
+                useUrlParameter: false,
+                currentPage: $scope.versions_current_page,
+                onClickCallback: function(requestedPage){
+                    $scope.versions_current_page = requestedPage;
+                    preloader.start();
+                    scroll_to_top();
+                }
+            });
+        })
         /*global_reports_s.init($scope, $http, $timeout, $compile, reports_optional_status, preloader, soldiers_reports_s, buildings_reports_s);
         users_s.init($scope, $http, $timeout);
         guidance_bases_s.init($scope, $http, $timeout, $compile);
@@ -74,6 +102,19 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                 );
             }
         };
+    })
+
+    .directive('propertiesUpdateD', function() { // After loading the versions run this directive
+        return {
+            restrict: 'A',
+            scope: {
+                callback: '&toggleActiveClass'
+            },
+            link: function(scope, element, attrs) {
+                // Toggle active class
+                scope.callback()
+            }
+        }
     })
 
     .service("preloader", function() {

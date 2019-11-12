@@ -1,6 +1,6 @@
 <!--Version's Properties-->
 <ul class="collapsible expandable" ng-show="version_data.view_state">
-    <li class="active">
+    <li id="{{version_data.version}}_properties_data">
         <div class="collapsible-header">Version's Properties</div>
         <div class="collapsible-body">
             <div class="center pages-bg" name="properties_paging_v{{version_data.version}}" ng-show="version_data.properties_pages_count > 1">
@@ -24,7 +24,8 @@
                                | properties_filter:
                                version_data :
                                version_data.properties_current_page :
-                               num_properties_for_page_model">
+                               num_properties_for_page_model"
+                    properties-update-d toggle-active-class="toggle_active_class_properties(version_data)">
 
                     <!--Options-->
                     <td>
@@ -110,7 +111,7 @@
             <div class="center pages-bg" name="properties_paging_v{{version_data.version}}" ng-show="version_data.properties_pages_count > 1"></div>
         </div>
     </li>
-    <li>
+    <li id="{{version_data.version}}_properties_new">
         <div class="collapsible-header">Add New Version's Property</div>
         <div class="collapsible-body">
             <table class="highlight responsive-table centered" ng-show="version_data.view_state">

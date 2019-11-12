@@ -15,19 +15,7 @@ angular.module("pagingM", [])
         this.update_versions_paging = (versions, current_page) => {
             _$scope.versions_pages_count = Math.ceil(versions.length / _$scope.num_versions_for_page_model);
             current_page = current_page > _$scope.versions_pages_count ? _$scope.versions_pages_count : current_page;
-            //_$scope.versions_current_page = current_page;
-            $("[name='versions_pagination']").materializePagination({
-                align: 'center',
-                lastPage: _$scope.versions_pages_count,
-                firstPage:  1,
-                useUrlParameter: false,
-                currentPage: current_page,
-                onClickCallback: function(requestedPage){
-                    _$scope.versions_current_page = requestedPage;
-                    _preloader.start();
-                    scroll_to_top();
-                }
-            });
+            _$scope.versions_current_page = current_page;
         };
 
         this.update_properties_paging = (version_data, properties, current_page) => {

@@ -55,8 +55,8 @@ node ./app.js
 * *~~Add search by descriptions keywords (versions & properties).~~* :heavy_check_mark:
 * Add generic description options for versions.
 * *~~Click on version will automatically search it.~~* :heavy_check_mark:
-* Limit versions count in a page.
-* Limit properties count in a page.
+* *~~Limit versions count in a page.~~* :heavy_check_mark:
+* *~~Limit properties count in a page.~~* :heavy_check_mark:
 * Properties/Versions short description TAGs.
 
 #### Next

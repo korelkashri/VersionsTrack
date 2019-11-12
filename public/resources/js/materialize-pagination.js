@@ -26,6 +26,7 @@
         this.currentPage = null;
         this.visiblePages = [];
         this.maxVisiblePages = 3;
+        this.useAppend = false;
     };
 
     MaterializePagination.prototype = {
@@ -68,8 +69,8 @@
             this.$nextEllipsis = this.util.Ellipsis();
 
             var $firstPage = this.util.createPage(this.config.firstPage);
-            var $prevChevron = this.util.createChevron('prev');
-            var $nextChevron = this.util.createChevron('next');
+            var $prevChevron = this.config.currentPage > 1 ? this.util.createChevron('prev') : null;
+            var $nextChevron = this.config.currentPage < this.config.lastPage ? this.util.createChevron('next') : null;
 
             this.$container
                 .append($prevChevron)
@@ -80,12 +81,16 @@
 
             if (this.config.lastPage > this.config.firstPage) {
                 var $lastPage = this.util.createPage(this.config.lastPage);
-                $lastPage.insertBefore($nextChevron);
+                $lastPage.insertAfter(this.$nextEllipsis.$elem);
             }
 
             this.requestPage(requestedPage, true);
             this.renderActivePage();
-            this.$elem.html(this.$container);
+            if (this.useAppend) {
+                this.$elem.append(this.$container);
+            } else {
+                this.$elem.html(this.$container);
+            }
             return true;
         },
 
@@ -111,15 +116,19 @@
         },
 
         requestPrevPage: function() {
-            this.currentPage -= 1;
-            this.visiblePages.pop().remove();
-            this.visiblePages.unshift(this.insertPrevPaginationComponent(this.currentPage - 1));
+            if (this.currentPage > this.config.firstPage) {
+                this.currentPage -= 1;
+                this.visiblePages.pop().remove();
+                this.visiblePages.unshift(this.insertPrevPaginationComponent(this.currentPage - 1));
+            }
         },
 
         requestNextPage: function() {
-            this.currentPage += 1;
-            this.visiblePages.shift().remove();
-            this.visiblePages.push(this.insertNextPaginationComponent(this.currentPage + 1));
+            if (this.currentPage < this.config.lastPage) {
+                this.currentPage += 1;
+                this.visiblePages.shift().remove();
+                this.visiblePages.push(this.insertNextPaginationComponent(this.currentPage + 1));
+            }
         },
 
         requestPageByNumber: function(requestedPage) {
