@@ -34,6 +34,19 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                 )
             }).trigger("change");
         });
+
+        $scope.toggle_active_class_properties = (version_data) => {
+            let p_data = $("[id='" + version_data.version + "_properties_data']");
+            let p_new = $("[id='" + version_data.version + "_properties_new']");
+            if (version_data.properties.length) {
+                p_data.addClass('active');
+                p_new.removeClass('active');
+            } else {
+                p_data.removeClass('active');
+                p_new.addClass('active');
+            }
+            init_materialize();
+        }
         /*global_reports_s.init($scope, $http, $timeout, $compile, reports_optional_status, preloader, soldiers_reports_s, buildings_reports_s);
         users_s.init($scope, $http, $timeout);
         guidance_bases_s.init($scope, $http, $timeout, $compile);
@@ -74,6 +87,19 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                 );
             }
         };
+    })
+
+    .directive('propertiesUpdateD', function() { // After loading the versions run this directive
+        return {
+            restrict: 'A',
+            scope: {
+                callback: '&toggleActiveClass'
+            },
+            link: function(scope, element, attrs) {
+                // Toggle active class
+                scope.callback()
+            }
+        }
     })
 
     .service("preloader", function() {
