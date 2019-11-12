@@ -1,11 +1,12 @@
 angular.module("searchM", [])
     .service("search_s", function() {
-        let _$scope, _$http, _$timeout;
+        let _$scope, _$http, _$timeout, _$paging;
 
-        this.init = ($scope, $http, $timeout) => {
+        this.init = ($scope, $http, $timeout, paging_s) => {
             _$http = $http;
             _$scope = $scope;
             _$timeout = $timeout;
+            _$paging = paging_s;
 
             _$scope.search = (force_update) => {
                 let route;
@@ -73,6 +74,7 @@ angular.module("searchM", [])
                         let splitter = '-';
                         version.release_date = date.getDate() + splitter + (date.getMonth() + 1) + splitter + date.getFullYear();
                         version.view_state = true;
+                        version.properties_current_page = 1;
                         version.properties.forEach((property) => {
                             property.view_state = true;
                         });

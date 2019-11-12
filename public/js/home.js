@@ -11,8 +11,8 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
         versions_s.init($scope, $http);
         properties_s.init($scope, $http);
 
-        $scope.num_versions_for_page_model = 5;
-        $scope.num_properties_for_page_model = 5;
+        $scope.num_versions_for_page_model = 2;
+        $scope.num_properties_for_page_model = 3;
         paging_s.init($scope);
 
         $scope.versions_table_conf = {

@@ -1,6 +1,17 @@
 <!--All versions-->
 <!--TODO: In description searching, there is a significance to the results order-->
-<div id="versions_table" ng-repeat="version_data in versions_list | orderBy: ['-version']" versions-update-d ng-hide="version_edit_progress.is_active && version_data.version != version_edit_progress.version">
+<div class="center pages-bg" ng-show="versions_pages_count > 1">
+    <a class="waves-effect waves-light btn blue darken-4" ng-disabled="versions_current_page == 1" ng-click="versions_current_page = versions_current_page - 1">Previous</a>
+    {{versions_current_page}}/{{versions_pages_count}}
+    <a class="waves-effect waves-light btn blue darken-4" ng-disabled="versions_current_page == versions_pages_count" ng-click="versions_current_page = versions_current_page + 1">Next</a>
+</div>
+
+<div id="versions_table" ng-repeat="version_data in versions_list
+                                    | orderBy: ['-version']
+                                    | versions_filter :
+                                    versions_current_page :
+                                    num_versions_for_page_model"
+     versions-update-d ng-hide="version_edit_progress.is_active && version_data.version != version_edit_progress.version">
 
     <!--row: From v___ To v___ Actions-->
     <div class="row"
@@ -139,4 +150,10 @@
     <%include ../partials/version_properties_table.ejs%>
 
     <br><br>
+</div>
+
+<div class="center pages-bg" ng-show="versions_pages_count > 1">
+    <a class="waves-effect waves-light btn blue darken-4" ng-disabled="versions_current_page == 1" ng-click="versions_current_page = versions_current_page - 1">Previous</a>
+    {{versions_current_page}}/{{versions_pages_count}}
+    <a class="waves-effect waves-light btn blue darken-4" ng-disabled="versions_current_page == versions_pages_count" ng-click="versions_current_page = versions_current_page + 1">Next</a>
 </div>
