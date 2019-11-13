@@ -47,41 +47,6 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
             }
             init_materialize();
         };
-
-        /*$scope.$watchGroup(['versions_pages_count', 'versions_current_page'], () => {
-            $("[name='versions_pagination']").materializePagination({
-                align: 'center',
-                lastPage: $scope.versions_pages_count,
-                firstPage:  1,
-                useUrlParameter: false,
-                currentPage: $scope.versions_current_page,
-                onClickCallback: function(requestedPage){
-                    $scope.versions_current_page = requestedPage;
-                    preloader.start();
-                    scroll_to_top();
-                }
-            });
-        })*/
-        /*global_reports_s.init($scope, $http, $timeout, $compile, reports_optional_status, preloader, soldiers_reports_s, buildings_reports_s);
-        users_s.init($scope, $http, $timeout);
-        guidance_bases_s.init($scope, $http, $timeout, $compile);
-        paging.init($scope);
-
-        let plus_button = {
-            actions: {
-                click: () => {
-                    $scope.buildings.clear_report_modal();
-                    $scope.soldiers.clear_report_modal();
-                }
-            },
-            classes: [
-                "modal-trigger"
-            ],
-            attributes: {
-                "data-target": "choose_plus_modal"
-            }
-        };
-        angular_init_users_pages($scope, dark_area, plus_button);*/
     })
 
     .directive('versionsUpdateD', function() { // After loading the versions run this directive
