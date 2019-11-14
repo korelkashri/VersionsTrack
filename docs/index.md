@@ -1,4 +1,4 @@
-[![Github All Releases](https://img.shields.io/github/downloads/korelkashri/VersionsTrack/total.svg)]()
+<!--[![Github All Releases](https://img.shields.io/github/downloads/korelkashri/VersionsTrack/total.svg)]()-->
 
 # About Versions Track
 Interactive web-based application to control issues & features, alongside development.

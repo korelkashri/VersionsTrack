@@ -1,4 +1,4 @@
-[![Github All Releases](https://img.shields.io/github/downloads/korelkashri/VersionsTrack/total.svg)]()
+<!--[![Github All Releases](https://img.shields.io/github/downloads/korelkashri/VersionsTrack/total.svg)]()-->
 
 # Versions Track
 Web-based application for release versions management.
