@@ -4,12 +4,13 @@ angular.element(document).ready(() => {
     //document.getElementById("filter_version_release_date").valueAsDate = new Date(new Date() + " EDT");
 });
 
-const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM'])
+const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM', 'modalsM'])
 
-    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s, paging_s, preloader, dark_area) => {
+    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s, paging_s, modals_s, preloader, dark_area) => {
         search_s.init($scope, $http, $timeout, preloader);
-        versions_s.init($scope, $http);
+        versions_s.init($scope, $http, modals_s);
         properties_s.init($scope, $http);
+        modals_s.init($scope, preloader, dark_area);
 
         $scope.num_versions_for_page_model = 2;
         $scope.num_properties_for_page_model = 3;
