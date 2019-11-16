@@ -73,6 +73,46 @@ let init_versions_schema = _ => {
     versions_model.on('index', error => { if (error) console.log(error) });
 };
 
+let init_users_schema = _ => {
+    // Define versions schema
+    let schema = mongoose.Schema({
+        username: {
+            type: String,
+            required: true
+        },
+        password: {
+            type: String,
+            required: true
+        },
+
+    });
+
+    // Text search indexes
+    schema.index({
+        details: 'text',
+        downloader: 'text',
+        known_issues: 'text',
+        "properties.type": 'text',
+        "properties.description": 'text',
+        "properties.known_issues": 'text'
+    }, {
+        weights: {
+            details: 1,
+            downloader: 1,
+            known_issues: 1,
+            "properties.type": 1,
+            "properties.description": 1,
+            "properties.known_issues": 1
+        }
+    });
+
+    // Create versions model
+    versions_model = mongoose.model('versions', schema);
+
+    // Make sure the text search indexes are ready
+    versions_model.on('index', error => { if (error) console.log(error) });
+};
+
 let initDB = callback => {
     assert.ok(!is_initialize, "A try to initialize an initialized DB detected.");
     let db_new = mongoose.connect('mongodb://localhost/versions_track', {
