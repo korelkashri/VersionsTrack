@@ -2100,7 +2100,8 @@ video.responsive-video {
   .pagination li.active a {
     color: #fff; }
   .pagination li.active {
-    background-color: rgba(206, 214, 238, 0.75); }
+    background-color: #42A5F5;
+    border-radius: 50%; }
   .pagination li.disabled a {
     cursor: default;
     color: #999; }

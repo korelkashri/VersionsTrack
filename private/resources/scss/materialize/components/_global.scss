@@ -182,7 +182,10 @@ video.responsive-video {
 
     &.active a { color: #fff; }
 
-    &.active { background-color: $primary-color; }
+    &.active {
+      background-color: $pagination-active-color;
+      border-radius: 50%;
+    }
 
     &.disabled a {
       cursor: default;

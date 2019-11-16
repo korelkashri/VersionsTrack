@@ -31,7 +31,7 @@ angular.module("modalsM", [])
             //  6   Define modal
             //  7   Open the modal
 
-            general_warning = general_warning ? "<div class='materialert warning'><i class='material-icons'>warning</i> " + general_warning + "</div><br>" : "";
+            general_warning = general_warning ? "<div class='valign-wrapper flash flash-warn'><i class='material-icons' style='padding-right: 5px;'>warning</i> " + general_warning + "</div><br>" : "";
 
             let main_modal = $("[id = '" + id + "']");
             // 1 Check if id exists
