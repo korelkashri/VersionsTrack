@@ -66,6 +66,13 @@ node ./app.js
 
 #### Next
 * Add users privileges.
-* Add admin panel.
+* Add discussion page for versions/properties.
+* Users privileges:
+    * Admin    -> Full access + Admin panel access.
+    * Manager  -> Create / Delete / Modify versions/properties access.
+    * User     -> Watch & Comment for issues in versions.
+    * Guest    -> Watch access.
+    * Banned   -> No access at all.
+* Add admin panel:
     * Users control panel
     * Background change option.

@@ -117,7 +117,17 @@ exports.modify_property = async (req, res, next) => {
 // View
 exports.view_versions = async (req, res, next) => {
     try {
-        res.render("pages/home"/*, {access_level: req.session.user.role}*/);
+        res.render("pages/home", {
+            access_level: req.session.user && req.session.user.role || 1,
+            min_access_required: {
+                create_new_version: 3,
+                create_new_property: 3,
+                modify_version: 3,
+                modify_property: 3,
+                delete_version: 3,
+                delete_property: 3
+            }
+        });
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
     }

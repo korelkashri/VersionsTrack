@@ -8,7 +8,6 @@ db = require('./helpers/db_controllers/services/db'),
 router = require("./routers/router"),
 con_validator = require('./middlewares/validate_connection');
 
-
 // Setup server
 let app = express()
 
@@ -34,16 +33,21 @@ let app = express()
 
 // Setup routes
 app
-    // .use(con_validator.test_session_connection)
+    .use(con_validator.test_session_connection)
 
     .use("/", router);
 
 // Initialize application
-db.initDB(() => {
-    app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+db.initDB(_ => {
+    app.listen(PORT, _ => console.log(`Listening on ${ PORT }`));
 });
 
 // Setup errors
+// Banned users
+app.get('/banned', function(req, res){
+    res.render("errors/banned")
+});
+
 //The 404 Route
 app.get('/*', function(req, res){
     res.render("errors/404")

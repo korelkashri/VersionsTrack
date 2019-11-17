@@ -1,7 +1,7 @@
 const assert = require("assert");
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp'); // TODO: consider using this for last update time data.
-let versions_model;
+let versions_model, users_model;
 let is_initialize = false;
 
 let init_versions_schema = _ => {
@@ -74,8 +74,12 @@ let init_versions_schema = _ => {
 };
 
 let init_users_schema = _ => {
-    // Define versions schema
+    // Define users schema
     let schema = mongoose.Schema({
+        id: {
+            type: Number,
+            required: true
+        },
         username: {
             type: String,
             required: true
@@ -84,33 +88,39 @@ let init_users_schema = _ => {
             type: String,
             required: true
         },
-
+        role: {
+            type: Number,
+            // 4 -> Admin    -> Full access + Admin panel access.
+            // 3 -> Manager  -> Create / Delete / Modify versions/properties access.
+            // 2 -> User     -> Watch & Comment for issues in versions.
+            // 1 -> Guest    -> Watch access.
+            // 0 -> Banned   -> No access at all.
+            //enum: ['Admin', 'Manager', 'User', 'Guest', 'Banned'],
+            default: 1,
+            required: true
+        },
+        register_date: {
+            type: Date,
+            default: Date.now
+        }
     });
 
     // Text search indexes
     schema.index({
-        details: 'text',
-        downloader: 'text',
-        known_issues: 'text',
-        "properties.type": 'text',
-        "properties.description": 'text',
-        "properties.known_issues": 'text'
+        username: 'text',
+        role: 'text',
     }, {
         weights: {
-            details: 1,
-            downloader: 1,
-            known_issues: 1,
-            "properties.type": 1,
-            "properties.description": 1,
-            "properties.known_issues": 1
+            username: 1,
+            role: 10,
         }
     });
 
     // Create versions model
-    versions_model = mongoose.model('versions', schema);
+    users_model = mongoose.model('users', schema);
 
     // Make sure the text search indexes are ready
-    versions_model.on('index', error => { if (error) console.log(error) });
+    users_model.on('index', error => { if (error) console.log(error) });
 };
 
 let initDB = callback => {
@@ -124,6 +134,7 @@ let initDB = callback => {
     console.log("Db connected successfully");
 
     init_versions_schema();
+    init_users_schema();
 
     is_initialize = true;
     callback();
@@ -138,10 +149,16 @@ let getVersionsDBModel = _ => {
     return versions_model;
 };
 
+let getUsersDBModel = _ => {
+    db_use_pre_conditions();
+    return users_model;
+};
+
 module.exports = {
     getDB: _ => {
         return {
-            versions_model: getVersionsDBModel
+            versions_model: getVersionsDBModel,
+            users_model: getUsersDBModel
         }
     },
     initDB
