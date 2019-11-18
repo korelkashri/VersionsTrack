@@ -3,10 +3,12 @@ var router = express.Router();
 
 // Get routs
 let versions = require('./versions');
-// TODO add Users api/routes
+let users = require('./users');
 
 router.get('/', (req, res) => res.redirect('/api/versions'));
 
 router.use('/versions', versions);
+
+router.use('/', users);
 
 module.exports = router;
