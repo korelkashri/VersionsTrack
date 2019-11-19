@@ -2,21 +2,19 @@
 
 <!DOCTYPE html>
 <html lang="en" ng-app="global_app" ng-cloak>
-<head>
-    <% include ../partials/head.ejs %>
-    <script type="text/javascript" src="/js/global.js"></script>
-</head>
 
-<body class="rtl login-background" ng-controller="body_controller">
+<% include ../partials/head.ejs %>
+
+<body class="rtl" ng-controller="body_controller">
     <% if (is_connection_failed) { %>
-    <script>
-        alertify.error("התחברות נכשלה: פרטי משתמש שגויים.");
-    </script>
+        <script>
+            alertify.error("התחברות נכשלה: פרטי משתמש שגויים.");
+        </script>
     <% } %>
     <div id="page_content">
         <div class="row">
             <div class="s12 center">
-                <img src="../images/icare-logo.png" style="width: 75%; max-width: min-content;">
+                <!--<img src="../images/icare-logo.png" style="width: 75%; max-width: min-content;">-->
             </div>
         </div>
         <div class="row" style="padding-top: 20px;">
