@@ -22,12 +22,15 @@ exports.get = async (req, res, next) => {
     try {
         let res;
         let username = requests_handler.optional_param(req, "route", "username");
+        if (req.user && req.user.role < 4 && req.user.username !== username) {
+            throw new Error("You have no permission to watch this user.");
+        }
         if (username) { // Get specific user by id
             let query = {
                 username: username
             };
             let password;
-            if (!req.user || req.user.role < 4) { // If not logged in already or the current user is not an admin, require password
+            if (!req.user) { // If not logged in already or the current user is not an admin, require password
                 password = requests_handler.require_param(req, "post", "password");
                 query.password = hash(password);
             }
@@ -55,13 +58,23 @@ exports.add = async (req, res, next) => {
         } catch (e) {
             throw new Error("User already exists");
         }
-        query = {
-            username: username,
-            password: hash(password)
-        };
+        let new_user;
         if (req.user && req.user.role >= 4 && role) { // Only admin can add new user with specific role
-            query.role = role;
+            new_user = new users_db_model({
+                username: username,
+                password: hash(password),
+                role: role
+            });
+        } else {
+            new_user = new users_db_model({
+                username: username,
+                password: hash(password)
+            });
         }
+
+        new_user = await new_user.save();
+        return new_user;
+
         return users_db_model.insert(query).exec();
     } catch (e) {
         throw new Error(e)

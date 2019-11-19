@@ -1,3 +1,4 @@
+const hash = require("../../hash").get_hash_code;
 const assert = require("assert");
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp'); // TODO: consider using this for last update time data.
@@ -115,6 +116,21 @@ let init_users_schema = _ => {
 
     // Create versions model
     users_model = mongoose.model('users', schema);
+
+    // If there are no users in db, create an admin user. username = "admin" & password = "admin".
+    users_model.find({}).exec((err, data) => {
+        if (!data.length) {
+            let password = hash("admin");
+            let username = "admin";
+            let role = 4;
+            let new_user = new users_model({
+                username: username,
+                password: password,
+                role: role
+            });
+            new_user.save((err) => {});
+        }
+    });
 
     // Make sure the text search indexes are ready
     users_model.on('index', error => { if (error) console.log(error) });

@@ -6,11 +6,6 @@
 <% include ../partials/head.ejs %>
 
 <body class="rtl" ng-controller="body_controller">
-    <% if (is_connection_failed) { %>
-        <script>
-            alertify.error("התחברות נכשלה: פרטי משתמש שגויים.");
-        </script>
-    <% } %>
     <div id="page_content">
         <div class="row">
             <div class="s12 center">

@@ -1,3 +1,4 @@
+const hash = require('../helpers/hash').get_hash_code;
 const responses_gen = require('../helpers/responses');
 let users_model = require('../models/users');
 
@@ -49,7 +50,16 @@ exports.remove_user = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         let user = await users_model.get(req, res, next); // by username & password
-        return responses_gen.generate_response(res, 200, user, "User successfully restored");
+        if (user.length !== 0) {
+            user = user[0];
+            if (hash(req.body.password) === user.password) {
+                // sets a cookie with the user's info
+                user.password = hash(user.password);
+                req.session.user = user;
+                return responses_gen.generate_response(res, 200, user, "Successful login");
+            }
+        }
+        throw new Error("Credentials don't much an existing user.");
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
     }

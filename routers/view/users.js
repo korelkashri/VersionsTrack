@@ -6,7 +6,7 @@ const users_controller = require("../../controllers/users"); // todo Add Control
 // GET routes
 
 router.get('/login', con_validator.require_logout, function(req, res) {
-    res.render('pages/login', {is_connection_failed: false});
+    res.render('pages/login');
 });
 
 // router.post('/login', con_validator.require_logout, users_controller.login);
@@ -17,7 +17,7 @@ router.get('/disconnect', function(req, res) {
 });
 
 router.get("/register", con_validator.require_logout, function(req, res) {
-    res.render('pages/register', {is_registration_failed: false}); // TODO create register page
+    res.render('pages/register'); // TODO create register page
 });
 
 // router.post("/register", con_validator.require_logout, users_controller.register);
