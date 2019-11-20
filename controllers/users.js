@@ -52,7 +52,7 @@ exports.login = async (req, res, next) => {
         let user = await users_model.get(req, res, next); // by username & password
         if (user.length !== 0) {
             user = user[0];
-            if (hash(req.body.password) === user.password) {
+            if (hash(req.query.password) === user.password) { // Single hash comparison
                 // sets a cookie with the user's info
                 user.password = hash(user.password);
                 req.session.user = user;

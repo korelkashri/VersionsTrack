@@ -18,6 +18,7 @@ function initialize_alertify_properties() {
 }
 
 function init_scroll() {
+    if (!document.getElementById("page_sticky_header")) return;
     let header_classes, sticky;
     header_classes = document.getElementById("page_sticky_header").classList;
     //sticky = header.offsetTop;

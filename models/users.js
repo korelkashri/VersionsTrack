@@ -31,7 +31,7 @@ exports.get = async (req, res, next) => {
             };
             let password;
             if (!req.user) { // If not logged in already or the current user is not an admin, require password
-                password = requests_handler.require_param(req, "post", "password");
+                password = requests_handler.require_param(req, "get", "password");
                 query.password = hash(password);
             }
             res = users_db_model.find(query).exec();

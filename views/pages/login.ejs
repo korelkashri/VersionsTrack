@@ -3,7 +3,10 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="global_app" ng-cloak>
 
-<% include ../partials/head.ejs %>
+<head>
+    <% include ../partials/basic_head.ejs %>
+    <script type="text/javascript" src="/js/login.js"></script>
+</head>
 
 <body class="rtl" ng-controller="body_controller">
     <div id="page_content">
@@ -18,21 +21,21 @@
             </div>
         </div>
         <div class="row" style="margin: 0 auto; display: flex;">
-            <form method="post" action="" class="col s12 m4" style="margin: 0 auto;">
+            <form method="post" ng-submit="login()" class="col s12 m4" style="margin: 0 auto;">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input name="userid" maxlength="7" minlength="7" id="first_name" type="number" class="validate">
-                        <label for="first_name">username</label>
+                        <input ng-model="username_model" type="text" id="username" ng-init="username_model=''" class="validate">
+                        <label for="username">username</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input name="pwd" id="last_name" type="password" class="validate">
+                        <input name="pwd" ng-model="password_model" id="last_name" ng-init="password_model=''" type="password" class="validate">
                         <label for="last_name">password</label>
                     </div>
                 </div>
                 <div class="row left-align" style="padding-left: .75rem;">
-                    <button class="btn waves-effect waves-light" style="background-color: #00205a" type="submit" name="action">Login
+                    <button ng-class="{'disabled': !username_model.length || !password_model.length}" class="btn waves-effect waves-light" style="background-color: #00205a" type="submit" name="action">Login
                         <i class="material-icons right">fiber_manual_record</i>
                     </button>
                 </div>

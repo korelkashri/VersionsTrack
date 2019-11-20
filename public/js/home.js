@@ -4,7 +4,7 @@ angular.element(document).ready(() => {
     //document.getElementById("filter_version_release_date").valueAsDate = new Date(new Date() + " EDT");
 });
 
-const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM', 'modalsM'])
+const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM', 'modalsM', 'loaderM'])
 
     .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s, paging_s, modals_s, preloader, dark_area) => {
         search_s.init($scope, $http, $timeout, preloader);
@@ -81,44 +81,6 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                 scope.callback()
             }
         }
-    })
-
-    .service("preloader", function() {
-        this.start = () => {
-            $(".circular-preloader").addClass("active");
-            //$(".preloader_status").addClass("progress");
-        };
-
-        this.stop = () => {
-            $(".circular-preloader").removeClass("active");
-            //$(".preloader_status").removeClass("progress");
-        };
-    })
-
-    .service("dark_area", function() {
-        this.is_dismiss_on = true;
-        this.show = () => {
-            $(".dismiss_area").addClass("on");
-        };
-
-        this.hide = () => {
-            $(".dismiss_area").removeClass("on");
-        };
-
-        $(".dismiss_area").click(function() {
-            if (is_dismiss_on) {
-                $(".sidenav").sidenav("close");
-                $(".dismiss_area").removeClass("on");
-            }
-        });
-
-        this.turn_on_dismiss = () => {
-            is_dismiss_on = true;
-        };
-
-        this.turn_off_dismiss = () => {
-            is_dismiss_on = false;
-        };
     })
 
     .factory('skipReload', [
