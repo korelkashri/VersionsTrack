@@ -1,6 +1,7 @@
 const hash = require('../helpers/hash').get_hash_code;
 const responses_gen = require('../helpers/responses');
 let users_model = require('../models/users');
+const access_limitations = require('../helpers/configurations/access_limitations');
 
 exports.get_users = async (req, res, next) => {
     try {
@@ -69,6 +70,30 @@ exports.register = async (req, res, next) => {
     try {
         let user = await users_model.add(req, res, next); // Without a specified role -> In model set role to default (Guest)
         return responses_gen.generate_response(res, 200, user, "User successfully restored");
+    } catch (e) {
+        return responses_gen.generate_response(res, 400, null, e.message);
+    }
+};
+
+exports.view_profile = async (req, res, next) => {
+    try {
+        res.render("pages/profile", {
+            access_level: req.session.user ? req.session.user.role : 1,
+            is_logged_in: !!req.session.user,
+            min_access_required: access_limitations.min_access_required
+        });
+    } catch (e) {
+        return responses_gen.generate_response(res, 400, null, e.message);
+    }
+};
+
+exports.view_admin_panel = async (req, res, next) => {
+    try {
+        res.render("pages/admin_panel", {
+            access_level: req.session.user ? req.session.user.role : 1,
+            is_logged_in: !!req.session.user,
+            min_access_required: access_limitations.min_access_required
+        });
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
     }

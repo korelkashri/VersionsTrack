@@ -5,6 +5,11 @@ function init_materialize() {
     collapsible.filter('.expandable').collapsible({
         accordion: false
     });
+    $('.dropdown-trigger').dropdown();
+    $('#user_options_dropdown_trigger').dropdown({
+ //       width: 140,
+        position: "static"
+    });
 }
 
 /**
@@ -96,6 +101,10 @@ function loadScript(url, callback)
     // Fire the loading
     head.appendChild(script);
 }
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
 
 angular.element(function () { // When all angular elements are ready
     $('select').formSelect();
