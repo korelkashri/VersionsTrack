@@ -35,7 +35,7 @@ let test_session_connection = (req, res, next) => {
 
 let require_login = (req, res, next) => {
     if (!req.user) {
-        res.redirect('/login');
+        res.redirect('/view/login');
     } else {
         next();
     }

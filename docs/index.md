@@ -55,9 +55,12 @@ node ./app.js
 * Limit versions count in a page.
 * Limit properties count in a page.
 * Properties/Versions short description TAGs.
-
-### Next
 * Add users privileges.
 * Add admin panel.
     * Users control panel
+
+### Next
+* Add discussion page for versions/properties.
+* Multiple languages supporting.
+* Admin panel.
     * Background change option.

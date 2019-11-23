@@ -121,6 +121,7 @@ exports.view_versions = async (req, res, next) => {
         res.render("pages/home", {
             access_level: req.session.user ? req.session.user.role : 1,
             is_logged_in: !!req.session.user,
+            username: req.session.user && req.session.user.username,
             min_access_required: access_limitations.min_access_required
         });
     } catch (e) {

@@ -16,14 +16,21 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
         $scope.num_properties_for_page_model = 3;
         paging_s.init($scope, preloader, dark_area);
 
+        ng_init_sidenav(dark_area);
+
         $scope.versions_table_conf = {
             version_update_lock: false,
             properties_update_lock: false
         };
         $(document).ready(() => {
             $scope.search();
-            $('.modal').modal();
+            $('.modal').modal({
+                startingTop: '5%',
+                endingTop: '15%'
+            });
             $("#new_version_modal").modal({
+                startingTop: '5%',
+                endingTop: '15%',
                 onOpenStart: () => {
                     search_s.update_last_version()
                 }

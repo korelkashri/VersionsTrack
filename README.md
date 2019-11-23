@@ -27,8 +27,14 @@ node ./app.js
 # On browser [chrome recommanded]: localhost:5000
 ```
 
+### Base Configuration
+At the first application run, the system will automatically create an admin user:
+Username: 'admin'
+Password: 'admin'
+To edit system's users: Login to admin user, in side navigation bar select 'Admin Panel', there you will be able to modify, create, and remove users in/from the system.
+
 ## Features
-* Versions basic identifires: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
+* Versions basic identifiers: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
 * Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
 * Easy to use web-based interface, designed with [MaterializeCSS](https://materializecss.com/)
 * Versions search by version-id, version release date, and versions/properties descriptions.
@@ -51,22 +57,23 @@ node ./app.js
 ### Modify version's property
 ![Modify version's property](./docs/images/VersionsTrack-15-ModifyProperty.png)
 
+
+### Stabled Features
+* Versions basic identifiers: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
+* Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
+* Easy to use web-based interface, designed with [MaterializeCSS](https://materializecss.com/)
+* Versions search by version-id, version release date, and versions/properties descriptions.
+* Versions/Properties basic pagination.
+* Compatible with offline systems.
+* Cross-Platform application.
+
 ### TODO
-* *~~Add property option.~~* :heavy_check_mark:
-* *~~Version adding option~~* :heavy_check_mark:
-* *~~Version modifying option~~* :heavy_check_mark:
-* *~~Version deleting option~~* :heavy_check_mark:
-* Order properties by type/tests scope.
-* *~~Add search by descriptions keywords (versions & properties).~~* :heavy_check_mark:
-* Add generic description options for versions.
-* *~~Click on version will automatically search it.~~* :heavy_check_mark:
 * *~~Limit versions count in a page.~~* :heavy_check_mark:
 * *~~Limit properties count in a page.~~* :heavy_check_mark:
+* Order properties by type/tests scope.
+* Add generic description options for versions.
 * Properties/Versions short description TAGs.
-
-#### Next
 * Add users privileges.
-* Add discussion page for versions/properties.
 * Users privileges:
     * Admin    -> Full access + Admin panel access.
     * Manager  -> Create / Delete / Modify versions/properties access.
@@ -75,4 +82,9 @@ node ./app.js
     * Banned   -> No access at all.
 * Add admin panel:
     * Users control panel
+    
+#### Next
+* Add discussion page for versions/properties.
+* Multiple languages supporting.
+* Admin Panel:
     * Background change option.

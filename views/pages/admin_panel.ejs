@@ -14,9 +14,16 @@
 <div id="page_content">
     <br><br><br><br>
     <div style="padding: 0 0.75rem;">
-
-
-
+        <%- include('../partials/menu', {menu_links: [
+            {
+                link: '/view/admin-panel/users-management',
+                name: 'Users Management'
+            }, {
+                link: '/view/admin-panel/settings',
+                name: 'Global Settings'
+            }
+        ], current_page: category_name}) %>
+        <%- include("../partials/admin_panel/" + category_name.replace('-', '_'))%>
     </div>
 </div>
 

@@ -42,31 +42,49 @@
     </div>
 </div>
 
+<!--Side NavBar-->
+<ul id="slide-out" class="sidenav left-aligned flow-text">
+    <li>
+        <div style="display: flex; align-items: center;" class="user-view">
+            <% if (is_logged_in) { %>
+                <i style="font-size: 40px; padding-right: 5px" class="fa fa-user-circle"></i><span><%=username%></span>
+            <% } %>
+        </div>
+    </li>
+    <% if (is_logged_in) { %>
+        <li>
+            <a href="/view/disconnect"><i class="fa fa-sign-out-alt"></i>Logout</a>
+        </li>
+        <li>
+            <a href="/view/profile"><i class="fa fa-user-edit"></i>Edit Profile</a>
+        </li>
+    <% } else { %>
+        <li>
+            <a href="/view/login"><i class="fa fa-sign-in-alt"></i>Login</a>
+        </li>
+    <% } %>
+    <li>
+        <a href="/view/versions"><i class="fa fa-stream"></i>Versions List</a>
+    </li>
+    <% if (is_logged_in && access_level >= min_access_required.view_admin_panel) { %>
+        <li>
+            <a href="/view/admin-panel"><i class="fa fa-toolbox"></i>Admin Panel</a>
+        </li>
+    <% } %>
+</ul>
+
 <!--Top NavBar-->
 <div id="page_sticky_header">
     <div class="row" ng-hide="version_edit_progress.is_active">
-
-        <!--User-->
-        <div class="col s1" style="text-align: center;">
-            <% if (is_logged_in) { %>
-                <ul>
-                    <li>
-                        <i onclick="$('#user_options_dropdown_trigger').click(); " style="padding-bottom: 5px; cursor: pointer; font-size: 40px;" class="fa fa-user-circle"></i>
-                        <i id="user_options_dropdown_trigger" class="material-icons dropdown-trigger" data-target='user_options'>arrow_drop_down</i>
-                    </li>
-                </ul>
-
-                <ul id='user_options' class='dropdown-content user-dropdown-content'>
-                    <li><a href="/view/disconnect">Logout</a></li>
-                    <li><a href="/view/profile">Edit Profile</a></li>
-                    <% if (access_level >= min_access_required.view_admin_panel) { %>
-                        <li><a href="/view/admin-panel">Admin Panel</a></li>
-                    <% } %>
-                </ul>
-            <% } else { %>
-                <h5></h5>
-                <a class="btn-small blue lighten-1" href="/view/login">Login</a>
-            <% } %>
+        <div style="text-align: center;" class="col s1" id="side-nav-button">
+            <a href="#" data-target="slide-out" class="sidenav-trigger">
+                <div class="menu-icon-2">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </a>
         </div>
 
         <!--Searching Part-->
