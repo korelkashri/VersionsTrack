@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col s3 bold">Username</div>
+    <div class="col s3 bold">Role</div>
+</div>
+<div class="row" ng-repeat="user_data in users_list | orderBy: ['-role']">
+    <div class="col s3">
+        <a href="/view/admin-panel/users-management/{{user_data.username}}">{{user_data.username}}</a>
+    </div>
+    <div class="col s3">
+        {{get_role_name(user_data.role)}}
+    </div>
+</div>

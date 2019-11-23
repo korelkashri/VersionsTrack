@@ -5416,14 +5416,14 @@ input[type=range]::-ms-thumb {
 .table-of-contents a {
   display: inline-block;
   font-weight: 300;
-  color: #757575;
+  color: #0079bd;
   padding-left: 16px;
   height: 1.5rem;
   line-height: 1.5rem;
   letter-spacing: .4;
   display: inline-block; }
   .table-of-contents a:hover {
-    color: #a8a8a8;
+    color: #24b0ff;
     padding-left: 15px;
     border-left: 1px solid rgba(206, 214, 238, 0.75); }
   .table-of-contents a.active {

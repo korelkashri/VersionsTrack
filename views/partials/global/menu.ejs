@@ -1,0 +1,14 @@
+<div class="col s3">
+    <div style="position: fixed;">
+        <ul class="section table-of-contents">
+            <li>Menu</li>
+            <% for (var i = 0; i < menu_links.length; i++) { %>
+                <li>
+                    <a  <%= current_page == menu_links[i].link.split('/')[menu_links[i].link.split('/').length - 1] ? "class=active" : "" %>
+                        href="<%= menu_links[i].link %>"
+                    ><%= menu_links[i].name %></a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+</div>

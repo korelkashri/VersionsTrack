@@ -12,7 +12,7 @@
   a {
     display: inline-block;
     font-weight: 300;
-    color: #757575;
+    color: $nav-list-link-color;
     padding-left: 16px;
     height: 1.5rem;
     line-height: 1.5rem;
@@ -20,7 +20,7 @@
     display: inline-block;
 
     &:hover {
-      color: lighten(#757575, 20%);
+      color: lighten($nav-list-link-color, 20%);
       padding-left: 15px;
       border-left: 1px solid $primary-color;
     }
