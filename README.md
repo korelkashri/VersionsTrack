@@ -33,7 +33,7 @@ Username: 'admin'
 Password: 'admin'
 To edit system's users: Login to admin user, in side navigation bar select 'Admin Panel', there you will be able to modify, create, and remove users in/from the system.
 
-## Features
+## Stabled Features
 * Versions basic identifiers: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
 * Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
 * Easy to use web-based interface, designed with [MaterializeCSS](https://materializecss.com/)
