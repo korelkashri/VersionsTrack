@@ -57,16 +57,6 @@ To edit system's users: Login to admin user, in side navigation bar select 'Admi
 ### Modify version's property
 ![Modify version's property](./docs/images/VersionsTrack-15-ModifyProperty.png)
 
-
-### Stabled Features
-* Versions basic identifiers: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
-* Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
-* Easy to use web-based interface, designed with [MaterializeCSS](https://materializecss.com/)
-* Versions search by version-id, version release date, and versions/properties descriptions.
-* Versions/Properties basic pagination.
-* Compatible with offline systems.
-* Cross-Platform application.
-
 ### TODO
 * *~~Limit versions count in a page.~~* :heavy_check_mark:
 * *~~Limit properties count in a page.~~* :heavy_check_mark:
