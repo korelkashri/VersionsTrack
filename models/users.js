@@ -81,6 +81,7 @@ exports.add = async (req, res, next) => {
     }
 };
 
+// TODO assert username == 'admin'
 exports.modify = async (req, res, next) => {
     let users_db_model = database.users_model();
     try {
@@ -92,6 +93,7 @@ exports.modify = async (req, res, next) => {
     }
 };
 
+// TODO assert username == 'admin'
 exports.remove = async (req, res, next) => {
     let users_db_model = database.users_model();
     try {
@@ -102,3 +104,5 @@ exports.remove = async (req, res, next) => {
         throw new Error(e)
     }
 };
+
+exports.validate_username = is_user_exists;

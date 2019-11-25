@@ -8,5 +8,9 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'loaderM', 
         ng_init_sidenav(dark_area);
         users.init($scope, $http, preloader);
 
-        $scope.get_all_users();
+        $scope.get_user_details = (username) => {
+            users.get_user_details(username, (data) => {
+                $('#user_role').val($scope.get_role_name(data.role));
+            })
+        };
     });

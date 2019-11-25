@@ -1,12 +1,43 @@
-<div class="row">
-    <div class="col s3 bold">Username</div>
-    <div class="col s3 bold">Role</div>
-</div>
-<div class="row" ng-repeat="user_data in users_list | orderBy: ['-role']">
-    <div class="col s3">
-        <a href="/view/admin-panel/users-management/{{user_data.username}}">{{user_data.username}}</a>
+<% if (typeof action === 'undefined') { %>
+    <!--Show all users list-->
+    <div class="row" ng-init="get_all_users()">
+        <div class="col s6 m3"><b>Username</b></div>
+        <div class="col s6 m1"><b>Role</b></div>
     </div>
-    <div class="col s3">
-        {{get_role_name(user_data.role)}}
+    <div class="row" ng-repeat="user_data in users_list | orderBy: ['-role']">
+        <div class="col s6 m3">
+            <a href="/view/admin-panel/users-management/u{{user_data.username}}">{{user_data.username}}</a>
+        </div>
+        <div class="col s6 m1">
+            {{get_role_name(user_data.role)}}
+        </div>
     </div>
-</div>
+    <div class="row" ng-init="get_all_users()">
+        <div class="col s12 m4">
+            <a class="btn-small btn-floating waves-effect waves-light" href="/view/admin-panel/users-management/new-user">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+    </div>
+<% } else if (action == "view" && typeof username_for_details !== "undefined") { %>
+    <!--Show specific user details-->
+    <div ng-init="get_user_details('<%= username_for_details %>')">
+        <h4>{{user_data.username}}</h4><br>
+        <div class="row">
+            <div class="col s4 m2 bold"><b>Role:</b></div>
+            <div class="col s8 m4 input-field inline">
+                <select id="user_role">
+                    <option value="Admin">Admin</option>
+                    <option value="Manager">Manger</option>
+                    <option value="User">User</option>
+                    <option value="Guest">Guest</option>
+                    <option value="Banned">Banned</option>
+                </select>
+                <label for="user_role">Role</label>
+            </div>
+        </div>
+    </div>
+<% } else if (action == "create") { %>
+    <!--Create new user-->
+    <!--TODO add create new user form-->
+<% } %>

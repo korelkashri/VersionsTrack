@@ -36,4 +36,24 @@ angular.module("usersM", [])
                 return role_names[role_number];
             }
         };
+
+        this.get_user_details = (username, success_cb, error_cb, cb) => {
+            _preloader.start();
+            _$http({
+                method: "GET",
+                url: "/api/users/u" + username,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then((response) => {
+                response = response.data;
+                _$scope.user_data = response.data[0];
+                success_cb && success_cb(_$scope.user_data);
+            }, (response) => {
+                response = response.data;
+                alertify.error(response.message);
+                error_cb && error_cb();
+            }).finally(() => {
+                _preloader.stop();
+                cb && cb();
+            });
+        };
     });

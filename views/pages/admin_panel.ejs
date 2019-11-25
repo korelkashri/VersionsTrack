@@ -15,7 +15,7 @@
 <div id="page_content">
     <br><br><br><br>
     <div style="padding: 0 0.75rem;" class="row">
-        <%- include('../partials/global/menu', {menu_links: [
+        <% let menu_links = [
             {
                 link: '/view/admin-panel/users-management',
                 name: 'Users Management'
@@ -23,9 +23,17 @@
                 link: '/view/admin-panel/settings',
                 name: 'Global Settings'
             }
-        ], current_page: category_name}) %>
-        <div class="col s9">
+        ]%>
+        <%- include('../partials/global/menu', {menu_links: menu_links, current_page: category_name}) %>
+        <div class="col m9 l10 hide-on-small-and-down show-on-medium-and-up">
             <%-include("../partials/admin_panel/" + category_name.replace('-', '_'))%>
+        </div>
+        <div class="hide-on-med-and-up show-on-small">
+            <% for (let i = 0; i < menu_links.length; i++) { %>
+                <%- "<h5>" + menu_links[i].name + "</h5>" %>
+                <%- include("../partials/admin_panel/" + menu_links[i].link.split('/')[menu_links[i].link.split('/').length - 1].replace('-', '_')) %>
+                <br>
+            <% } %>
         </div>
     </div>
 </div>
