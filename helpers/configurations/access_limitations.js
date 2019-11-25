@@ -6,5 +6,10 @@ exports.min_access_required = {
     delete_version: 3,
     delete_property: 3,
     view_profile: 1,
-    view_admin_panel: 4
+    view_admin_panel: 4,
+    view_users_details: 4,
+    create_new_user_with_specific_role: 4,
+    modify_all_users: 4,
+    delete_different_users: 4,
+    delete_all_users: 4 // Delete all users in one shot -- Recreate admin user (admin@admin)
 };

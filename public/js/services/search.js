@@ -1,6 +1,6 @@
 angular.module("searchM", [])
     .service("search_s", function() {
-        let _$scope, _$http, _$timeout, _$paging, _preloader;
+        let _$scope, _$http, _$timeout, _preloader;
 
         this.init = ($scope, $http, $timeout, preloader) => {
             _$http = $http;

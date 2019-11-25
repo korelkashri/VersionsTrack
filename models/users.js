@@ -4,6 +4,7 @@ const assert = require('assert');
 
 let database = require('../helpers/db_controllers/services/db').getDB();
 let requests_handler = require('../helpers/requests_handler');
+const access_limitations = require('../helpers/configurations/access_limitations');
 
 // req["params"]["username"]
 // Return: true if exists, else: false
@@ -22,7 +23,7 @@ exports.get = async (req, res, next) => {
     try {
         let res;
         let username = requests_handler.optional_param(req, "route", "username");
-        if (req.user && req.user.role < 4 && req.user.username !== username) {
+        if (req.user && req.user.role < access_limitations.min_access_required.view_users_details && req.user.username !== username) {
             throw new Error("You have no permission to watch this user.");
         }
         if (username) { // Get specific user by id
@@ -36,7 +37,7 @@ exports.get = async (req, res, next) => {
             }
             res = users_db_model.find(query).exec();
         } else { // Get all users
-            res = users_db_model.find({}).exec();
+            res = users_db_model.find({}, '-password').exec();
         }
         return res;
     } catch (e) {
@@ -54,12 +55,13 @@ exports.add = async (req, res, next) => {
 
         let user_exists = await is_user_exists({ params: { username: username } });
         try {
-            assert(!user_exists) // if exists, throw error
+            assert(!user_exists); // If exists, throw error
         } catch (e) {
             throw new Error("User already exists");
         }
+
         let new_user;
-        if (req.user && req.user.role >= 4 && role) { // Only admin can add new user with specific role
+        if (req.user && req.user.role >= access_limitations.min_access_required.create_new_user_with_specific_role && role) {
             new_user = new users_db_model({
                 username: username,
                 password: hash(password),
@@ -74,8 +76,6 @@ exports.add = async (req, res, next) => {
 
         new_user = await new_user.save();
         return new_user;
-
-        return users_db_model.insert(query).exec();
     } catch (e) {
         throw new Error(e)
     }
