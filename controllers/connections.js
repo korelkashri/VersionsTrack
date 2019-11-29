@@ -24,6 +24,7 @@ exports.login = async (req, res, next) => {
 
 exports.register = async (req, res, next) => {
     try {
+        req["body"]["role"] = undefined;
         let user = await users_model.add(req, res, next); // Without a specified role -> In model set role to default (Guest)
         return responses_gen.generate_response(res, 200, user, "User successfully restored");
     } catch (e) {

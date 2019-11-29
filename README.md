@@ -60,6 +60,7 @@ To edit system's users: Login to admin user, in side navigation bar select 'Admi
 ### TODO
 * *~~Limit versions count in a page.~~* :heavy_check_mark:
 * *~~Limit properties count in a page.~~* :heavy_check_mark:
+* Beta version marking.
 * Order properties by type/tests scope.
 * Add generic description options for versions.
 * Properties/Versions short description TAGs.
@@ -78,3 +79,4 @@ To edit system's users: Login to admin user, in side navigation bar select 'Admi
 * Multiple languages supporting.
 * Admin Panel:
     * Background change option.
+* JetBrains/Git integration.

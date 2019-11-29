@@ -50,12 +50,19 @@ node ./app.js
 ![Modify version's property](./images/VersionsTrack-15-ModifyProperty.png)
 
 ## Upcoming features
+* Beta version marking.
 * Order properties by type/tests scope.
 * Add generic description options for versions.
 * Limit versions count in a page.
 * Limit properties count in a page.
 * Properties/Versions short description TAGs.
 * Add users privileges.
+* Users privileges:
+    * Admin    -> Full access + Admin panel access.
+    * Manager  -> Create / Delete / Modify versions/properties access.
+    * User     -> Watch & Comment for issues in versions.
+    * Guest    -> Watch access.
+    * Banned   -> No access at all.
 * Add admin panel.
     * Users control panel
 
@@ -64,3 +71,4 @@ node ./app.js
 * Multiple languages supporting.
 * Admin panel.
     * Background change option.
+* JetBrains/Git integration.
