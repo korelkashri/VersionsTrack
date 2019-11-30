@@ -53,7 +53,9 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                 p_data.removeClass('active');
                 p_new.addClass('active');
             }
-            init_materialize();
+            $timeout(() => {
+                init_materialize();
+            }, 100);
         };
     })
 

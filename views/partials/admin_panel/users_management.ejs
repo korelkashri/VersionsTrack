@@ -53,8 +53,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s4 m2 bold"><b>Role:</b></div>
-                <div class="col s8 m10 input-field inline">
+                <div class="input-field col s12">
                     <select id="user_role">
                         <option value="4">Admin</option>
                         <option value="3">Manger</option>
@@ -101,7 +100,7 @@
                         <option value="1">Guest</option>
                         <option value="0">Banned</option>
                     </select>
-                    <label for="user_role"></label>
+                    <label for="user_role">Role</label>
                 </div>
             </div>
             <div class="row">
@@ -109,7 +108,7 @@
                     <button type="submit" class="col s12 waves-effect waves-green btn-flat">Create user</button>
                 </div>
                 <div class="col s6">
-                    <button type="reset" class="col s12 waves-effect waves-red btn-flat">Cancel</button>
+                    <button type="reset" ng-click="back_to_users_management();" class="col s12 waves-effect waves-red btn-flat">Cancel</button>
                 </div>
             </div>
         </form>

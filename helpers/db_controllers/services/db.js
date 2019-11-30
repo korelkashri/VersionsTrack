@@ -100,6 +100,16 @@ let init_users_schema = _ => {
         register_date: {
             type: Date,
             default: Date.now
+        },
+        personal_settings: {
+            versions_in_page: {
+                type: Number,
+                default: 2
+            },
+            properties_in_page: {
+                type: Number,
+                default: 3
+            }
         }
     });
 

@@ -139,7 +139,7 @@
         </div>
     </li>
     <% if (access_level >= min_access_required.create_new_property) { /* >= Manager */ %>
-        <li id="{{version_data.version}}_properties_new">
+        <li ng-class="{'active': !version_data.properties.length}" ng-init="!version_data.properties.length ? toggle_active_class_properties(version_data) : undefined" id="{{version_data.version}}_properties_new">
             <div class="collapsible-header">Add New Version's Property</div>
             <div class="collapsible-body">
                 <table class="highlight responsive-table centered" ng-show="version_data.view_state">
