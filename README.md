@@ -64,19 +64,21 @@ To edit system's users: Login to admin user, in side navigation bar select 'Admi
 * Order properties by type/tests scope.
 * Add generic description options for versions.
 * Properties/Versions short description TAGs.
-* Add users privileges.
-* Users privileges:
-    * Admin    -> Full access + Admin panel access.
-    * Manager  -> Create / Delete / Modify versions/properties access.
-    * User     -> Watch & Comment for issues in versions.
-    * Guest    -> Watch access.
-    * Banned   -> No access at all.
-* Add admin panel:
-    * Users control panel
+* *~~Add users privileges.~~* :heavy_check_mark:
+* *~~Users privileges:~~* :heavy_check_mark:
+    * *~~Admin    -> Full access + Admin panel access.~~* :heavy_check_mark:
+    * *~~Manager  -> Create / Delete / Modify versions/properties access.~~* :heavy_check_mark:
+    * *~~User     -> Watch access.~~* :heavy_check_mark:
+    * *~~Guest    -> Watch access.~~* :heavy_check_mark:
+    * *~~Banned   -> No access at all.~~* :heavy_check_mark:
+* *~~Add admin panel:~~* :heavy_check_mark:
+    * *~~Users control panel~~* :heavy_check_mark:
     
 #### Next
 * Add discussion page for versions/properties.
 * Multiple languages supporting.
+* Users privileges:
+    * User     -> Comment for issues in versions.
 * Admin Panel:
     * Background change option.
 * JetBrains/Git integration.

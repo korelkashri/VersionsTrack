@@ -60,7 +60,7 @@ node ./app.js
 * Users privileges:
     * Admin    -> Full access + Admin panel access.
     * Manager  -> Create / Delete / Modify versions/properties access.
-    * User     -> Watch & Comment for issues in versions.
+    * User     -> Watch access.
     * Guest    -> Watch access.
     * Banned   -> No access at all.
 * Add admin panel.
@@ -69,6 +69,8 @@ node ./app.js
 ### Next
 * Add discussion page for versions/properties.
 * Multiple languages supporting.
+* Users privileges:
+    * User     -> Comment for issues in versions.
 * Admin panel.
     * Background change option.
 * JetBrains/Git integration.

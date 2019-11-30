@@ -49,4 +49,12 @@ router.post("/modify/:username", con_validator.require_login, (req, res, next) =
     next();
 }, con_validator.require_access_level, users_controller.modify_user);
 
+router.post("/remove/:username", con_validator.require_login, (req, res, next) => {
+    req.required_level = access_limitations.min_access_required.delete_different_users;
+    req.action_on_reject = _ => {
+        res.redirect('/403');
+    };
+    next();
+}, con_validator.require_access_level, users_controller.remove_user);
+
 module.exports = router;

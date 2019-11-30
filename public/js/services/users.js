@@ -1,6 +1,6 @@
-angular.module("usersM", [])
+angular.module("adminUsersM", [])
 
-    .service("users", function() {
+    .service("adminUsers", function() {
         let _$scope, _$http, _preloader;
         let role_names = ["Banned", "Guest", "User", "Manger", "Admin"];
 
@@ -34,7 +34,71 @@ angular.module("usersM", [])
 
             _$scope.get_role_name = (role_number) => {
                 return role_names[role_number];
-            }
+            };
+
+            _$scope.create_user = () => {
+                let route = "/api/users/create";
+                let params = $.param({
+                    username: $("#username").val(),
+                    password: $("#password").val(),
+                    role: $("#user_role").val()
+                });
+                _$http({
+                    method: "POST",
+                    url: route,
+                    data: params,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    _$scope.back_to_users_management();
+                    alertify.success(response.message);
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
+                });
+            };
+
+            _$scope.modify_user = (username) => {
+                let route = "/api/users/modify/" + username;
+                let params = $.param({
+                    username: $("#username").val(),
+                    password: $("#password").val(),
+                    role: $("#user_role").val()
+                });
+                _$http({
+                    method: "POST",
+                    url: route,
+                    data: params,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    _$scope.back_to_users_management();
+                    alertify.success(response.message);
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
+                });
+            };
+
+            _$scope.delete_user = (username) => {
+                let route = "/api/users/remove/" + username;
+                _$http({
+                    method: "POST",
+                    url: route,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then((response) => {
+                    response = response.data;
+                    alertify.success(response.message);
+                    _$scope.get_all_users();
+                }, (response) => {
+                    response = response.data;
+                    alertify.error(response.message);
+                });
+            };
+
+            _$scope.back_to_users_management = () => {
+                window.location.assign(".");
+            };
         };
 
         this.get_user_details = (username, success_cb, error_cb, cb) => {

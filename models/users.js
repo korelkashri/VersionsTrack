@@ -128,15 +128,16 @@ exports.modify = async (req, res, next) => {
         let new_password = requests_handler.optional_param(req, "post", "password");
         let new_role = requests_handler.optional_param(req, "post", "role");
 
+        let update_struct = {};
+        if (new_username)
+            update_struct.username = new_username;
+        if (new_password)
+            update_struct.password = hash(new_password);
+        if (new_role)
+            update_struct.role = new_role;
+
         let filter = {username: username};
-        let update = {
-            $set:
-                {
-                    'username': new_username,
-                    'password': hash(new_password),
-                    'role': new_role
-                }
-        };
+        let update = { $set: update_struct };
         if (current_password) {
             filter.password = hash(current_password);
             delete update.$set.role;
@@ -168,9 +169,23 @@ exports.modify = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
     let users_db_model = database.users_model();
     try {
-        let version_id = requests_handler.require_param(req, "route", "version_id");
+        let username = requests_handler.require_param(req, "route", "username");
 
-        return users_db_model.remove({version: version_id}).exec();
+        let user_exists = await is_user_exists({ params: { username: username} });
+        try {
+            assert(user_exists); // If not exists, throw error
+        } catch (e) {
+            throw new Error("User not found");
+        }
+
+        let last_admin_validation = await last_admin_user_validation(username, "Delete");
+        try {
+            assert(!last_admin_validation); // If last admin will be lost, throw error
+        } catch (e) {
+            throw new Error("Attention! This is the last admin user. You can't delete this user or you won't be able to access as admin anymore.");
+        }
+
+        return users_db_model.remove({username: username}).exec();
     } catch (e) {
         throw new Error(e)
     }
