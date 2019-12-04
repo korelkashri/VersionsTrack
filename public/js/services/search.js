@@ -66,7 +66,7 @@ angular.module("searchM", [])
                     let versions_table = $("#versions_table"); // Cancel table animation for same data
                     versions_table.removeClass('animated'); // Cancel table animation for same data
                     new_versions_list = response.data;
-                    if (!$scope.versions_table_conf.version_update_lock && !$scope.versions_table_conf.property_update_lock) {
+                    if (!$scope.versions_table_conf.version_update_lock && !$scope.versions_table_conf.properties_update_lock) {
                         $scope.version_edit_progress = {
                             is_active: false,
                             version: ""
@@ -83,7 +83,7 @@ angular.module("searchM", [])
                             property.view_state = true;
                         });
                     });
-                    if (force_update || !$scope.versions_table_conf.version_update_lock && !$scope.versions_table_conf.property_update_lock) {
+                    if (force_update || !$scope.versions_table_conf.version_update_lock && !$scope.versions_table_conf.properties_update_lock) {
                         if (force_update || !_$scope.versions_list || new_versions_list.length !== _$scope.versions_list.length ||
                             (new_versions_list && new_versions_list.length && new_versions_list[0].version !== _$scope.versions_list[0].version)) {
                             // TODO: in description search, there is significance to the order, think of a way to detect results order changing

@@ -180,7 +180,7 @@
                         <!--New Property Description-->
                         <td>
                             <div class="input-field inline">
-                                <input id="new_version_property_description_{{version_data.version}}" type="text">
+                                <input id="new_version_property_description_{{version_data.version}}" ng-model="version_data.new_property_description_model" ng-change="change_new_property(version_data.version);" type="text">
                                 <label for="new_version_property_description_{{version_data.version}}">Description</label>
                             </div>
                         </td>
@@ -201,7 +201,7 @@
                         <!--New Property Tests Details-->
                         <td>
                             <div class="input-field inline">
-                                <input id="new_version_property_tests_details_{{version_data.version}}" type="text">
+                                <input id="new_version_property_tests_details_{{version_data.version}}" ng-model="version_data.new_property_tests_details_model" ng-change="change_new_property(version_data.version);" type="text">
                                 <label for="new_version_property_tests_details_{{version_data.version}}">Tests Details</label>
                             </div>
                         </td>
@@ -209,7 +209,7 @@
                         <!--New Property Known Issues-->
                         <td>
                             <div class="input-field inline">
-                                <input id="new_version_property_known_issues_{{version_data.version}}" type="text">
+                                <input id="new_version_property_known_issues_{{version_data.version}}" ng-model="version_data.new_property_known_issues_model" ng-change="change_new_property(version_data.version);" type="text">
                                 <label for="new_version_property_known_issues_{{version_data.version}}">Known Issues</label>
                             </div>
                         </td>

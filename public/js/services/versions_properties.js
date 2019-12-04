@@ -1,6 +1,13 @@
 angular.module("versionsPropertiesM", [])
     .service("properties_s", function () {
         this.init = ($scope, $http) => {
+            $scope.change_new_property = (version_id) => {
+                let current_desc = $("[id='new_version_property_description_" + version_id + "']").val();
+                let current_tests_details = $("[id='new_version_property_tests_details_" + version_id + "']").val();
+                let current_known_issues = $("[id='new_version_property_known_issues_" + version_id + "']").val();
+                $scope.versions_table_conf.properties_update_lock = !!current_desc.length || !!current_tests_details.length || !!current_known_issues.length;
+            };
+
             $scope.new_property = (version_id) => {
                 let description = $("[id='new_version_property_description_" + version_id + "'").val();
                 let params = $.param({
@@ -10,6 +17,8 @@ angular.module("versionsPropertiesM", [])
                     tests_details: $("[id='new_version_property_tests_details_" + version_id + "'").val(),
                     known_issues: $("[id='new_version_property_known_issues_" + version_id + "'").val()
                 });
+
+                $scope.versions_table_conf.properties_update_lock = false;
 
                 if (!description) {
                     alertify.error("Please enter description: " + version_id);
