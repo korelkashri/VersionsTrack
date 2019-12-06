@@ -55,7 +55,7 @@ node ./app.js
 
 ## Access Server
 ```
-# On browser [chrome recommanded]: localhost:5000
+# On browser [chrome recommended]: localhost:5000
 ```
 
 ## Configuration
