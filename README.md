@@ -1,5 +1,24 @@
 <!--[![Github All Releases](https://img.shields.io/github/downloads/korelkashri/VersionsTrack/total.svg)]()-->
 
+Table of Contents
+=================
+   * [Versions Track](#versions-track)
+      * [Description](#description)
+      * [Demo](#demo)
+      * [Dependencies](#dependencies)
+      * [Run](#run)
+         * [Access Server](#access-server)
+         * [Configuration](#configuration)
+      * [Stabled Features](#stabled-features)
+      * [Pictures](#pictures)
+         * [Versions Overview](#versions-overview)
+         * [Search section](#search-section)
+         * [Add new version](#add-new-version)
+         * [Modify version](#modify-version)
+         * [Modify version's property](#modify-versions-property)
+         * [TODO](#todo)
+            * [Next](#next)
+
 # Versions Track
 Web-based application for release versions management.
 
