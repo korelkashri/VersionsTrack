@@ -1,12 +1,9 @@
 ---
 layout: default
-title: Pictures
+title: Versions Track - Pictures
 ---
-# Versions Track - Pictures
-
 Table of Contents
 =================
-   * [Versions Track - Pictures](#versions-track---pictures)
    * [Table of Contents](#table-of-contents)
       * [Version 2.0.0](#version-200)
       * [Version 1.0.0](#version-100)
