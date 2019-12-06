@@ -48,7 +48,7 @@ Table of Contents
 
 # Run
 ```
-sudo service mongod start # make sure to start mongodb sevice
+sudo service mongod start # make sure to start mongodb service
 node ./app.js
 ```
 
