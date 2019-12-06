@@ -14,8 +14,10 @@
 
 <!-- Then we build the nav bar. -->
 <nav>
+    {{current_page}}
     <ul>
         {% for entry in site.data.navigation %}
+        {{entry.url}}
         {% if entry.url == current_page %}
         {% assign current = ' class="current"' %}
         {% else %}
