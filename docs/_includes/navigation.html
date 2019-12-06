@@ -12,7 +12,7 @@
 
 {% for entry in site.data.navigation %}
 {% capture fullurl %}{{ site.baseurl }}{{ entry.url }}{% endcapture %}
-{{page.url}}
+{{assign page.url[0] = "/VersionsTrack" + page.url[0]}}
 {% if fullurl == page.url %}
 {% assign current_page = fullurl %}
 {% break %}
