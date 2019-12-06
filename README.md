@@ -1,5 +1,12 @@
 <!--[![Github All Releases](https://img.shields.io/github/downloads/korelkashri/VersionsTrack/total.svg)]()-->
 
+# Versions Track
+Web-based application for release versions management.
+
+## Description
+Interactive web-based application to control issues & features, alongside development.
+Mark and remember old issues with versions/dates/description oriented search.
+
 Table of Contents
 =================
    * [Versions Track](#versions-track)
@@ -18,13 +25,6 @@ Table of Contents
          * [Modify version's property](#modify-versions-property)
          * [TODO](#todo)
             * [Next](#next)
-
-# Versions Track
-Web-based application for release versions management.
-
-## Description
-Interactive web-based application to control issues & features, alongside development.
-Mark and remember old issues with versions/dates/description oriented search.
 
 **Compatible with offline systems.**
 
