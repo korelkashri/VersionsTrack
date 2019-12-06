@@ -3,51 +3,53 @@
 # Versions Track
 Web-based application for release versions management.
 
-## Description
+# Description
 Interactive web-based application to control issues & features, alongside development.
 Mark and remember old issues with versions/dates/description oriented search.
 
 Table of Contents
 =================
    * [Versions Track](#versions-track)
-         * [Description](#description)
-      * [Table of Contents](#table-of-contents)
-         * [Demo](#demo)
-         * [Dependencies](#dependencies)
-         * [Run](#run)
-            * [Access Server](#access-server)
-            * [Configuration](#configuration)
-         * [Stabled Features](#stabled-features)
-         * [Pictures](#pictures)
-            * [Versions Overview](#versions-overview)
-            * [Search section](#search-section)
-            * [Add new version](#add-new-version)
-            * [Modify version](#modify-version)
-            * [Modify version's property](#modify-versions-property)
-            * [TODO](#todo)
-               * [Next](#next)
+   * [Description](#description)
+   * [Table of Contents](#table-of-contents)
+   * [Demo](#demo)
+   * [Dependencies](#dependencies)
+   * [Run](#run)
+      * [Access Server](#access-server)
+      * [Configuration](#configuration)
+   * [Stabled Features](#stabled-features)
+   * [Pictures](#pictures)
+      * [Versions Overview](#versions-overview)
+      * [Search section](#search-section)
+      * [Add new version](#add-new-version)
+      * [Modify version](#modify-version)
+      * [Modify version's property](#modify-versions-property)
+   * [TODO](#todo)
+      * [Next](#next)
+
+
 
 **Compatible with offline systems.**
 
-## Demo
+# Demo
 [demo - VersionsTrack](https://versions-track.herokuapp.com/)
 
-## Dependencies
+# Dependencies
 * [node.js](https://nodejs.org/en/).
 * [mongodb](https://www.mongodb.com/).
 
-## Run
+# Run
 ```
 sudo service mongod start # make sure to start mongodb sevice
 node ./app.js
 ```
 
-### Access Server
+## Access Server
 ```
 # On browser [chrome recommanded]: localhost:5000
 ```
 
-### Configuration
+## Configuration
 At the first time you run the system (v2.0.0+), admin user is automatically generated.
 ```
 username: admin
@@ -57,7 +59,7 @@ You can modify this user after login into it using ```Sidebar -> Admin Panel -> 
 
 WARNING! Don't lose your admin user credentials.
 
-## Stabled Features
+# Stabled Features
 * Versions basic identifiers: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1).
 * Beta versions marking.
 * Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..).
@@ -74,23 +76,23 @@ WARNING! Don't lose your admin user credentials.
 * Compatible with offline systems.
 * Cross-Platform application.
 
-## Pictures
-### Versions Overview
+# Pictures
+## Versions Overview
 ![Version Overview](docs/images/version1.0.0/VersionsTrack-11.png)
 
-### Search section
+## Search section
 ![Search section](docs/images/version1.0.0/VersionsTrack-12-Search.png)
 
-### Add new version
+## Add new version
 ![Add new version](docs/images/version1.0.0/VersionsTrack-13-NewVersion.png)
 
-### Modify version
+## Modify version
 ![Modify version](docs/images/version1.0.0/VersionsTrack-14-ModifyVersion.png)
 
-### Modify version's property
+## Modify version's property
 ![Modify version's property](docs/images/version1.0.0/VersionsTrack-15-ModifyProperty.png)
 
-### TODO
+# TODO
 * *~~Limit versions count in a page.~~* :heavy_check_mark:
 * *~~Limit properties count in a page.~~* :heavy_check_mark:
 * *~~Beta version marking.~~* :heavy_check_mark:
@@ -103,7 +105,7 @@ WARNING! Don't lose your admin user credentials.
     * Edit versions_in_page/properties_in_page.
     * Use user's versions_in_page/properties_in_page properties.
 
-#### Next
+## Next
 * Add discussion page for versions/properties.
 * Multiple languages supporting.
 * Users privileges:

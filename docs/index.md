@@ -6,7 +6,26 @@ Mark and remember old issues with versions/dates/description oriented search.
 
 **Compatible with offline systems.**
 
-## Demo
+Table of Contents
+=================
+   * [About Versions Track](#about-versions-track)
+   * [Table of Contents](#table-of-contents)
+   * [Demo](#demo)
+   * [Dependencies](#dependencies)
+   * [Run](#run)
+      * [Access Server](#access-server)
+      * [Configuration](#configuration)
+   * [Features](#features)
+      * [Upcoming features](#upcoming-features)
+         * [Next](#next)
+   * [Pictures](#pictures)
+      * [Versions Overview](#versions-overview)
+      * [Search section](#search-section)
+      * [Add new version](#add-new-version)
+      * [Modify version](#modify-version)
+      * [Modify version's property](#modify-versions-property)
+
+# Demo
 [demo - VersionsTrack](https://versions-track.herokuapp.com/)
 
 # Dependencies
@@ -19,12 +38,12 @@ sudo service mongod start # make sure to start mongodb sevice
 node ./app.js
 ```
 
-### Access Server
+## Access Server
 ```
 # On browser [chrome recommanded]: localhost:5000
 ```
 
-### Configuration
+## Configuration
 At the first time you run the system (v2.0.0+), admin user is automatically generated.
 ```
 username: admin
@@ -51,22 +70,6 @@ WARNING! Don't lose your admin user credentials.
 * Compatible with offline systems.
 * Cross-Platform application.
 
-## Pictures
-### Versions Overview
-![Version Overview](images/version1.0.0/VersionsTrack-11.png)
-
-### Search section
-![Search section](images/version1.0.0/VersionsTrack-12-Search.png)
-
-### Add new version
-![Add new version](images/version1.0.0/VersionsTrack-13-NewVersion.png)
-
-### Modify version
-![Modify version](images/version1.0.0/VersionsTrack-14-ModifyVersion.png)
-
-### Modify version's property
-![Modify version's property](images/version1.0.0/VersionsTrack-15-ModifyProperty.png)
-
 ## Upcoming features
 * Limit versions count in a page.
 * Limit properties count in a page.
@@ -86,3 +89,19 @@ WARNING! Don't lose your admin user credentials.
 * Admin panel.
     * Background change option.
 * JetBrains/Git integration.
+
+# Pictures
+## Versions Overview
+![Version Overview](images/version1.0.0/VersionsTrack-11.png)
+
+## Search section
+![Search section](images/version1.0.0/VersionsTrack-12-Search.png)
+
+## Add new version
+![Add new version](images/version1.0.0/VersionsTrack-13-NewVersion.png)
+
+## Modify version
+![Modify version](images/version1.0.0/VersionsTrack-14-ModifyVersion.png)
+
+## Modify version's property
+![Modify version's property](images/version1.0.0/VersionsTrack-15-ModifyProperty.png)
