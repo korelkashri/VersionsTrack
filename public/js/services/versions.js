@@ -10,6 +10,7 @@ angular.module("versionsM", [])
                 let route = "/api/versions/add/v" + new_version_id;
                 let params = $.param({
                     prev_version_id: prev_version_id,
+                    is_beta: !!$scope.new_version_beta,
                     details: $scope.new_version_version_details,
                     downloader: $scope.new_version_version_downloader,
                     release_date: new Date($scope.new_version_version_release_date),
@@ -92,6 +93,7 @@ angular.module("versionsM", [])
                     version: state || version_id
                 };
                 let version_details_field = $("[id='modify_version_details_" + version_id + "']"),
+                    is_beta_field = $("[id='modify_version_beta_" + version_id + "']"),
                     downloader_field = $("[id='modify_version_downloader_" + version_id + "']"),
                     release_date_field = $("[id='modify_version_release_date_" + version_id + "']"),
                     known_issues_field = $("[id='modify_version_known_issues_" + version_id + "']"),
@@ -102,6 +104,8 @@ angular.module("versionsM", [])
                 prev_version_field.val(version_data.prev_version);
                 // Version ID
                 version_id_field.val(version_data.version);
+                // Beta field
+                is_beta_field.prop("checked", version_data.is_beta);
                 // Version Details
                 version_details_field.val(version_data.details);
                 // Downloader
@@ -136,6 +140,7 @@ angular.module("versionsM", [])
                     downloader_field   = $("[id='modify_version_downloader_" + version_id + "']"),
                     release_date_field = $("[id='modify_version_release_date_" + version_id + "']"),
                     known_issues_field  = $("[id='modify_version_known_issues_" + version_id + "']"),
+                    is_beta_field  = $("[id='modify_version_beta_" + version_id + "']"),
                     prev_version_field  = $("[id='modify_version_from_" + version_id + "']"),
                     version_id_field  = $("[id='modify_version_version_id_" + version_id + "']");
 
@@ -144,6 +149,7 @@ angular.module("versionsM", [])
                 let params = $.param({
                     version_id: new_version_id,
                     prev_version: prev_version_field.val(),
+                    is_beta: !!is_beta_field.is(':checked'),
                     details: version_details_field.val(),
                     downloader: downloader_field.val(),
                     release_date: new Date(release_date_field.val() + " EDT"),

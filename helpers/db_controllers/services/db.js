@@ -16,6 +16,10 @@ let init_versions_schema = _ => {
             type: String,
             required: true
         },
+        is_beta: {
+            type: Boolean,
+            default: false
+        },
         details: String,
         downloader: String,
         release_date: {

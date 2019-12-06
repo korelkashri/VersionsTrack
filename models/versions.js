@@ -143,6 +143,7 @@ exports.add_version = async (req, res, next) => {
         }
 
         let prev_version_id = requests_handler.require_param(req, "post", "prev_version_id");
+        let is_beta = requests_handler.optional_param(req, "post", "is_beta");
         let details = requests_handler.optional_param(req, "post", "details");
         let downloader = requests_handler.optional_param(req, "post", "downloader");
         let release_date = requests_handler.require_param(req, "post", "release_date");
@@ -152,6 +153,7 @@ exports.add_version = async (req, res, next) => {
         let new_version = new versions_db_model({
             version: version_id,
             prev_version: prev_version_id,
+            is_beta: is_beta,
             details: details,
             downloader: downloader,
             release_date: release_date,
@@ -211,6 +213,7 @@ exports.modify_version = async (req, res, next) => {
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let new_version_id = requests_handler.optional_param(req, "post", "version_id");
         let new_prev_version = requests_handler.optional_param(req, "post", "prev_version");
+        let is_beta = requests_handler.optional_param(req, "post", "is_beta");
         let details = requests_handler.optional_param(req, "post", "details");
         let downloader = requests_handler.optional_param(req, "post", "downloader");
         let release_date = requests_handler.require_param(req, "post", "release_date");
@@ -223,6 +226,7 @@ exports.modify_version = async (req, res, next) => {
                 {
                     'version': new_version_id,
                     'prev_version': new_prev_version,
+                    'is_beta': is_beta,
                     'details': details,
                     'downloader': downloader,
                     'release_date': release_date,
