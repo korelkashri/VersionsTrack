@@ -74,7 +74,7 @@ WARNING! Don't lose your admin user credentials.
 * *~~Limit versions count in a page.~~* :heavy_check_mark:
 * *~~Limit properties count in a page.~~* :heavy_check_mark:
 * *~~Beta version marking.~~* :heavy_check_mark:
-* *~~Users privileges.~~*
+* *~~Users privileges.~~* :heavy_check_mark:
 * Order properties by type/tests scope.
 * Add generic description options for versions.
 * Properties/Versions short description TAGs.

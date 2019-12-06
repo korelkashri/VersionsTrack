@@ -1,4 +1,7 @@
-<a href="index.md">Home</a>
+---
+layout: page
+title: Pictures
+---
 # Versions Track - Pictures
 
 ## Version 2.0.0
