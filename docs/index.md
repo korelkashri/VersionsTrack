@@ -24,47 +24,59 @@ node ./app.js
 # On browser [chrome recommanded]: localhost:5000
 ```
 
+### Configuration
+At the first time you run the system (v2.0.0+), admin user is automatically generated.
+```
+username: admin
+password: admin
+```
+You can modify this user after login into it using ```Sidebar -> Admin Panel -> Users Management -> admin```
+
+WARNING! Don't lose your admin user credentials.
+
 # Features
-* Versions basic identifiers: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1)
-* Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..)
-* Easy to use web-based interface, designed with [MaterializeCSS](https://materializecss.com/)
+* Versions basic identifiers: Previous version id, This version id (e.g. From: 3.0.0 To: 3.0.1).
+* Beta versions marking.
+* Version properties: Unique changes that applied in specific version (e.g. Features, Solved Bugs, etc..).
 * Versions search by version-id, version release date, and versions/properties descriptions.
-* Versions/Properties basic pagination.
-* Compatible with offline systems.
-* Cross-Platform application.
-
-## Pictures
-### Versions Overview
-![Version Overview](./images/VersionsTrack-11.png)
-
-### Search section
-![Search section](./images/VersionsTrack-12-Search.png)
-
-### Add new version
-![Add new version](./images/VersionsTrack-13-NewVersion.png)
-
-### Modify version
-![Modify version](./images/VersionsTrack-14-ModifyVersion.png)
-
-### Modify version's property
-![Modify version's property](./images/VersionsTrack-15-ModifyProperty.png)
-
-## Upcoming features
-* Beta version marking.
-* Order properties by type/tests scope.
-* Add generic description options for versions.
-* Limit versions count in a page.
-* Limit properties count in a page.
-* Properties/Versions short description TAGs.
-* Add users privileges.
 * Users privileges:
     * Admin    -> Full access + Admin panel access.
     * Manager  -> Create / Delete / Modify versions/properties access.
     * User     -> Watch access.
     * Guest    -> Watch access.
     * Banned   -> No access at all.
-* Add admin panel.
-    * Users control panel
+* Admin Panel:
+    * Users control panel (Add / Modify / Remove).
+* Easy to use web-based interface, designed with [MaterializeCSS](https://materializecss.com/)
+* Compatible with offline systems.
+* Cross-Platform application.
+
+## Pictures
+### Versions Overview
+![Version Overview](images/version1.0.0/VersionsTrack-11.png)
+
+### Search section
+![Search section](images/version1.0.0/VersionsTrack-12-Search.png)
+
+### Add new version
+![Add new version](images/version1.0.0/VersionsTrack-13-NewVersion.png)
+
+### Modify version
+![Modify version](images/version1.0.0/VersionsTrack-14-ModifyVersion.png)
+
+### Modify version's property
+![Modify version's property](images/version1.0.0/VersionsTrack-15-ModifyProperty.png)
+
+## Upcoming features
+* Limit versions count in a page.
+* Limit properties count in a page.
+* Order properties by type/tests scope.
+* Add generic description options for versions.
+* Properties/Versions short description TAGs.
+* Edit profile:
+    * Edit username/password.
+    * Edit versions_in_page/properties_in_page.
+    * Use user's versions_in_page/properties_in_page properties.
 
 ### Next
 * Add discussion page for versions/properties.
