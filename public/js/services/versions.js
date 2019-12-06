@@ -135,7 +135,6 @@ angular.module("versionsM", [])
 
             $scope.modify_version = (version_data) => {
                 let version_id = version_data.version;
-                version_data.view_state = true;
                 let version_details_field   = $("[id='modify_version_details_" + version_id + "']"),
                     downloader_field   = $("[id='modify_version_downloader_" + version_id + "']"),
                     release_date_field = $("[id='modify_version_release_date_" + version_id + "']"),
@@ -166,6 +165,7 @@ angular.module("versionsM", [])
                     alertify.success(response.message);
                     $scope.version_data_filter_model = new_version_id;
                     $scope.versions_table_conf.version_update_lock = false;
+                    $scope.modify_version_view_state(version_data, true);
                     $scope.search(true);
                 }, (response) => {
                     response = response.data;

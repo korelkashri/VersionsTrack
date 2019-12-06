@@ -102,7 +102,7 @@
 
             <% if (access_level >= min_access_required.modify_version) { /* >= Manager */ %>
                 <!--Modification - Beta version-->
-                <div class="col s12" style="padding-left: 20px;">
+                <div ng-hide="version_data.view_state" class="col s12" style="padding-left: 20px;">
                     <label>
                         <input type="checkbox" id="modify_version_beta_{{version_data.version}}" />
                         <span>Beta version</span>
