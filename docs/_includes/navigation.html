@@ -2,6 +2,8 @@
 
 <!-- This finds the current page so it can be highlighted. -->
 
+<!--global: page-->
+<!--page.url-->
 <!--global: site-->
 <!--site.baseurl-->
 <!---->
@@ -9,7 +11,8 @@
 <!--entry.url-->
 
 {% for entry in site.data.navigation %}
-{% capture fullurl %}{{ site.baseurl }}{{"/VersionsTrack"}}{{ entry.url }}{% endcapture %}
+{% capture fullurl %}{{ site.baseurl }}{{ entry.url }}{% endcapture %}
+{{page.url}}
 {% if fullurl == page.url %}
 {% assign current_page = fullurl %}
 {% break %}
