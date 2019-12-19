@@ -4,20 +4,70 @@ const assert = require('assert');
 let database = require('../helpers/db_controllers/services/db').getDB();
 let requests_handler = require('../helpers/requests_handler');
 
+// req["params"]["project_name"] // TODO
 // req["params"]["version_id"]
 // Return: true if exists, else: false
 let is_version_exists = async (req, res, next) => {
-    let versions_db_model = database.versions_model();
+    let projects_db_model = database.projects_model();
     try {
+        let project_name = "UNNAMED"; // TODO
         let version_id = requests_handler.require_param(req, "route", "version_id");
-        return (await versions_db_model.find({version: version_id}).exec()).length !== 0;
+        let db_res = await projects_db_model.find({name: project_name, "versions.version": version_id}, 'versions').exec();
+        return db_res.length !== 0;
     } catch (e) {
         throw new Error(e)
     }
 };
 
+function splitMulti(str, tokens){
+    var tempChar = tokens[0]; // We can use the first token as a temporary join character
+    for(var i = 1; i < tokens.length; i++){
+        str = str.split(tokens[i]).join(tempChar);
+    }
+    str = str.split(tempChar);
+    return str;
+}
+
+/**
+ * If ver1 is bigger => Returns 1
+ * If ver2 is bigger => Returns -1
+ * If the versions are equals => Returns 0
+ *
+ * Note: Working the same way with dates in format: yyyy-mm-dd
+ *
+ * @param ver1
+ * @param ver2
+ * @returns 1/-1/0
+ */
+let compare_two_versions = (ver1, ver2) => {
+    let ver1_data = splitMulti(ver1, ['.', '-', 'T',':','Z']);
+    let ver2_data = splitMulti(ver2, ['.', '-', 'T',':','Z']);
+    let min_length = Math.min(ver1_data.length, ver2_data.length);
+    let max_length = Math.max(ver1_data.length, ver2_data.length);
+    let i;
+    for (i = 0; i < min_length; i++) {
+        if (Number(ver1_data[i]) > Number(ver2_data[i])) {
+            return 1;
+        } else if (Number(ver1_data[i]) < Number(ver2_data[i])) {
+            return -1;
+        }
+    }
+
+    if (min_length !== max_length) {
+        let data_to_check;
+        let suspect_sign;
+        if (ver1_data.length === max_length) { data_to_check = ver1_data; suspect_sign = 1; }
+        else { data_to_check = ver2_data; suspect_sign = -1; }
+        for (i; i < max_length; i++) {
+            if (Number(data_to_check[i]) !== 0) return suspect_sign;
+        }
+    }
+
+    return 0;
+};
+
 exports.get = async (req, res, next) => {
-    let versions_db_model = database.versions_model();
+    let projects_db_model = database.projects_model();
 
     // req.params.filter - if set defines lower or bigger then a parameter (version / version release date).
     // req.params.version_id - if specified check filter (optional)
@@ -27,28 +77,48 @@ exports.get = async (req, res, next) => {
     let target_version_rel_date;
     let filter;
 
+    let project_name = "UNNAMED";
     target_version = requests_handler.optional_param(req, 'route','version_id');
     target_description = requests_handler.optional_param(req, 'route','description');
     target_version_rel_date = requests_handler.optional_param(req, 'route', 'download_date');
     if (target_version) filter = requests_handler.optional_param(req, 'route', 'filter');
     else if (target_version_rel_date) filter = requests_handler.require_param(req, 'route', 'filter');
 
-    let versions;
+    let selected_proj = await projects_db_model.find( { name: project_name } ).exec();
+    if (!selected_proj.length)
+        throw new Error("Project not found");
+    selected_proj = selected_proj[0]._doc;
+
+    let versions = [];
     try {
         if (target_version) {
             // Search versions by id
 
             switch (filter) {
                 case "<":
-                    versions = await versions_db_model.find( { version: { "$lte": target_version } } ).exec();
+                    selected_proj.versions.forEach((obj, idx, arr) => {
+                        let compare_res = compare_two_versions(obj.version, target_version);
+                        if (compare_res === -1 || compare_res === 0) {
+                            versions.push(obj);
+                        }
+                    });
                     break;
 
                 case ">":
-                    versions = await versions_db_model.find( { version: { "$gte": target_version } } ).exec();
+                    selected_proj.versions.forEach((obj, idx, arr) => {
+                        let compare_res = compare_two_versions(obj.version, target_version);
+                        if (compare_res === 1 || compare_res === 0) {
+                            versions.push(obj);
+                        }
+                    });
                     break;
 
                 default:
-                    versions = await versions_db_model.find( { version: target_version } ).exec();
+                    versions = await projects_db_model.find( { name: project_name, "versions.version": target_version }, 'versions.$' ).exec();
+                    if (versions.length)
+                        versions = versions[0].versions;
+                    else
+                        versions = [];
                     break;
             }
         } else if (target_version_rel_date) {
@@ -68,11 +138,21 @@ exports.get = async (req, res, next) => {
             */
             switch (filter) {
                 case "<":
-                    versions = await versions_db_model.find( { "release_date": { "$lte": target_version_rel_date } } ).exec();
+                    selected_proj.versions.forEach((obj, idx, arr) => {
+                        let compare_res = compare_two_versions(obj.release_date.toISOString(), target_version_rel_date.toISOString());
+                        if (compare_res === -1 || compare_res === 0) {
+                            versions.push(obj);
+                        }
+                    });
                     break;
 
                 case ">":
-                    versions = await versions_db_model.find( { "release_date": { "$gte": target_version_rel_date } } ).exec();
+                    selected_proj.versions.forEach((obj, idx, arr) => {
+                        let compare_res = compare_two_versions(obj.release_date.toISOString(), target_version_rel_date.toISOString());
+                        if (compare_res === 1 || compare_res === 0) {
+                            versions.push(obj);
+                        }
+                    });
                     break;
 
                 default:
@@ -82,48 +162,17 @@ exports.get = async (req, res, next) => {
             // Search versions by description
 
             versions =
-                await versions_db_model.find(
+                await projects_db_model.find(
                     {$text: {$search: target_description, $language: "en"}},
                     {score: {$meta: "textScore"}}
                 ).sort({ score: { $meta: "textScore" } }).exec();
         } else {
             // Get all versions
-
-            async function demo_erase_and_create_a_demo_db() {
-                versions_db_model.deleteMany({}, null).exec();
-                let new_version = new versions_db_model({
-                    version: "0.0.0",
-                    prev_version: "0.0.0",
-                    details: "lala",
-                    downloader: "me",
-                    release_date: new Date("2010-10-26"),
-                    known_issues: "lala",
-                    properties: []
-                });
-                new_version = await new_version.save();
-                new_version = new versions_db_model({
-                    version: "0.0.1",
-                    prev_version: "0.0.0",
-                    details: "lala",
-                    downloader: "me",
-                    release_date: new Date("2010-11-10"),
-                    known_issues: "lala",
-                    properties: []
-                });
-                new_version = await new_version.save();
-                new_version = new versions_db_model({
-                    version: "0.0.2",
-                    prev_version: "0.0.1",
-                    details: "lala",
-                    downloader: "me",
-                    release_date: new Date("2010-12-13"),
-                    known_issues: "lala",
-                    properties: []
-                });
-                new_version = await new_version.save();
-            }
-            //await demo_erase_and_create_a_demo_db();
-            versions = await versions_db_model.find({}).exec();
+            versions = await projects_db_model.find({name: project_name}, 'versions').exec();
+            if (versions.length)
+                versions = versions[0].versions;
+            else
+                versions = [];
         }
     } catch (e) {
         throw new Error(e)
@@ -132,8 +181,9 @@ exports.get = async (req, res, next) => {
 };
 
 exports.add_version = async (req, res, next) => {
-    let versions_db_model = database.versions_model();
+    let versions_db_model = database.projects_model();
     try {
+        let project_name = "UNNAMED";
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let version_exists = await is_version_exists({ params: { version_id: version_id } });
         try {
@@ -150,18 +200,26 @@ exports.add_version = async (req, res, next) => {
         release_date = moment(release_date).format('YYYY-MM-DD'); // Format date to match the DB format
         let known_issues = requests_handler.optional_param(req, "post", "known_issues");
 
-        let new_version = new versions_db_model({
-            version: version_id,
-            prev_version: prev_version_id,
-            is_beta: is_beta,
-            details: details,
-            downloader: downloader,
-            release_date: release_date,
-            known_issues: known_issues,
-            properties: []
-        });
+        let filter = {name: project_name};
+        let update = {
+            $push:
+                {
+                    versions: {
+                        version: version_id,
+                        prev_version: prev_version_id,
+                        is_beta: is_beta,
+                        details: details,
+                        downloader: downloader,
+                        release_date: release_date,
+                        known_issues: known_issues,
+                        properties: []
+                    }
+                }
+        };
 
-        new_version = await new_version.save();
+        let new_version = await versions_db_model.findOneAndUpdate(filter, update, {
+            new: true // Return the new object after the update is applied
+        });
         return new_version;
     } catch (e) {
         throw new Error(e)
@@ -169,8 +227,9 @@ exports.add_version = async (req, res, next) => {
 };
 
 exports.add_property = async (req, res, next) => {
-    let versions_db_model = database.versions_model();
+    let versions_db_model = database.projects_model();
     try {
+        let project_name = "UNNAMED";
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let property_type = requests_handler.require_param(req, "post", "type");
         let description = requests_handler.require_param(req, "post", "description");
@@ -178,11 +237,11 @@ exports.add_property = async (req, res, next) => {
         let tests_details = requests_handler.optional_param(req, "post", "tests_details");
         let known_issues = requests_handler.optional_param(req, "post", "known_issues");
 
-        let filter = {version: version_id};
+        let filter = {name: project_name, "versions.version": version_id};
         let update = {
-            $push:
+            $addToSet:
                 {
-                    properties: {
+                    "versions.$.properties": {
                         // _id is automatically generated by mongodb
                         type: property_type,
                         description: description,
@@ -208,8 +267,9 @@ exports.add_property = async (req, res, next) => {
 };
 
 exports.modify_version = async (req, res, next) => {
-    let versions_db_model = database.versions_model();
+    let versions_db_model = database.projects_model();
     try {
+        let project_name = "UNNAMED";
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let new_version_id = requests_handler.optional_param(req, "post", "version_id");
         let new_prev_version = requests_handler.optional_param(req, "post", "prev_version");
@@ -220,17 +280,17 @@ exports.modify_version = async (req, res, next) => {
         release_date = new Date(release_date);
         let known_issues = requests_handler.optional_param(req, "post", "known_issues");
 
-        let filter = {version: version_id};
+        let filter = {name: project_name, "versions.version": version_id};
         let update = {
             $set:
                 {
-                    'version': new_version_id,
-                    'prev_version': new_prev_version,
-                    'is_beta': is_beta,
-                    'details': details,
-                    'downloader': downloader,
-                    'release_date': release_date,
-                    'known_issues': known_issues
+                    'versions.$.version': new_version_id,
+                    'versions.$.prev_version': new_prev_version,
+                    'versions.$.is_beta': is_beta,
+                    'versions.$.details': details,
+                    'versions.$.downloader': downloader,
+                    'versions.$.release_date': release_date,
+                    'versions.$.known_issues': known_issues
                 }
         };
 
@@ -249,8 +309,9 @@ exports.modify_version = async (req, res, next) => {
 };
 
 exports.modify_property = async (req, res, next) => {
-    let versions_db_model = database.versions_model();
+    let versions_db_model = database.projects_model();
     try {
+        let project_name = "UNNAMED";
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let property_id = requests_handler.require_param(req, "route", "property_id");
         let property_type = requests_handler.require_param(req, "post", "type");
@@ -259,15 +320,53 @@ exports.modify_property = async (req, res, next) => {
         let tests_details = requests_handler.optional_param(req, "post", "tests_details");
         let known_issues = requests_handler.optional_param(req, "post", "known_issues");
 
-        let filter = {version: version_id, 'properties._id': property_id};
+        let filter = {name: project_name};
         let update = {
             $set:
                 {
-                    'properties.$.type': property_type,
-                    'properties.$.description': description,
-                    'properties.$.tests_scope': tests_scope,
-                    'properties.$.tests_details': tests_details,
-                    'properties.$.known_issues': known_issues
+                    'versions.$[ver].properties.$[prop].type': property_type,
+                    'versions.$[ver].properties.$[prop].description': description,
+                    'versions.$[ver].properties.$[prop].tests_scope': tests_scope,
+                    'versions.$[ver].properties.$[prop].tests_details': tests_details,
+                    'versions.$[ver].properties.$[prop].known_issues': known_issues
+                }
+        };
+        let progress_filter = {
+            arrayFilters: [
+                {
+                    "ver.version": version_id
+                }, {
+                    "prop._id": property_id
+                }
+            ],
+            new: true
+        };
+
+        let new_version = await versions_db_model.updateOne(filter, update, progress_filter).exec();
+
+        if (!new_version) {
+            throw new Error("Target version didn't found.");
+        }
+
+        return new_version;
+    } catch (e) {
+        throw new Error(e)
+    }
+};
+
+exports.remove_version = async (req, res, next) => {
+    let project_name = "UNNAMED";
+    let versions_db_model = database.projects_model();
+    try {
+        let version_id = requests_handler.require_param(req, "route", "version_id");
+
+        let filter = {name: project_name};
+        let update = {
+            $pull:
+                {
+                    versions: {
+                        version: version_id
+                    }
                 }
         };
 
@@ -285,28 +384,18 @@ exports.modify_property = async (req, res, next) => {
     }
 };
 
-exports.remove_version = async (req, res, next) => {
-    let versions_db_model = database.versions_model();
-    try {
-        let version_id = requests_handler.require_param(req, "route", "version_id");
-
-        return versions_db_model.remove({version: version_id}).exec();
-    } catch (e) {
-        throw new Error(e)
-    }
-};
-
 exports.remove_property = async (req, res, next) => {
-    let versions_db_model = database.versions_model();
+    let versions_db_model = database.projects_model();
     try {
+        let project_name = "UNNAMED";
         let version_id = requests_handler.require_param(req, "route", "version_id");
         let property_id = requests_handler.require_param(req, "route", "property_id");
 
-        let filter = {version: version_id};
+        let filter = {name: project_name, "versions.version": version_id};
         let update = {
             $pull:
                 {
-                    properties: {
+                    "versions.$.properties": {
                         _id: property_id
                     }
                 }

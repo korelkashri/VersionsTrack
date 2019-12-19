@@ -2,12 +2,13 @@ const hash = require("../../hash").get_hash_code;
 const assert = require("assert");
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp'); // TODO: consider using this for last update time data.
-let versions_model, users_model;
+let projects_model, users_model;
+let version_schema;
 let is_initialize = false;
 
-let init_versions_schema = _ => {
-    // Define versions schema
-    let schema = mongoose.Schema({
+let init_projects_schema = _ => {
+    // Define version schema
+    version_schema = mongoose.Schema({
         version: {
             type: String,
             required: true
@@ -52,30 +53,45 @@ let init_versions_schema = _ => {
         ]
     });
 
+    // Define system schema
+    let schema = mongoose.Schema({
+        name: {
+            type: String,
+            required: true
+        },
+        git_repository: {
+            type: String,
+            required: false
+        },
+        versions: [
+            version_schema
+        ]
+    });
+
     // Text search indexes
     schema.index({
-        details: 'text',
-        downloader: 'text',
-        known_issues: 'text',
-        "properties.type": 'text',
-        "properties.description": 'text',
-        "properties.known_issues": 'text'
+        "versions.details": 'text',
+        "versions.downloader": 'text',
+        "versions.known_issues": 'text',
+        "versions.properties.type": 'text',
+        "versions.properties.description": 'text',
+        "versions.properties.known_issues": 'text'
     }, {
         weights: {
-            details: 1,
-            downloader: 1,
-            known_issues: 1,
-            "properties.type": 1,
-            "properties.description": 1,
-            "properties.known_issues": 1
+            "versions.details": 1,
+            "versions.downloader": 1,
+            "versions.known_issues": 1,
+            "versions.properties.type": 1,
+            "versions.properties.description": 1,
+            "versions.properties.known_issues": 1
         }
     });
 
-    // Create versions model
-    versions_model = mongoose.model('versions', schema);
+    // Create systems model
+    projects_model = mongoose.model('projects', schema);
 
     // Make sure the text search indexes are ready
-    versions_model.on('index', error => { if (error) console.log(error) });
+    projects_model.on('index', error => { if (error) console.log(error) });
 };
 
 let init_users_schema = _ => {
@@ -160,8 +176,51 @@ let initDB = callback => {
 
     console.log("Db connected successfully");
 
-    init_versions_schema();
+    init_projects_schema();
     init_users_schema();
+
+    // FOR PREVIOUS `VersionsTrack`  VERSIONS UPGRADE:
+    // If there is a `versions` model, create a new project named "UNNAMED", copy all of the versions to there, and remove `versions` model.
+
+    mongoose.connection.on('open', async function() {
+        mongoose.connection.db.listCollections().toArray(async function (err, names) {
+            if (err) {
+                console.log(err);
+            } else {
+                for (let i = 0; i < names.length; i++) {
+                    if (names[i].name === "versions") {
+                        console.log("Old 'VersionsTrack' version upgrade detected.");
+                        let current_versions_model = mongoose.model('versions', version_schema);
+                        let current_versions = await current_versions_model.find({}).exec();
+                        let is_unnamed_exists = await projects_model.find({name: "UNNAMED"});
+                        if (is_unnamed_exists.length === 0) {
+                            let new_unnamed_project = new projects_model({
+                                name: "UNNAMED",
+                                versions: current_versions
+                            });
+
+                            new_unnamed_project = await new_unnamed_project.save();
+                        } else {
+                            let filter = {name: "UNNAMED"};
+                            let update = {
+                                $push:
+                                    {
+                                        versions: current_versions
+                                    }
+                            };
+                            let new_project = await projects_model.findOneAndUpdate(filter, update, {
+                                new: true // Return the new object after the update is applied
+                            });
+                        }
+
+                        // Clear 'versions' model!
+                        let res = await current_versions_model.remove({}).exec();
+                        console.log(res);
+                    }
+                }
+            }
+        });
+    });
 
     is_initialize = true;
     callback();
@@ -171,9 +230,17 @@ let db_use_pre_conditions = _ => {
     assert.ok(is_initialize, "Db has not been initialized. Please called init first.");
 };
 
-let getVersionsDBModel = _ => {
+let getProjectsDBModel = _ => {
     db_use_pre_conditions();
-    return versions_model;
+    return projects_model;
+};
+
+let getVersionsDBModel = async system_name => {
+    db_use_pre_conditions();
+    if (system_name === undefined) system_name = "UNNAMED";
+    let res = await projects_model.find({name: system_name});
+    if (res.length === 0) throw new Error("System not found.");
+    return res[0];
 };
 
 let getUsersDBModel = _ => {
@@ -184,6 +251,7 @@ let getUsersDBModel = _ => {
 module.exports = {
     getDB: _ => {
         return {
+            projects_model: getProjectsDBModel,
             versions_model: getVersionsDBModel,
             users_model: getUsersDBModel
         }

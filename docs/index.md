@@ -95,6 +95,25 @@ WARNING! Don't lose your admin user credentials.
     * Edit username/password.
     * Edit versions_in_page/properties_in_page.
     * Use user's versions_in_page/properties_in_page properties.
+* Git integration.
+    * Auto properties addition by git commits.
+    * Define commit template, for property type detection.
+        * For example:
+            ```bash
+                git commit -m " Untracked commit info...
+                                ...
+                                ...
+                                *-Feature|Description|TestsScope|Tests Details|Known Issues*-
+                                *-Change|Change Desc|FULL|Some T details-*
+                                *-Deprecated|Details|NONE-*
+                                ...
+                                ...Untracked commit info...
+                                ...
+                                *-Feature|Details|PARTIAL|Details.-*
+                                ...
+                              "
+          ```
+    * Detect the latest checked commit, and follow the new ones [Every git refresh].
 
 ### Next
 * Add discussion page for versions/properties.
@@ -103,7 +122,10 @@ WARNING! Don't lose your admin user credentials.
     * User     -> Comment for issues in versions.
 * Admin panel.
     * Background change option.
-* JetBrains/Git integration.
+* JetBrains integration.
+* Manage multiple projects versions.
+    * Separate access rules for users by projects.
+    * Enable different git follow for each project.
 
 # Pictures
 
