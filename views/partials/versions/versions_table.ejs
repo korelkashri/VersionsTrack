@@ -16,9 +16,7 @@
     <a class="waves-effect waves-light btn blue darken-4" ng-disabled="versions_current_page == versions_pages_count" ng-click="versions_current_page = versions_current_page + 1">Next</a>-->
 </div>
 
-<!--TODO: In description searching, there is a significance to the results order-->
 <div id="versions_table" ng-repeat="version_data in versions_list
-                                    | orderBy: ['-version']
                                     | versions_filter :
                                     versions_current_page :
                                     num_versions_for_page_model"

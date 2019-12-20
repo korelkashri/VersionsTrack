@@ -114,7 +114,7 @@
                 <div class="input-field col"
                      ng-show="versions_filter_type_select_model !== 'date'"
                      ng-class="[{'s9': versions_filter_type_select_model === 'desc'}, {'s3': versions_filter_type_select_model !== 'desc'}]">
-                    <input id="filter_version_data" type="text" placeholder="All" ng-model="version_data_filter_model" ng-change="search();">
+                    <input id="filter_version_data" type="text" placeholder="All" ng-model="version_data_filter_model" ng-change="search(false, true);">
                     <label for="filter_version_data">
                         {{versions_filter_type_select_model == 'ver' ? "Version ID" : "Description"}}
                     </label>
@@ -124,13 +124,13 @@
                 <div class="input-field col s3"
                      style="/*min-width: 250px;*/"
                      ng-show="versions_filter_type_select_model === 'date'">
-                    <input type="date" id="filter_version_release_date" data-date-format="DD/MM/YYYY" ng-model="version_date_data_filter_model" ng-change="search();">
+                    <input type="date" id="filter_version_release_date" data-date-format="DD/MM/YYYY" ng-model="version_date_data_filter_model" ng-change="search(false, true);">
                     <label for="filter_version_release_date">Release Date</label>
                 </div>
 
                 <!--Extra filter for VersionID base data input type [LT, Equal, GT]-->
                 <div class="input-field col s6" ng-show="versions_filter_type_select_model == 'ver'">
-                    <select id="versions_version_type_filter_select" ng-model="versions_filter_select_model" ng-change="search();" ng-init="versions_filter_select_model='before'">
+                    <select id="versions_version_type_filter_select" ng-model="versions_filter_select_model" ng-change="search(false, true);" ng-init="versions_filter_select_model='before'">
                         <option value="before">< [Until this version]</option>
                         <option value="equal">= [Only this version]</option>
                         <option value="after">> [From this version and on]</option>
@@ -140,7 +140,7 @@
 
                 <!--Extra filter for Date base data input type [LT, GT]-->
                 <div class="input-field col s6" ng-show="versions_filter_type_select_model == 'date'">
-                    <select id="versions_date_type_filter_select" ng-model="versions_filter_select_model" ng-change="search();">
+                    <select id="versions_date_type_filter_select" ng-model="versions_filter_select_model" ng-change="search(false, true);">
                         <option value="before">< [Until this date]</option>
                         <option value="after">> [From this date and on]</option>
                     </select>

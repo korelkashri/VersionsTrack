@@ -33,7 +33,7 @@ angular.module("versionsPropertiesM", [])
                 }).then((response) => {
                     response = response.data;
                     alertify.success(response.message);
-                    $scope.search(true);
+                    $scope.search(true, true);
                 }, (response) => {
                     response = response.data;
                     alertify.error(response.message);
@@ -68,7 +68,7 @@ angular.module("versionsPropertiesM", [])
                 }).then((response) => {
                     response = response.data;
                     alertify.success(response.message);
-                    $scope.search(true);
+                    $scope.search(true, true);
                     $scope.versions_table_conf.properties_update_lock = false;
                 }, (response) => {
                     response = response.data;
@@ -108,7 +108,7 @@ angular.module("versionsPropertiesM", [])
                 }).then((response) => {
                     response = response.data;
                     alertify.success(response.message);
-                    $scope.search(true);
+                    $scope.search(true, true);
                 }, (response) => {
                     response = response.data;
                     alertify.error(response.message);

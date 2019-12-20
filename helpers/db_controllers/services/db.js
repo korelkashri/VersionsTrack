@@ -69,7 +69,7 @@ let init_projects_schema = _ => {
     });
 
     // Text search indexes
-    schema.index({
+    /*schema.index({
         "versions.details": 'text',
         "versions.downloader": 'text',
         "versions.known_issues": 'text',
@@ -85,7 +85,7 @@ let init_projects_schema = _ => {
             "versions.properties.description": 1,
             "versions.properties.known_issues": 1
         }
-    });
+    });*/
 
     // Create systems model
     projects_model = mongoose.model('projects', schema);

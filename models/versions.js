@@ -1,6 +1,6 @@
 var moment = require('moment');
 const assert = require('assert');
-
+const Fuse = require('fuse.js');
 let database = require('../helpers/db_controllers/services/db').getDB();
 let requests_handler = require('../helpers/requests_handler');
 
@@ -161,11 +161,37 @@ exports.get = async (req, res, next) => {
         } else if (target_description) {
             // Search versions by description
 
-            versions =
-                await projects_db_model.find(
-                    {$text: {$search: target_description, $language: "en"}},
-                    {score: {$meta: "textScore"}}
-                ).sort({ score: { $meta: "textScore" } }).exec();
+            // Fuse search
+            let options = {
+                shouldSort: true,
+                //includeScore: true,
+                threshold: 0.4,
+                location: 0,
+                distance: 1000,
+                maxPatternLength: 32,
+                minMatchCharLength: 1,
+                keys: [{
+                    name: "details",
+                    weight: 0.7
+                }, {
+                    name: "downloader",
+                    weight: 0.5
+                }, {
+                    name: "known_issues",
+                    weight: 0.3
+                }, {
+                    name: "properties.type",
+                    weight: 1
+                }, {
+                    name: "properties.description",
+                    weight: 0.7
+                }, {
+                    name: "properties.known_issues",
+                    weight: 0.5
+                }]
+            };
+            let fuse = new Fuse(selected_proj.versions, options);
+            versions = fuse.search(target_description);
         } else {
             // Get all versions
             versions = await projects_db_model.find({name: project_name}, 'versions').exec();
