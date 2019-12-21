@@ -2,7 +2,7 @@ angular.module("searchM", [])
     .service("search_s", function() {
         let _$scope, _$http, _$timeout, _preloader;
 
-        // Cancel table animation for same data
+        // Cancel table animation for some data
         function cancel_table_animation() {
             let versions_table = $("#versions_table");
             versions_table.removeClass('animated');
@@ -58,6 +58,28 @@ angular.module("searchM", [])
             }
             str = str.split(tempChar);
             return str;
+        }
+
+        function mark() {
+
+            // Read the keyword
+            let keyword = _$scope.version_data_filter_model;
+
+            // Determine selected options
+            let options = {
+                separateWordSearch: true,
+                diacritics: true,
+                accuracy: "partially"
+                //accuracy: ["complementary", "partially", "exactly"]
+            };
+
+            // Remove previous marked elements and mark
+            // the new keyword inside the context
+            $("#page_content").unmark({
+                done: function() {
+                    $("#page_content").mark(keyword, options);
+                }
+            });
         }
 
         /**
@@ -175,6 +197,9 @@ angular.module("searchM", [])
                         apply_table_animation();
                         _$scope.versions_list = new_versions_list;
                         alertify.success(response.message);
+                    }
+                    if (_$scope.versions_filter_type_select_model === "desc" && _$scope.version_data_filter_model) {
+                        mark();
                     }
                 }, (response) => {
                     let msg;

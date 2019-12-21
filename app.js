@@ -1,7 +1,7 @@
 // Import dependencies
 const express = require('express'),
 path = require('path'),
-PORT = process.env.PORT || 5000,
+PORT = process.env.PORT || 5001,
 body_parser = require('body-parser'),
 session = require('client-sessions'),
 db = require('./helpers/db_controllers/services/db'),
@@ -12,6 +12,8 @@ con_validator = require('./middlewares/validate_connection');
 let app = express()
 
     .use(express.static(path.join(__dirname, 'public')))
+
+    .use('/scripts', express.static(__dirname + '/node_modules/mark.js/dist/'))
 
     .use(session({
         cookieName: 'session',

@@ -36,5 +36,8 @@
     "version-control-system",
     "version-manager"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "mark.js": "^8.11.1"
+  }
 }

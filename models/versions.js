@@ -161,6 +161,11 @@ exports.get = async (req, res, next) => {
         } else if (target_description) {
             // Search versions by description
 
+            // Sort by version number ("-version")
+            let sorted_versions = selected_proj.versions.sort((ver1, ver2) => {
+                return -compare_two_versions(ver1.version, ver2.version)
+            });
+
             // Fuse search
             let options = {
                 shouldSort: true,
@@ -190,15 +195,11 @@ exports.get = async (req, res, next) => {
                     weight: 0.5
                 }]
             };
-            let fuse = new Fuse(selected_proj.versions, options);
+            let fuse = new Fuse(sorted_versions, options);
             versions = fuse.search(target_description);
         } else {
             // Get all versions
-            versions = await projects_db_model.find({name: project_name}, 'versions').exec();
-            if (versions.length)
-                versions = versions[0].versions;
-            else
-                versions = [];
+            versions = selected_proj.versions;
         }
     } catch (e) {
         throw new Error(e)
