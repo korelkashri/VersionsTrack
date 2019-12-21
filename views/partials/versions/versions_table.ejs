@@ -28,18 +28,53 @@
          ng-mouseleave="version_data.show_options = false"
          ng-init="version_data.show_options = false">
 
+        <!--Version Actions [Small Screens - Show Always]-->
+        <div class="center col s12 hide-on-med-and-up show-on-small">
+            <h4></h4>
+
+            <% if (access_level >= min_access_required.delete_version) { /* >= Manager */ %>
+            <!--Remove Version-->
+            <button ng-show="version_data.view_state" class="red btn-small btn-floating waves-effect waves-light center-align" ng-click="remove_version(version_data.version)"> <!--Delete-->
+                <i class="material-icons">delete_forever</i>
+            </button>
+            <% } %>
+
+            <% if (access_level >= min_access_required.modify_version) { /* >= Manager */ %>
+            <!--Edit Version-->
+            <button ng-show="version_data.view_state" class="btn-small blue btn-floating waves-effect waves-light center-align" ng-click="modify_version_view_state(version_data, false)"> <!--Edit-->
+                <i class="material-icons">create</i>
+            </button>
+
+            <!--Save Version After Modification-->
+            <button ng-hide="version_data.view_state" class="btn-small blue btn-floating waves-effect waves-light center-align" ng-click="modify_version(version_data)"> <!--Save-->
+                <i class="material-icons">check</i>
+            </button>
+
+            <!--Cancel Version Modification-->
+            <button ng-hide="version_data.view_state" class="red btn-small btn-floating waves-effect waves-light center-align" ng-click="cancel_modify_version(version_data)"> <!--Cancel-->
+                <i class="material-icons">clear</i>
+            </button>
+            <% } %>
+        </div>
+
         <!--Presentation: From-->
-        <div class="col s3" ng-show="version_data.view_state">
-            <h4>From: <u ng-click="version_data.is_prev_version_exists && search_version(version_data.prev_version);"
-                         ng-style="!version_data.is_prev_version_exists &&
+        <div class="col m3 s12" ng-show="version_data.view_state">
+            <div class="col s6">
+                <h4>From:</h4>
+            </div>
+            <div class="col s6">
+                <h4>
+                    <u ng-click="version_data.is_prev_version_exists && search_version(version_data.prev_version);"
+                       ng-style="!version_data.is_prev_version_exists &&
                                                     {'text-decoration-line': 'line-through'} ||
                                                     {'cursor': 'pointer'}">{{version_data.prev_version}}
-                </u>
-            </h4>
+                    </u>
+                </h4>
+            </div>
         </div>
         <% if (access_level >= min_access_required.modify_version) { /* >= Manager */ %>
             <!--Modify: From field-->
-            <div class="col s4" ng-hide="version_data.view_state">
+            <div class="col m4 s12" ng-hide="version_data.view_state">
                 <div class="input-field col s11">
                     <input id="modify_version_from_{{version_data.version}}" type="text">
                     <label for="modify_version_from_{{version_data.version}}">Previous Version</label>
@@ -48,15 +83,21 @@
         <% } %>
 
         <!--Presentation: To-->
-        <div class="col s3" ng-show="version_data.view_state">
-            <h4>To: <u style="cursor: pointer" ng-click="search_version(version_data.version);">{{version_data.version}}</u>
-                <!--Beta version Presentation-->
-                <em ng-show="version_data.is_beta" style="font-size: medium; top: -11px; position: relative;" class="red-text">Beta</em>
-            </h4>
+        <div class="col m3 s12" ng-show="version_data.view_state">
+            <div class="col s6">
+                <h4>To:</h4>
+            </div>
+            <div class="col s6">
+                <h4 style="display: table;">
+                    <u style="cursor: pointer" ng-click="search_version(version_data.version);">{{version_data.version}}</u>
+                    <!--Beta version Presentation-->
+                    <em ng-show="version_data.is_beta" style="padding-left: 5px; font-size: medium; top: -11px; position: relative;" class="red-text">Beta</em>
+                </h4>
+            </div>
         </div>
         <% if (access_level >= min_access_required.modify_version) { /* >= Manager */ %>
             <!--Modify: To field-->
-            <div class="col s4" ng-hide="version_data.view_state">
+            <div class="col m4 s12" ng-hide="version_data.view_state">
                 <div class="input-field col s11">
                     <input id="modify_version_version_id_{{version_data.version}}" type="text">
                     <label for="modify_version_version_id_{{version_data.version}}">[This] Version ID</label>
@@ -64,8 +105,8 @@
             </div>
         <% } %>
 
-        <!--Version Actions-->
-        <div class="col s3" ng-show="version_data.show_options || !version_data.view_state">
+        <!--Version Actions [Medium Screens and Up]-->
+        <div class="col m3 show-on-medium-and-up hide-on-small-and-down" ng-show="version_data.show_options || !version_data.view_state">
             <h4></h4>
 
             <% if (access_level >= min_access_required.delete_version) { /* >= Manager */ %>
