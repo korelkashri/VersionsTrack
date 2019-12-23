@@ -250,9 +250,9 @@ angular.module("searchM", [])
             };
 
             _$scope.open_search = (type) => {
-                if (search_status.split('-')[0] === "open" && search_status.split('-')[1] === type) return;
                 switch (type) {
                     case "quick":
+                        if (search_status.split('-')[0] === "open" && search_status.split('-')[1] === type) return;
                         search_container.addClass("full-search-btn-container");
                         search_container.removeClass("apply-search-container");
                         break;
