@@ -1,6 +1,8 @@
 angular.module("searchM", [])
     .service("search_s", function() {
         let _$scope, _$http, _$timeout, _preloader;
+        let search_container = $(".search-container");
+        let search_status = "close"; // ["close", "open-quick", "open-full"]
 
         // Cancel table animation for some data
         function cancel_table_animation() {
@@ -235,6 +237,52 @@ angular.module("searchM", [])
                 version_rel_date_filter.val("");
                 version_rel_date_filter.trigger("change");
                 _$scope.search(false, true);
+                if (search_status.split('-')[0] === "open") {
+                    search_container.addClass("full-search-btn-container");
+                    search_container.removeClass("apply-search-container");
+                }
+            };
+
+            _$scope.close_search = () => {
+                search_container.removeClass("full-search-btn-container apply-search-container");
+                search_status = "close";
+
+            };
+
+            _$scope.open_search = (type) => {
+                if (search_status.split('-')[0] === "open" && search_status.split('-')[1] === type) return;
+                switch (type) {
+                    case "quick":
+                        search_container.addClass("full-search-btn-container");
+                        search_container.removeClass("apply-search-container");
+                        break;
+
+                    case "full":
+                        console.log("Open full search window.");
+                        break;
+                }
+                search_status = "open-" + type;
+            };
+
+            _$scope.update_quick_full_search_btn = () => {
+                if (search_status === "close") return;
+                switch (_$scope.versions_filter_type_select_model) {
+                    case "ver":
+                    case "desc":
+                        if (_$scope.version_data_filter_model) {
+                            search_container.removeClass("full-search-btn-container");
+                            search_container.addClass("apply-search-container");
+                        } else {
+                            search_container.addClass("full-search-btn-container");
+                            search_container.removeClass("apply-search-container");
+                        }
+                        break;
+
+                    case "date":
+                        search_container.removeClass("full-search-btn-container");
+                        search_container.addClass("apply-search-container");
+                        break;
+                }
             };
 
             _$scope.change_data_input_type = () => {
@@ -252,6 +300,7 @@ angular.module("searchM", [])
                 }
                 $('select').formSelect();
                 _$scope.clear_search();
+                _$scope.update_quick_full_search_btn();
             };
 
             _$scope.search_version = (version_id) => {

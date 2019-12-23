@@ -1,0 +1,358 @@
+{
+  "_id": "5dfb53e42017ff6f38d72fc9",
+  "name": "UNNAMED",
+  "versions": [
+    {
+      "is_beta": false,
+      "_id": "5db629400657781c1b6125df",
+      "version": "0.0.0",
+      "prev_version": "None",
+      "details": "lala",
+      "downloader": "me",
+      "release_date": "2010-10-26T04:00:00Z",
+      "known_issues": "lala",
+      "properties": [
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5de2c0492a63a055c3e6e560",
+          "description": "a",
+          "tests_details": "a",
+          "known_issues": "a"
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "description": "a",
+          "known_issues": "",
+          "tests_details": "a",
+          "tests_scope": "None",
+          "type": "Fix Bug"
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "is_beta": false,
+      "_id": "5db629400657781c1b6125e0",
+      "version": "0.0.1",
+      "prev_version": "0.0.0",
+      "details": "lala",
+      "downloader": "me",
+      "release_date": "2010-11-10T00:00:00Z",
+      "known_issues": "lala",
+      "properties": [
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5db6b7ee276bd7226fa990b8",
+          "description": "example",
+          "tests_details": "<span dir='rtl' align='right'>     <a href=\"http://google.com\">Emm test</a> קישור לגוגל: </span>",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5db6b804276bd7226fa990b9",
+          "description": "long example long example long example long example long example long example long example long example long example long example long example long example ",
+          "tests_details": "long example long example long example long example long example long example long example long example long example long example ",
+          "known_issues": "long example long example long example long example long example long example long example long example long example long example long example long example long example long example "
+        },
+        {
+          "type": "Fix Bug",
+          "tests_scope": "None",
+          "_id": "5dc322f63ae1750e8a14b3db",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322f93ae1750e8a14b3dc",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322fa3ae1750e8a14b3dd",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322fd3ae1750e8a14b3de",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": ""
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "is_beta": false,
+      "_id": "5db629400657781c1b6125e1",
+      "version": "0.0.2",
+      "prev_version": "0.0.1",
+      "details": "lala",
+      "downloader": "me",
+      "release_date": "2010-12-13T04:00:00Z",
+      "known_issues": "lala",
+      "properties": [
+        {
+          "type": "Fix Bug",
+          "tests_scope": "Partial",
+          "_id": "5db62ffed8f938233361ca0e",
+          "description": "d",
+          "tests_details": "mmmm some tests details...",
+          "known_issues": "Known issues.."
+        },
+        {
+          "type": "Change",
+          "tests_scope": "Full",
+          "_id": "5db63043d8f938233361ca0f",
+          "description": "I changed this field",
+          "tests_details": "Fully tested now. More test description.. some more, even more... lalala fafafafa mamamamama",
+          "known_issues": "I am one known issue for this field. Some more details. More and more details."
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc6e40d1333e77e23f49718",
+          "description": "a",
+          "tests_details": "a",
+          "known_issues": "a"
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "Partial",
+          "_id": "5dc899f42ca50b04fe60755f",
+          "description": "test",
+          "tests_details": "test",
+          "known_issues": "test"
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "is_beta": false,
+      "_id": "5dc302648c260750b459ae02",
+      "version": "0.0.3",
+      "prev_version": "0.0.2",
+      "details": "Version Details",
+      "downloader": "Downloader name",
+      "release_date": "2019-11-06T04:00:00Z",
+      "known_issues": "",
+      "properties": [
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322933ae1750e8a14b3c9",
+          "description": "a",
+          "tests_details": "a",
+          "known_issues": "a"
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322993ae1750e8a14b3ca",
+          "description": "b",
+          "tests_details": "b",
+          "known_issues": "b"
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc3229d3ae1750e8a14b3cb",
+          "description": "v",
+          "tests_details": "v",
+          "known_issues": "v"
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322a03ae1750e8a14b3cc",
+          "description": "d",
+          "tests_details": "d",
+          "known_issues": ""
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "is_beta": false,
+      "_id": "5dc322a93ae1750e8a14b3cd",
+      "version": "0.0.4",
+      "prev_version": "0.0.3",
+      "details": "long long long description. long long long description. long long long description. long long long description. long long long description. long long long description. long long long description. long long long description. ",
+      "downloader": "",
+      "release_date": "2019-11-07T04:00:00Z",
+      "known_issues": "* A * B",
+      "properties": [
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322c53ae1750e8a14b3cf",
+          "description": "c",
+          "tests_details": "c",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322c83ae1750e8a14b3d0",
+          "description": "fafafalalala",
+          "tests_details": "f",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322cc3ae1750e8a14b3d1",
+          "description": "hfhgd",
+          "tests_details": "dh",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322d03ae1750e8a14b3d2",
+          "description": "hhh",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322d43ae1750e8a14b3d3",
+          "description": "h",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322d63ae1750e8a14b3d4",
+          "description": "h",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Change",
+          "tests_scope": "None",
+          "_id": "5dc322da3ae1750e8a14b3d5",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322ea3ae1750e8a14b3d6",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322ec3ae1750e8a14b3d7",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": ""
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322ed3ae1750e8a14b3d8",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": "b"
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc322ef3ae1750e8a14b3d9",
+          "description": "a",
+          "tests_details": "",
+          "known_issues": "b"
+        },
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc89ad02ca50b04fe607560",
+          "description": "a",
+          "tests_details": "a",
+          "known_issues": "b"
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "is_beta": false,
+      "_id": "5dc4a2a79fa63a2b9c172b69",
+      "version": "0.0.6",
+      "prev_version": "0.0.5",
+      "details": "Version description.",
+      "downloader": "Downloader name.",
+      "release_date": "2019-11-08T04:00:00Z",
+      "known_issues": "Some known issues in this release.",
+      "properties": [
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dc592d4fd51c87e9959f171",
+          "description": "Feature description.",
+          "tests_details": "There was no tests at all on this feature.",
+          "known_issues": ""
+        },
+        {
+          "type": "Change",
+          "tests_scope": "Full",
+          "_id": "5dc5932bfd51c87e9959f172",
+          "description": "Change description. More description. long long description.",
+          "tests_details": "Tests details.",
+          "known_issues": "HTML List:<br><ol><li>First.</li><li>Second</li></ol>"
+        },
+        {
+          "type": "Deprecated",
+          "tests_scope": "Large",
+          "_id": "5dc5938dfd51c87e9959f173",
+          "description": "Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description.",
+          "tests_details": "Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description.",
+          "known_issues": "Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description. Long long long description."
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "is_beta": true,
+      "_id": "5dea9ca8bafa3953aad15dc5",
+      "version": "0.0.7",
+      "prev_version": "0.0.6",
+      "details": "Beta version details.",
+      "downloader": "Korel Kashri",
+      "release_date": "2019-12-07T00:00:00Z",
+      "known_issues": "",
+      "properties": [
+        {
+          "type": "Feature",
+          "tests_scope": "None",
+          "_id": "5dfb53f72017ff6f38d72fef",
+          "description": "a",
+          "tests_details": "a",
+          "known_issues": ""
+        }
+      ],
+      "__v": 0
+    }
+  ],
+  "__v": 0
+}

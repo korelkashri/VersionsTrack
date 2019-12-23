@@ -1,6 +1,6 @@
 .menu-icon-2, .menu-icon-1 {
   width: 18.5px;
-  height: calc(64px - 10px);
+  height: $navbar-height - 10px;
   position: relative;
   margin: 0;
   -webkit-transform: rotate(0deg);

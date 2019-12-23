@@ -24,29 +24,29 @@ function initialize_alertify_properties() {
 
 function init_scroll() {
     if (!document.getElementById("page_sticky_header")) return;
-    let header_classes, sticky;
-    header_classes = document.getElementById("page_sticky_header").classList;
+    let header, sticky;
+    header = $(".sticky-action");
     //sticky = header.offsetTop;
 
     function downAction() {
-        header_classes.remove('open');
-        header_classes.remove('home');
-        header_classes.add('collapse');
+        header.removeClass('open');
+        header.removeClass('home');
+        header.addClass('collapse');
         $(".dropdown-trigger").dropdown('close');
     }
 
     function upAction() {
-        header_classes.remove('collapse');
-        header_classes.remove('home');
-        header_classes.add('open');
-        header_classes.add("sticky");
+        header.removeClass('collapse');
+        header.removeClass('home');
+        header.addClass('open');
+        header.addClass("sticky");
     }
 
     function homeAction() {
-        header_classes.remove('collapse');
-        header_classes.add('home');
-        header_classes.add('open');
-        header_classes.remove("sticky");
+        header.removeClass('collapse');
+        header.addClass('home');
+        header.addClass('open');
+        header.removeClass("sticky");
     }
 
     var scrollTop = function() {

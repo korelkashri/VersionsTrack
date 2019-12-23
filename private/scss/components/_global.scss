@@ -4,19 +4,19 @@
 
 #page_sticky_header {
   width: 100%;
-  background-color: rgba(173, 225, 255, 0.86);
+  background-color: $page-sticky-header-bg;
   position: fixed;
   padding-top: 8px;
-  height: 80px;
+  height: $page-sticky-header-height;
   z-index: 2;
 }
-#page_sticky_header.collapse {
+.sticky-action.collapse {
   animation: collapse 300ms ease forwards;
 }
-#page_sticky_header.open {
+.sticky-action.open {
   animation: open 300ms ease forwards;
 }
-#page_sticky_header.home {
+.sticky-action.home {
   -webkit-transition: background-color 300ms cubic-bezier(0.6, 0.3, 0.8, 0.8);
   transition: background-color 300ms cubic-bezier(0.6, 0.3, 0.8, 0.8);
 }
