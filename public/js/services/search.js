@@ -307,8 +307,10 @@ angular.module("searchM", [])
                 _$scope.versions_filter_type_select_model = 'ver';
                 _$scope.version_data_filter_model = version_id;
                 _$scope.versions_filter_select_model = "equal";
-                scroll_to_top();
+                _$scope.open_search("quick");
+                _$scope.update_quick_full_search_btn();
                 _$scope.search(false, true);
+                scroll_to_top();
             };
 
             _$http({method: "GET", url: "/guidance_bases"}).then((response) => {
