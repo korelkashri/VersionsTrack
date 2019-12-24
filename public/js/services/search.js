@@ -1,5 +1,5 @@
 angular.module("searchM", [])
-    .service("search_s", function() {
+    .service("versions_search_s", function() {
         let _$scope, _$http, _$timeout, _preloader;
         let search_container = $(".search-container");
         let search_status = "close"; // ["close", "open-quick", "open-full"]

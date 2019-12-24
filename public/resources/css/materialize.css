@@ -2293,6 +2293,8 @@ td, th {
     /* sort out borders */ }
     table.responsive-table td:empty:before {
       content: '\00a0'; }
+    table.responsive-table.centered.cancel-center-in-med-and-down thead tr th, table.responsive-table.centered.cancel-center-in-med-and-down tbody tr td {
+      text-align: left; }
     table.responsive-table th,
     table.responsive-table td {
       margin: 0;

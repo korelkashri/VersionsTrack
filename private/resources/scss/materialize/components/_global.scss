@@ -465,6 +465,12 @@ td, th{
       content: '\00a0';
     }
 
+    &.centered.cancel-center-in-med-and-down {
+      thead tr th, tbody tr td {
+        text-align: left;
+      }
+    }
+
     th,
     td {
       margin: 0;

@@ -6,8 +6,8 @@ angular.element(document).ready(() => {
 
 const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM', 'modalsM', 'loaderM'])
 
-    .controller('body_controller', ($scope, $http, $timeout, search_s, versions_s, properties_s, paging_s, modals_s, preloader, dark_area) => {
-        search_s.init($scope, $http, $timeout, preloader);
+    .controller('body_controller', ($scope, $http, $timeout, versions_search_s, versions_s, properties_s, paging_s, modals_s, preloader, dark_area) => {
+        versions_search_s.init($scope, $http, $timeout, preloader);
         versions_s.init($scope, $http, modals_s);
         properties_s.init($scope, $http);
         modals_s.init($scope, preloader, dark_area);
@@ -32,7 +32,7 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                 startingTop: '5%',
                 endingTop: '15%',
                 onOpenStart: () => {
-                    search_s.update_last_version()
+                    versions_search_s.update_last_version()
                 }
             });
             $("#new_version_version_release_date, #filter_version_release_date").on("change", function() {

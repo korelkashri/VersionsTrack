@@ -19,7 +19,7 @@
                 <span class="pages-bg">{{version_data.properties_current_page}}/{{version_data.properties_pages_count}}</span>
                 <a class="waves-effect waves-light btn blue darken-4" ng-disabled="version_data.properties_current_page == version_data.properties_pages_count" ng-click="version_data.properties_current_page = version_data.properties_current_page + 1">Next</a>-->
             </div>
-            <table class="highlight responsive-table centered">
+            <table class="highlight responsive-table centered cancel-center-in-med-and-down">
                 <thead>
                 <tr>
                     <th>-</th>
@@ -31,7 +31,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="property in version_data.properties
+                <tr style="max-width: 300px;" ng-repeat="property in version_data.properties
                                | properties_filter:
                                version_data :
                                version_data.properties_current_page :
@@ -40,9 +40,8 @@
 
                     <!--Options-->
                     <td>
-                        <div class="row" style="min-width: 90px;">
-                            <h4></h4>
-                            <div class="col s4">
+                        <div class="row" style="min-width: 90px; margin-bottom: -10px;">
+                            <div class="col l4 s2">
                                 <% if (access_level >= min_access_required.modify_property) { /* >= Manager */ %>
                                     <button class="btn-small blue btn-floating waves-effect waves-light" ng-click="modify_property_view_state(property, false)" ng-show="property.view_state"> <!--Edit-->
                                         <i class="material-icons">create</i>
@@ -52,8 +51,7 @@
                                     </button>
                                 <% } %>
                             </div>
-                            <div class="col s2"></div>
-                            <div class="col s4">
+                            <div class="col l4 offset-l2 s2">
                                 <% if (access_level >= min_access_required.delete_property) { /* >= Manager */ %>
                                     <button class="btn-small red btn-floating waves-effect waves-light" ng-click="remove_property(version_data.version, property._id)" ng-show="property.view_state"> <!--Remove-->
                                         <i class="material-icons">delete_forever</i>
