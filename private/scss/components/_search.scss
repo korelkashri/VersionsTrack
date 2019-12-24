@@ -9,6 +9,16 @@ $search-btn-animation-time: 2s;
   z-index: 3;
   top: 0;
 
+  &:before {
+    content: "";
+    $width: 1em;
+    width: $width;
+    margin-left: -$width;
+    height: $page-sticky-header-height;
+    position: absolute;
+    background-color: rgba($page-sticky-header-basic-bg, 0.9);
+  }
+
   a {
     height: $page-sticky-header-height - 10px;
     color: white;
@@ -42,9 +52,15 @@ $search-btn-animation-time: 2s;
   }
 
   &.apply-search-container, &.full-search-btn-container {
-    transform: translateX(80%);
-    i {
-      transform: rotate(360deg);
+
+    @media #{$large-and-up} {
+      & {
+        transform: translateX(80%);
+      }
+
+      i {
+        transform: rotate(360deg);
+      }
     }
     .close-search-btn {
       transform: translateX(3em);

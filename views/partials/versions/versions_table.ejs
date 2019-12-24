@@ -58,18 +58,18 @@
         </div>
 
         <!--Presentation: From-->
-        <div class="col l3 m5 s12" ng-show="version_data.view_state">
-            <div class="col s6">
-                <h4>From:</h4>
+        <div class="col l2 m4 s12" ng-show="version_data.view_state">
+            <div class="col l5 s6">
+                <h5>From:</h5>
             </div>
-            <div class="col s6">
-                <h4>
+            <div class="col l7 s6">
+                <h5>
                     <u ng-click="version_data.is_prev_version_exists && search_version(version_data.prev_version);"
                        ng-style="!version_data.is_prev_version_exists &&
                                                     {'text-decoration-line': 'line-through'} ||
                                                     {'cursor': 'pointer'}">{{version_data.prev_version}}
                     </u>
-                </h4>
+                </h5>
             </div>
         </div>
         <% if (access_level >= min_access_required.modify_version) { /* >= Manager */ %>
@@ -83,11 +83,11 @@
         <% } %>
 
         <!--Presentation: To-->
-        <div class="col l3 m4 s12" ng-show="version_data.view_state">
-            <div class="col s6">
+        <div class="col l2 m3 s12" ng-show="version_data.view_state">
+            <div class="col l4 s6">
                 <h4>To:</h4>
             </div>
-            <div class="col s6">
+            <div class="col l8 s6">
                 <h4 style="display: table;">
                     <u style="cursor: pointer" ng-click="search_version(version_data.version);">{{version_data.version}}</u>
                     <!--Beta version Presentation-->

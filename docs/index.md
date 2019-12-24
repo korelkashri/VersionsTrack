@@ -126,6 +126,7 @@ WARNING! Don't lose your admin user credentials.
 * Manage multiple projects versions.
     * Separate access rules for users by projects.
     * Enable different git follow for each project.
+* Changes log
 
 # Pictures
 
