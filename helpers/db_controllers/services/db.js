@@ -186,6 +186,13 @@ let initDB = callback => {
         useCreateIndex: true,
         useUnifiedTopology: true
     });
+    /* How to remove debug database (e.g. test_versions_track)
+        mongo //to start the mongodb shell
+        show dbs //to list existing databases
+        use <dbname> //the <dbname> is the database you'd like to drop
+        db //should show <dbname> just to be sure I'm working with the right database
+        db.dropDatabase() //will delete the database & return { "dropped" : "<dbname>", "ok" : 1 }
+    */
 
     console.log("Db connected successfully");
 
