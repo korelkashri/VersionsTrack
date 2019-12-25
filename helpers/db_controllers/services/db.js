@@ -180,8 +180,8 @@ let init_users_schema = _ => {
 
 let initDB = callback => {
     assert.ok(!is_initialize, "A try to initialize an initialized DB detected.");
-    //let db_new = mongoose.connect('mongodb://localhost/versions_track', {
-    let db_new = mongoose.connect('mongodb://localhost/test_versions_track', {
+    let db_new = mongoose.connect('mongodb://localhost/versions_track', {
+    //let db_new = mongoose.connect('mongodb://localhost/test_versions_track', {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true
