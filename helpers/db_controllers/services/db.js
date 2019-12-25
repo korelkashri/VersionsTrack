@@ -6,7 +6,7 @@ let projects_model, users_model;
 let version_schema;
 let is_initialize = false;
 
-let init_projects_schema = _ => {
+let init_projects_schema = async _ => {
     // Define version schema
     version_schema = mongoose.Schema({
         version: {
@@ -90,6 +90,18 @@ let init_projects_schema = _ => {
     // Create systems model
     projects_model = mongoose.model('projects', schema);
 
+    projects_model.find({}).exec(async (err, res) => {
+        if (err) {}
+        if (!res.length) {
+            let new_unnamed_project = new projects_model({
+                name: "UNNAMED",
+                versions: []
+            });
+
+            new_unnamed_project = await new_unnamed_project.save();
+        }
+    });
+
     // Make sure the text search indexes are ready
     projects_model.on('index', error => { if (error) console.log(error) });
 };
@@ -168,7 +180,8 @@ let init_users_schema = _ => {
 
 let initDB = callback => {
     assert.ok(!is_initialize, "A try to initialize an initialized DB detected.");
-    let db_new = mongoose.connect('mongodb://localhost/versions_track', {
+    //let db_new = mongoose.connect('mongodb://localhost/versions_track', {
+    let db_new = mongoose.connect('mongodb://localhost/test_versions_track', {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true
