@@ -1081,7 +1081,7 @@ if (typeof define === 'function' && define.amd) {
   if (typeof module !== 'undefined' && !module.nodeType && module.exports) {
     exports = module.exports = M;
   }
-  exports.default = M;
+  exports['default'] = M;
 }
 
 M.version = '1.0.0';
@@ -10372,7 +10372,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _setupCounter() {
         this.counterEl = document.createElement('span');
         $(this.counterEl).addClass('character-counter').css({
-          float: 'right',
+          'float': 'right',
           'font-size': '12px',
           height: 1
         });
@@ -12146,7 +12146,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         var currentMax = null;
         function check_max_change(el) {
-          let newImgSrc = $(el).attr("max");
+          var newImgSrc = $(el).attr("max");
           if (newImgSrc !== currentMax) {
             currentMax = newImgSrc;
             $(el).trigger("maxChange");
