@@ -12144,6 +12144,17 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         this.el.addEventListener('change', this._handleRangeChangeBound);
 
+        var currentMax = null;
+        function check_max_change(el) {
+          let newImgSrc = $(el).attr("max");
+          if (newImgSrc !== currentMax) {
+            currentMax = newImgSrc;
+            $(el).trigger("maxChange");
+          }
+        }
+        this.max_change_interval = setInterval(check_max_change.bind(null, this.el), 50);
+        this.el.addEventListener("maxChange", this._handleRangeChangeBound); // -- Korel
+
         this.el.addEventListener('mousedown', this._handleRangeMousedownTouchstartBound);
         this.el.addEventListener('touchstart', this._handleRangeMousedownTouchstartBound);
 
@@ -12167,6 +12178,8 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "_removeEventHandlers",
       value: function _removeEventHandlers() {
         this.el.removeEventListener('change', this._handleRangeChangeBound);
+        clearInterval(this.max_change_interval);
+        this.el.removeEventListener("maxChange", this._handleRangeChangeBound);
 
         this.el.removeEventListener('mousedown', this._handleRangeMousedownTouchstartBound);
         this.el.removeEventListener('touchstart', this._handleRangeMousedownTouchstartBound);
@@ -12265,7 +12278,8 @@ $jscomp.polyfill = function (e, r, p, m) {
           var paddingLeft = parseInt(this.$el.css('padding-left'));
           var marginLeft = 7 + paddingLeft + 'px';
 
-          if ($(this.thumb).hasClass('active')) {
+          // -- Korel: Always show thumb
+          /*if ($(this.thumb).hasClass('active')) {
             anim.remove(this.thumb);
             anim({
               targets: this.thumb,
@@ -12277,7 +12291,7 @@ $jscomp.polyfill = function (e, r, p, m) {
               duration: 100
             });
           }
-          $(this.thumb).removeClass('active');
+          $(this.thumb).removeClass('active');*/
         }
       }
 

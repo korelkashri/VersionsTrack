@@ -120,7 +120,7 @@
                     <div class="input-field col"
                          ng-show="versions_filter_type_select_model !== 'date'"
                          ng-class="[{'s9': versions_filter_type_select_model === 'desc'}, {'s3': versions_filter_type_select_model !== 'desc'}]">
-                        <input id="filter_version_data" type="text" placeholder="All" ng-model="version_data_filter_model" ng-change="update_quick_full_search_btn();">
+                        <input id="filter_version_data" type="text" maxlength="32" placeholder="All" ng-model="version_data_filter_model" ng-change="update_quick_full_search_btn();">
                         <label for="filter_version_data">
                             {{versions_filter_type_select_model == 'ver' ? "Version ID" : "Description"}}
                         </label>

@@ -4,10 +4,11 @@ angular.element(document).ready(() => {
     //document.getElementById("filter_version_release_date").valueAsDate = new Date(new Date() + " EDT");
 });
 
-const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM', 'modalsM', 'loaderM'])
+const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 'searchM', 'versionsM', 'versionsPropertiesM', 'modalsM', 'loaderM', 'timersM'])
 
-    .controller('body_controller', ($scope, $http, $timeout, versions_search_s, versions_s, properties_s, paging_s, modals_s, preloader, dark_area) => {
-        versions_search_s.init($scope, $http, $timeout, preloader);
+    .controller('body_controller', ($scope, $http, $timeout, versions_search_s, versions_s, properties_s, paging_s, modals_s, preloader, dark_area, timers_manager_s) => {
+        timers_manager_s.init($scope, $http, $timeout, preloader);
+        versions_search_s.init($scope, $http, timers_manager_s, preloader);
         versions_s.init($scope, $http, modals_s);
         properties_s.init($scope, $http);
         modals_s.init($scope, preloader, dark_area);
@@ -35,12 +36,16 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                     versions_search_s.update_last_version()
                 }
             });
-            $("#new_version_version_release_date, #filter_version_release_date").on("change", function() {
+            $("#new_version_version_release_date, #filter_version_release_date, #advanced_search_release_date").on("change", function() {
                 this.setAttribute(
                     "data-date",
                     moment(this.value, "YYYY/MM/DD").format(this.getAttribute("data-date-format"))
                 )
             }).trigger("change");
+            $('#advanced_search_version_modal .tabs').tabs("select", "advanced_search_by_version");
+            setTimeout(() => {
+                $('#advanced_search_version_modal .tabs').tabs("updateTabIndicator");
+            }, 3000);
         });
 
         $scope.toggle_active_class_properties = (version_data) => {

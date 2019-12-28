@@ -10,6 +10,11 @@ function init_materialize() {
  //       width: 140,
         position: "static"
     });
+    /*$('#advanced_search_version_modal .tabs').tabs({
+        onShow: () => {
+            $('#advanced_search_version_modal .tabs').tabs("select", "advanced_search_by_version");
+        }
+    });*/
 }
 
 /**
@@ -134,5 +139,6 @@ angular.element(function () { // When all angular elements are ready
 (function($) {
     $(document).ready(function(){
         init_all();
+        $('.tabs').tabs();
     });
 })(jQuery);

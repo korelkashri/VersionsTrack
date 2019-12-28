@@ -84,6 +84,10 @@ exports.get = async (req, res, next) => {
     if (target_version) filter = requests_handler.optional_param(req, 'route', 'filter');
     else if (target_version_rel_date) filter = requests_handler.require_param(req, 'route', 'filter');
 
+    // Advanced search params
+
+    target_version_rel_date = requests_handler.optional_param(req, 'route', 'download_date');
+
     let selected_proj = await projects_db_model.find( { name: project_name } ).exec();
     if (!selected_proj.length)
         throw new Error("Project not found");

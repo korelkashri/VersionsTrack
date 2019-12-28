@@ -1,6 +1,6 @@
 angular.module("searchM", [])
     .service("versions_search_s", function() {
-        let _$scope, _$http, _$timeout, _preloader;
+        let _$scope, _$http, timers_manager_s, _preloader;
         let search_container = $(".search-container");
         let search_status = "close"; // ["close", "open-quick", "open-full"]
 
@@ -126,10 +126,10 @@ angular.module("searchM", [])
             versions_list.sort(compare_two_versions);
         }
 
-        this.init = ($scope, $http, $timeout, preloader) => {
+        this.init = ($scope, $http, timers_manager_s, preloader) => {
             _$http = $http;
             _$scope = $scope;
-            _$timeout = $timeout;
+            timers_manager_s = timers_manager_s;
             _preloader = preloader;
 
             _$scope.search = (force_update, single_search) => {
@@ -214,10 +214,11 @@ angular.module("searchM", [])
                     alertify.error(msg);
                 }).finally(() => {
                     _preloader.stop();
-                    if (!single_search) {
-                        _$timeout(() => {
-                            _$scope.search();
-                        }, 2000);
+                    let is_timer_exists = timers_manager_s.is_exists("versions_search");
+                    let is_timer_running = timers_manager_s.is_timer_running("versions_search");
+                    if (!single_search && (!is_timer_exists || is_timer_running)) {
+                        if (!is_timer_exists) timers_manager_s.add_timer("versions_search", _ => _$scope.search(), 2000);
+                        timers_manager_s.start_timer("versions_search");
                     }
 
                     deferred.resolve("Search ended");
@@ -241,12 +242,64 @@ angular.module("searchM", [])
                     search_container.addClass("full-search-btn-container");
                     search_container.removeClass("apply-search-container");
                 }
+                timers_manager_s.start_timer("versions_search");
             };
 
             _$scope.close_search = () => {
                 search_container.removeClass("full-search-btn-container apply-search-container");
                 search_status = "close";
 
+            };
+
+            _$scope.update_advanced_description_search_sliders = (is_add, current_slider_id) => {
+                let sliders = $("#" + current_slider_id);
+                let availableTotal = 1;
+
+                sliders.each(function() {
+                    if (!$(this).attr("slider_initialized")) $(this).range();
+                    $(this).attr("slider_initialized", true);
+                    $(this).off("input");
+                    $(this).off("change");
+                    function calculate_max() {
+                        let total = 0;
+
+                        let sliders = $(".active .special-slider");
+                        sliders.each(function () {
+                            total += Number($(this).val());
+                        });
+
+                        let max = availableTotal - total;
+                        return max;
+                    }
+                    function update_sliders(max, sliders) {
+                        // Update each slider
+                        sliders.each(function () {
+                            let t = $(this), value = Number(t.val());
+                            t.attr("max", max + value);
+                            t.val(value);
+                        });
+                    }
+                    $(this).on("input", _ => {
+                        let sliders = $(".active .special-slider");
+                        let max = calculate_max();
+                        update_sliders(max, sliders.not(this))
+                    });
+                    $(this).on("change", _ => {
+                        let sliders = $(".active .special-slider");
+                        let max = calculate_max();
+                        update_sliders(max, sliders.not(this))
+                    });
+                    let sliders;
+                    if (is_add) {
+                        sliders = $(this);
+                    }
+                    else {
+                        $(this).val(0);
+                        sliders = $(".active .special-slider");
+                    }
+                    let max = calculate_max();
+                    update_sliders(max, sliders);
+                });
             };
 
             _$scope.open_search = (type) => {
@@ -258,7 +311,8 @@ angular.module("searchM", [])
                         break;
 
                     case "full":
-                        console.log("Open full search window.");
+                        timers_manager_s.pause_timer("versions_search");
+                        $('#advanced_search_version_modal').modal('open');
                         break;
                 }
                 search_status = "open-" + type;
@@ -272,6 +326,7 @@ angular.module("searchM", [])
                         if (_$scope.version_data_filter_model) {
                             search_container.removeClass("full-search-btn-container");
                             search_container.addClass("apply-search-container");
+                            timers_manager_s.pause_timer("versions_search");
                         } else {
                             search_container.addClass("full-search-btn-container");
                             search_container.removeClass("apply-search-container");
@@ -281,6 +336,7 @@ angular.module("searchM", [])
                     case "date":
                         search_container.removeClass("full-search-btn-container");
                         search_container.addClass("apply-search-container");
+                        timers_manager_s.pause_timer("versions_search");
                         break;
                 }
             };
@@ -312,13 +368,6 @@ angular.module("searchM", [])
                 _$scope.search(false, true);
                 scroll_to_top();
             };
-
-            _$http({method: "GET", url: "/guidance_bases"}).then((response) => {
-                _$scope.guidance_bases_list = response.data.data;
-                /*$timeout(() => {
-                    $('[name="optional_guidance_bases"]').formSelect();
-                }, 500);*/
-            });
         };
 
         this.update_last_version = () => {
