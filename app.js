@@ -1,7 +1,7 @@
 // Import dependencies
 const express = require('express'),
 path = require('path'),
-PORT = process.env.PORT || 5001,
+PORT = process.env.PORT || 5000,
 body_parser = require('body-parser'),
 session = require('client-sessions'),
 db = require('./helpers/db_controllers/services/db'),

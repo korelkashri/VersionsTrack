@@ -2,31 +2,80 @@
 <div id="advanced_search_version_modal" class="modal">
     <div class="modal-content">
 
+        <!--Available Tabs-->
         <div class="row">
             <ul class="tabs tabs-fixed-width tab-demo z-depth-1" style="margin-bottom: 25px">
-                <li class="tab col s4"><a class="active" href="#advanced_search_by_version">Version</a></li>
-                <li class="tab col s4"><a href="#advanced_search_by_date">Date</a></li>
-                <li class="tab col s4"><a href="#advanced_search_by_description">Text</a></li>
+                <!--Version ID Tab-->
+                <li class="tab col s4"><a class="active" href="#advanced_search_by_version"
+                                          ng-click="change_data_input_type('tabs_click', 'ver');">Version</a></li>
+                <!--Date Tab-->
+                <li class="tab col s4"><a href="#advanced_search_by_date"
+                                          ng-click="change_data_input_type('tabs_click', 'date');">Date</a></li>
+                <!--Description Tab-->
+                <li class="tab col s4"><a href="#advanced_search_by_description"
+                                          ng-click="change_data_input_type('tabs_click', 'desc');">Text</a></li>
             </ul>
         </div>
 
+        <!--Search by Version ID-->
         <div id="advanced_search_by_version" class="col s12">
             <div class="input-field">
-                <input type="text" placeholder="Which version ?" id="advanced_search_version_input">
+                <input type="text" placeholder="Which version ?" id="advanced_search_version_input" ng-model="version_data_filter_model">
                 <label for="advanced_search_description_input">Version ID</label>
             </div>
-        </div>
-
-        <div id="advanced_search_by_date" class="col s12">
-            <div class="input-field">
-                <input type="date" id="advanced_search_release_date" data-date-format="DD/MM/YYYY">
-                <label for="advanced_search_release_date">Release Date</label>
+            <div class="row">
+                <div class="col s12">
+                    <label>
+                        <input class="with-gap" name="advanced_search_versions_id_filter_type" ng-model="versions_filter_select_model" type="radio" value="before" checked
+                               ng-click="update_quick_search_toolbox_filter_select('version', 'before');" />
+                        <span>Until this version</span>
+                    </label>
+                </div>
+                <div class="col s12">
+                    <label>
+                        <input class="with-gap" name="advanced_search_versions_id_filter_type" ng-model="versions_filter_select_model" type="radio" value="equal"
+                               ng-click="update_quick_search_toolbox_filter_select('version', 'equal');" />
+                        <span>Only this version</span>
+                    </label>
+                </div>
+                <div class="col s12">
+                    <label>
+                        <input class="with-gap" name="advanced_search_versions_id_filter_type" ng-model="versions_filter_select_model" type="radio" value="after"
+                               ng-click="update_quick_search_toolbox_filter_select('version', 'after');" />
+                        <span>From this version</span>
+                    </label>
+                </div>
             </div>
         </div>
 
+        <!--Search by Release Date-->
+        <div id="advanced_search_by_date" class="col s12">
+            <div class="input-field">
+                <input type="date" id="advanced_search_release_date" data-date-format="DD/MM/YYYY" ng-model="version_date_data_filter_model">
+                <label for="advanced_search_release_date">Release Date</label>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <label>
+                        <input class="with-gap" name="advanced_search_release_date_filter_type" ng-model="versions_filter_select_model" type="radio" value="before" checked
+                               ng-click="update_quick_search_toolbox_filter_select('date', 'before');" />
+                        <span>Until this date</span>
+                    </label>
+                </div>
+                <div class="col s12">
+                    <label>
+                        <input class="with-gap" name="advanced_search_release_date_filter_type" ng-model="versions_filter_select_model" type="radio" value="after"
+                               ng-click="update_quick_search_toolbox_filter_select('date', 'after');" />
+                        <span>From this date</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!--Search by Description-->
         <div id="advanced_search_by_description" class="col s12">
             <div class="input-field">
-                <input type="text" placeholder="What're we looking for ?" id="advanced_search_description_input">
+                <input type="text" placeholder="What're we looking for ?" id="advanced_search_description_input" ng-model="version_data_filter_model">
                 <label for="advanced_search_description_input">Description</label>
             </div>
             <div class="row">
@@ -135,7 +184,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat" ng-click="search();">Search</a>
-        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" ng-click="apply_advanced_search();">Search</a>
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" ng-click="cancel_advanced_search();">Cancel</a>
     </div>
 </div>

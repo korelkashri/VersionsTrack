@@ -1,6 +1,6 @@
 angular.element(document).ready(() => {
     init_materialize();
-    document.getElementById("new_version_version_release_date").valueAsDate = new Date(new Date() + " EDT");
+    document.getElementById("new_version_version_release_date").valueAsDate = new Date(); // TODO pay attention - a troubles maker
     //document.getElementById("filter_version_release_date").valueAsDate = new Date(new Date() + " EDT");
 });
 
@@ -34,6 +34,13 @@ const app = angular.module('global_app', ['ngSanitize', 'ngAnimate', 'pagingM', 
                 endingTop: '15%',
                 onOpenStart: () => {
                     versions_search_s.update_last_version()
+                }
+            });
+            $("#advanced_search_version_modal").modal({
+                startingTop: '5%',
+                endingTop: '15%',
+                onCloseEnd: _ => {
+                    versions_search_s.close_advanced_search_modal();
                 }
             });
             $("#new_version_version_release_date, #filter_version_release_date, #advanced_search_release_date").on("change", function() {

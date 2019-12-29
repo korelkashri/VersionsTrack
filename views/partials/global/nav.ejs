@@ -108,7 +108,7 @@
                 <div class="quick-search-toolbox col s8 offset-s2">
                     <!--Data input type selection-->
                     <div class="input-field col s3">
-                        <select id="reports_type_filter_select" ng-model="versions_filter_type_select_model" ng-change="change_data_input_type();" ng-init="versions_filter_type_select_model='ver'">
+                        <select id="reports_type_filter_select" ng-model="versions_filter_type_select_model" ng-change="change_data_input_type('quick_search_toolbox');" ng-init="versions_filter_type_select_model='ver'">
                             <option value="ver">Version</option>
                             <option value="date">Date</option>
                             <option value="desc">Description</option>
@@ -148,6 +148,7 @@
                     <div class="input-field col s6" ng-show="versions_filter_type_select_model == 'date'">
                         <select id="versions_date_type_filter_select" ng-model="versions_filter_select_model">
                             <option value="before">< [Until this date]</option>
+                            <option value="equal" disabled>= [Only this version]</option>
                             <option value="after">> [From this date and on]</option>
                         </select>
                         <label for="versions_date_type_filter_select">Filter</label>

@@ -81,12 +81,10 @@ exports.get = async (req, res, next) => {
     target_version = requests_handler.optional_param(req, 'route','version_id');
     target_description = requests_handler.optional_param(req, 'route','description');
     target_version_rel_date = requests_handler.optional_param(req, 'route', 'download_date');
-    if (target_version) filter = requests_handler.optional_param(req, 'route', 'filter');
-    else if (target_version_rel_date) filter = requests_handler.require_param(req, 'route', 'filter');
+    filter = requests_handler.optional_param(req, 'route', 'filter');
 
     // Advanced search params
-
-    target_version_rel_date = requests_handler.optional_param(req, 'route', 'download_date');
+    // TODO
 
     let selected_proj = await projects_db_model.find( { name: project_name } ).exec();
     if (!selected_proj.length)
@@ -152,7 +150,7 @@ exports.get = async (req, res, next) => {
 
                 case ">":
                     selected_proj.versions.forEach((obj, idx, arr) => {
-                        let compare_res = compare_two_versions(obj.release_date.toISOString(), target_version_rel_date.toISOString());
+                        let compare_res = compare_two_versions(obj.release_date.toISOString().split("T")[0], target_version_rel_date.toISOString().split("T")[0]);
                         if (compare_res === 1 || compare_res === 0) {
                             versions.push(obj);
                         }
@@ -160,7 +158,7 @@ exports.get = async (req, res, next) => {
                     break;
 
                 default:
-                    throw new Error("Unspecified sign for date filter.");
+                    throw new Error("Can't restore versions of specific date.");
             }
         } else if (target_description) {
             // Search versions by description

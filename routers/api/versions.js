@@ -17,11 +17,13 @@ router.get("/lt_v:version_id", versions_middleware.set_param_lt, versions_contro
 
 router.get("/gt_v:version_id", versions_middleware.set_param_gt, versions_controller.get_versions_by_version); // Display after specified version
 
+router.get("/desc-:description", versions_controller.get_versions_by_description); // Display after specified date
+
+router.get("/d:download_date", versions_controller.get_version); // Display specified date (Unimplemented - throws an error)
+
 router.get("/lt_d:download_date", versions_middleware.set_param_lt, versions_controller.get_versions_by_date); // Display before specified date
 
 router.get("/gt_d:download_date", versions_middleware.set_param_gt, versions_controller.get_versions_by_date); // Display after specified date
-
-router.get("/desc-:description", versions_controller.get_versions_by_description); // Display after specified date
 
 // POST routes
 
