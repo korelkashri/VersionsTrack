@@ -238,7 +238,8 @@ angular.module("searchM", [])
                         alertify.success(response.message);
                     }
                     if (_$scope.versions_filter_type_select_model === "desc" && _$scope.version_data_filter_model) {
-                        mark();
+                        _timers_pool.add_timer("marker", mark, 500);
+                        _timers_pool.start_timer("marker");
                     }
                 }, (response) => {
                     let msg;
