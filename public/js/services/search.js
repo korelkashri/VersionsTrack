@@ -35,7 +35,7 @@ angular.module("searchM", [])
         };
 
         this.close_advanced_search_modal = _ => {
-            _$scope.cancel_advanced_search();
+            _$scope.advanced_search.cancel();
         };
 
         init_scope_functions = _ => {
@@ -292,59 +292,6 @@ angular.module("searchM", [])
                 search_status = "close";
             };
 
-            _$scope.update_advanced_description_search_sliders = (is_add, current_slider_id) => {
-                let sliders = $("#" + current_slider_id);
-                let availableTotal = 1;
-
-                sliders.each(function () {
-                    if (!$(this).attr("slider_initialized")) $(this).range();
-                    $(this).attr("slider_initialized", true);
-                    $(this).off("input");
-                    $(this).off("change");
-
-                    function calculate_max() {
-                        let total = 0;
-
-                        let sliders = $(".active .special-slider");
-                        sliders.each(function () {
-                            total += Number($(this).val());
-                        });
-
-                        let max = availableTotal - total;
-                        return max;
-                    }
-
-                    function update_sliders(max, sliders) {
-                        // Update each slider
-                        sliders.each(function () {
-                            let t = $(this), value = Number(t.val());
-                            t.attr("max", max + value);
-                            t.val(value);
-                        });
-                    }
-
-                    $(this).on("input", _ => {
-                        let sliders = $(".active .special-slider");
-                        let max = calculate_max();
-                        update_sliders(max, sliders.not(this))
-                    });
-                    $(this).on("change", _ => {
-                        let sliders = $(".active .special-slider");
-                        let max = calculate_max();
-                        update_sliders(max, sliders.not(this))
-                    });
-                    let sliders;
-                    if (is_add) {
-                        sliders = $(this);
-                    } else {
-                        $(this).val(0);
-                        sliders = $(".active .special-slider");
-                    }
-                    let max = calculate_max();
-                    update_sliders(max, sliders);
-                });
-            };
-
             _$scope.open_search = type => {
                 switch (type) {
                     case "quick":
@@ -439,21 +386,144 @@ angular.module("searchM", [])
                 scroll_to_top();
             };
 
-            _$scope.cancel_advanced_search = _ => {
-                if (!is_search_active) {
-                    _$scope.clear_search();
-                    _$scope.close_search();
-                    _timers_pool.start_timer("versions_search");
+            _$scope.advanced_search = {
+                init: function() {
+                    this.description.parent = this;
+                },
+                params: {
+                    available_params: type => {
+                        switch (type) {
+                            case "desc":
+                                return [
+                                    'versions_details',
+                                    'versions_downloaders',
+                                    'versions_issues',
+                                    'properties_types',
+                                    'properties_descriptions',
+                                    'properties_issues'
+                                ].map(i => "description." + i);
+
+                            default:
+                                return [];
+                        }
+                    },
+                    get_param_value: param => {
+                        let parts = param.split('.');
+                        let current_param = _$scope.advanced_search;
+                        parts.forEach((part) => {
+                            current_param = current_param[part];
+                        });
+                        return current_param;
+                    },
+                    get_param_parent: param => {
+                        let parts = param.split('.');
+                        parts.pop();
+                        let current_param = _$scope.advanced_search;
+                        parts.forEach((part) => {
+                            current_param = current_param[part];
+                        });
+                        return current_param;
+                    },
+                    get_param_name: param => {
+                        let parts = param.split('.');
+                        return parts[parts.length - 1];
+                    }
+                },
+                cancel: _ => {
+                    if (!is_search_active) {
+                        _$scope.clear_search();
+                        _$scope.close_search();
+                        _timers_pool.start_timer("versions_search");
+                    }
+                    _$scope.update_quick_full_search_btn();
+                },
+                apply: function() {
+                    is_search_active = true;
+                    let params = {};
+
+                    this.params.available_params(_$scope.versions_filter_type_select_model).forEach((param) => {
+                        let current_param = this.params.get_param_value(param);
+                        if (current_param.checkbox)
+                            params[this.params.get_param_name(param)] = current_param.slider;
+                    });
+
+                    _$scope.open_search("quick");
+                    _$scope.search(true, true, params);
+                },
+                description: {
+                    init_models: function() {
+                        this.parent.params.available_params("desc").forEach((param) => {
+                            let current_params_root = this.parent.params.get_param_parent(param);
+                            current_params_root[this.parent.params.get_param_name(param)] = {
+                                checkbox: false,
+                                slider: 0
+                            };
+                        });
+                    },
+                    select_all: _ => {
+                        $("#advanced_search_by_description input[type='checkbox']").checked(true);
+                    },
+                    deselect_all: _ => {
+                        $("#advanced_search_by_description input[type='checkbox']").checked(false);
+                    },
+                    equal_weight: function() {
+                        let selected_elements = $("#advanced_search_by_description input[type='checkbox']:checked");
+                        let weight = 1 / selected_elements.length;
+                        
+                    },
+                    update_sliders: (is_add, current_slider_id) => {
+                        let sliders = $("#" + current_slider_id);
+                        let availableTotal = 1;
+
+                        sliders.each(function () {
+                            if (!$(this).attr("slider_initialized")) $(this).range();
+                            $(this).attr("slider_initialized", true);
+
+                            function calculate_max() {
+                                let total = 0;
+
+                                let sliders = $(".active .special-slider");
+                                sliders.each(function () {
+                                    total += Number($(this).val());
+                                });
+
+                                return availableTotal - total; // New max
+                            }
+
+                            function update_sliders(max, sliders) {
+                                // Update each slider
+                                sliders.each(function () {
+                                    let t = $(this), value = Number(t.val());
+                                    t.attr("max", max + value);
+                                    t.val(value);
+                                });
+                            }
+
+                            $(this).off(".custom");
+                            $(this).on("input.custom", _ => {
+                                let sliders = $(".active .special-slider");
+                                let max = calculate_max();
+                                update_sliders(max, sliders.not(this))
+                            });
+                            $(this).on("change.custom", _ => {
+                                let sliders = $(".active .special-slider");
+                                let max = calculate_max();
+                                update_sliders(max, sliders.not(this))
+                            });
+                            let sliders;
+                            if (is_add) {
+                                sliders = $(this);
+                            } else {
+                                $(this).val(0);
+                                sliders = $(".active .special-slider");
+                            }
+                            let max = calculate_max();
+                            update_sliders(max, sliders);
+                        });
+                    }
                 }
-                _$scope.update_quick_full_search_btn();
             };
-
-            _$scope.apply_advanced_search = _ => {
-                is_search_active = true;
-                let params = {};
-
-                _$scope.open_search("quick");
-                _$scope.search(true, true, params);
-            };
+            _$scope.advanced_search.init();
+            _$scope.advanced_search.description.init_models();
         };
     });

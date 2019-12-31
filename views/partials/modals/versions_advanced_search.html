@@ -79,103 +79,162 @@
                 <label for="advanced_search_description_input">Description</label>
             </div>
             <div class="row">
+                <!--Versions Details-->
                 <div class="col s12 adv-search-param">
                     <div class="col l6 s12 adv-search-title">
                         <p>
                             <label>
-                                <input type="checkbox" ng-model="search_in_versions_details_model" class="filled-in" checked="checked" ng-change="update_advanced_description_search_sliders(search_in_versions_details_model, 'search_in_versions_details_slider');" />
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       checked="checked"
+                                       ng-model="advanced_search.description.versions_details.checkbox"
+                                       ng-change="advanced_search.description.update_sliders(advanced_search.description.versions_details.checkbox, 'search_in_versions_details_slider');" />
                                 <span>Versions Details</span>
                             </label>
                         </p>
                     </div>
-                    <div class="col l6 s12 adv-search-slider" ng-show="search_in_versions_details_model" ng-class="{'active': search_in_versions_details_model}">
+                    <div class="col l6 s12 adv-search-slider"
+                         ng-show="advanced_search.description.versions_details.checkbox"
+                         ng-class="{'active': advanced_search.description.versions_details.checkbox}">
                         <p class="range-field">
-                            <input type="range" id="search_in_versions_details_slider" class="special-slider" value="0" step="0.01" min="0" max="1" />
+                            <input type="range" id="search_in_versions_details_slider" class="special-slider"
+                                   step="0.01" min="0" max="1"
+                                   ng-model="advanced_search.description.versions_details.slider" />
                             <label for="search_in_versions_details_slider">Search weight for versions details</label>
                         </p>
                     </div>
                 </div>
 
+                <!--Versions Downloaders-->
                 <div class="col s12 adv-search-param">
                     <div class="col l6 s12 adv-search-title">
                         <p>
                             <label>
-                                <input type="checkbox" ng-model="search_in_versions_downloaders_model" class="filled-in" checked="checked" ng-change="update_advanced_description_search_sliders(search_in_versions_downloaders_model, 'search_in_versions_downloaders_slider');" />
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       checked="checked"
+                                       ng-model="advanced_search.description.versions_downloaders.checkbox"
+                                       ng-change="advanced_search.description.update_sliders(advanced_search.description.versions_downloaders.checkbox, 'search_in_versions_downloaders_slider');" />
                                 <span>Versions Downloaders</span>
                             </label>
                         </p>
                     </div>
-                    <div class="col l6 s12 adv-search-slider" ng-show="search_in_versions_downloaders_model" ng-class="{'active': search_in_versions_downloaders_model}">
+                    <div class="col l6 s12 adv-search-slider"
+                         ng-show="advanced_search.description.versions_downloaders.checkbox"
+                         ng-class="{'active': advanced_search.description.versions_downloaders.checkbox}">
                         <p class="range-field">
-                            <input type="range" id="search_in_versions_downloaders_slider" class="special-slider" value="0" step="0.01" min="0" max="1" />
+                            <input type="range" id="search_in_versions_downloaders_slider" class="special-slider"
+                                   step="0.01" min="0" max="1"
+                                   smart-float
+                                   ng-model="advanced_search.description.versions_downloaders.slider" />
                             <label for="search_in_versions_downloaders_slider">Search weight for versions downloaders</label>
                         </p>
                     </div>
                 </div>
 
+                <!--Versions Issues-->
                 <div class="col s12 adv-search-param">
                     <div class="col l6 s12 adv-search-title">
                         <p>
                             <label>
-                                <input type="checkbox" ng-model="search_in_versions_issues_model" class="filled-in" checked="checked" ng-change="update_advanced_description_search_sliders(search_in_versions_issues_model, 'search_in_versions_issues_slider');" />
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       checked="checked"
+                                       ng-model="advanced_search.description.versions_issues.checkbox"
+                                       ng-change="advanced_search.description.update_sliders(advanced_search.description.versions_issues.checkbox, 'search_in_versions_issues_slider');" />
                                 <span>Versions Issues</span>
                             </label>
                         </p>
                     </div>
-                    <div class="col l6 s12 adv-search-slider" ng-show="search_in_versions_issues_model" ng-class="{'active': search_in_versions_issues_model}">
+                    <div class="col l6 s12 adv-search-slider"
+                         ng-show="advanced_search.description.versions_issues.checkbox"
+                         ng-class="{'active': advanced_search.description.versions_issues.checkbox}">
                         <p class="range-field">
-                            <input type="range" id="search_in_versions_issues_slider" class="special-slider" value="0" step="0.01" min="0" max="1" />
+                            <input type="range" id="search_in_versions_issues_slider" class="special-slider"
+                                   step="0.01" min="0" max="1"
+                                   smart-float
+                                   ng-model="advanced_search.description.versions_issues.slider" />
                             <label for="search_in_versions_issues_slider">Search weight for versions issues</label>
                         </p>
                     </div>
                 </div>
 
+                <!--Properties Types-->
                 <div class="col s12 adv-search-param">
                     <div class="col l6 s12 adv-search-title">
                         <p>
                             <label>
-                                <input type="checkbox" ng-model="search_in_properties_types_model" class="filled-in" checked="checked" ng-change="update_advanced_description_search_sliders(search_in_properties_types_model, 'search_in_properties_types_slider');" />
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       checked="checked"
+                                       ng-model="advanced_search.description.properties_types.checkbox"
+                                       ng-change="advanced_search.description.update_sliders(advanced_search.description.properties_types.checkbox, 'search_in_properties_types_slider');" />
                                 <span>Properties Types</span>
                             </label>
                         </p>
                     </div>
-                    <div class="col l6 s12 adv-search-slider" ng-show="search_in_properties_types_model" ng-class="{'active': search_in_properties_types_model}">
+                    <div class="col l6 s12 adv-search-slider"
+                         ng-show="advanced_search.description.properties_types.checkbox"
+                         ng-class="{'active': advanced_search.description.properties_types.checkbox}">
                         <p class="range-field">
-                            <input type="range" id="search_in_properties_types_slider" class="special-slider" value="0" step="0.01" min="0" max="1" />
+                            <input type="range" id="search_in_properties_types_slider" class="special-slider"
+                                   step="0.01" min="0" max="1"
+                                   smart-float
+                                   ng-model="advanced_search.description.properties_types.slider" />
                             <label for="search_in_properties_types_slider">Search weight for properties types</label>
                         </p>
                     </div>
                 </div>
 
+                <!--Properties Descriptions-->
                 <div class="col s12 adv-search-param">
                     <div class="col l6 s12 adv-search-title">
                         <p>
                             <label>
-                                <input type="checkbox" ng-model="search_in_properties_descriptions_model" class="filled-in" checked="checked" ng-change="update_advanced_description_search_sliders(search_in_properties_descriptions_model, 'search_in_properties_descriptions_slider');" />
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       checked="checked"
+                                       ng-model="advanced_search.description.properties_descriptions.checkbox"
+                                       ng-change="advanced_search.description.update_sliders(advanced_search.description.properties_descriptions.checkbox, 'search_in_properties_descriptions_slider');" />
                                 <span>Properties Descriptions</span>
                             </label>
                         </p>
                     </div>
-                    <div class="col l6 s12 adv-search-slider" ng-show="search_in_properties_descriptions_model" ng-class="{'active': search_in_properties_descriptions_model}">
+                    <div class="col l6 s12 adv-search-slider"
+                         ng-show="advanced_search.description.properties_descriptions.checkbox"
+                         ng-class="{'active': advanced_search.description.properties_descriptions.checkbox}">
                         <p class="range-field">
-                            <input type="range" id="search_in_properties_descriptions_slider" class="special-slider" value="0" step="0.01" min="0" max="1" />
+                            <input type="range" id="search_in_properties_descriptions_slider" class="special-slider"
+                                   step="0.01" min="0" max="1"
+                                   smart-float
+                                   ng-model="advanced_search.description.properties_descriptions.slider" />
                             <label for="search_in_properties_descriptions_slider">Search weight for properties descriptions</label>
                         </p>
                     </div>
                 </div>
 
+                <!--Properties Issues-->
                 <div class="col s12 adv-search-param">
                     <div class="col l6 s12 adv-search-title">
                         <p>
                             <label>
-                                <input type="checkbox" ng-model="search_in_properties_issues_model" class="filled-in" checked="checked" ng-change="update_advanced_description_search_sliders(search_in_properties_issues_model, 'search_in_properties_issues_slider');" />
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       checked="checked"
+                                       ng-model="advanced_search.description.properties_issues.checkbox"
+                                       ng-change="advanced_search.description.update_sliders(advanced_search.description.properties_issues.checkbox, 'search_in_properties_issues_slider');" />
                                 <span>Properties Issues</span>
                             </label>
                         </p>
                     </div>
-                    <div class="col l6 s12 adv-search-slider" ng-show="search_in_properties_issues_model" ng-class="{'active': search_in_properties_issues_model}">
+                    <div class="col l6 s12 adv-search-slider"
+                         ng-show="advanced_search.description.properties_issues.checkbox"
+                         ng-class="{'active': advanced_search.description.properties_issues.checkbox}">
                         <p class="range-field">
-                            <input type="range" id="search_in_properties_issues_slider" class="special-slider" value="0" step="0.01" min="0" max="1" />
+                            <input type="range" id="search_in_properties_issues_slider" class="special-slider"
+                                   step="0.01" min="0" max="1"
+                                   smart-float
+                                   ng-model="advanced_search.description.properties_issues.slider" />
                             <label for="search_in_properties_issues_slider">Search weight for properties issues</label>
                         </p>
                     </div>
@@ -184,7 +243,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat" ng-click="apply_advanced_search();">Search</a>
-        <a href="#!" class="modal-close waves-effect waves-red btn-flat" ng-click="cancel_advanced_search();">Cancel</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" ng-click="advanced_search.apply();">Search</a>
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat" ng-click="advanced_search.cancel();">Cancel</a>
     </div>
 </div>
