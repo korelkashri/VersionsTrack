@@ -66,6 +66,32 @@ let compare_two_versions = (ver1, ver2) => {
     return 0;
 };
 
+function check_for_desc_advanced_params(desc_adv_p) {
+    let is_empty =
+        desc_adv_p.versions_details === desc_adv_p.versions_downloaders &&
+        desc_adv_p.versions_details === desc_adv_p.versions_issues &&
+        desc_adv_p.versions_details === desc_adv_p.properties_types &&
+        desc_adv_p.versions_details === desc_adv_p.properties_descriptions &&
+        desc_adv_p.versions_details === desc_adv_p.properties_issues &&
+        desc_adv_p.versions_details === undefined;
+    if (is_empty) {
+        desc_adv_p.versions_details
+        = desc_adv_p.versions_downloaders
+        = desc_adv_p.versions_issues
+        = desc_adv_p.properties_types
+        = desc_adv_p.properties_descriptions
+        = desc_adv_p.properties_issues
+        = 1 / 6;
+    } else {
+        desc_adv_p.versions_details = Number(desc_adv_p.versions_details || 0);
+        desc_adv_p.versions_downloaders = Number(desc_adv_p.versions_downloaders || 0);
+        desc_adv_p.versions_issues = Number(desc_adv_p.versions_issues || 0);
+        desc_adv_p.properties_types = Number(desc_adv_p.properties_types || 0);
+        desc_adv_p.properties_descriptions = Number(desc_adv_p.properties_descriptions || 0);
+        desc_adv_p.properties_issues = Number(desc_adv_p.properties_issues || 0);
+    }
+}
+
 exports.get = async (req, res, next) => {
     let projects_db_model = database.projects_model();
 
@@ -84,7 +110,15 @@ exports.get = async (req, res, next) => {
     filter = requests_handler.optional_param(req, 'route', 'filter');
 
     // Advanced search params
-    // TODO
+    let desc_adv_p = {};
+    desc_adv_p.versions_details = requests_handler.optional_param(req, 'get', 'versions_details');
+    desc_adv_p.versions_downloaders = requests_handler.optional_param(req, 'get', 'versions_downloaders');
+    desc_adv_p.versions_issues = requests_handler.optional_param(req, 'get', 'versions_issues');
+    desc_adv_p.properties_types = requests_handler.optional_param(req, 'get', 'properties_types');
+    desc_adv_p.properties_descriptions = requests_handler.optional_param(req, 'get', 'properties_descriptions');
+    desc_adv_p.properties_issues = requests_handler.optional_param(req, 'get', 'properties_issues');
+    check_for_desc_advanced_params(desc_adv_p);
+
 
     let selected_proj = await projects_db_model.find( { name: project_name } ).exec();
     if (!selected_proj.length)
@@ -169,6 +203,39 @@ exports.get = async (req, res, next) => {
             });
 
             // Fuse search
+
+            let keys = [];
+            let available_keys = [{
+                name: "details",
+                val_name: "versions_details"
+            }, {
+                name: "downloader",
+                val_name: "versions_downloaders"
+            }, {
+                name: "known_issues",
+                val_name: "versions_downloaders"
+            }, {
+                name: "properties.type",
+                val_name: "properties_types"
+            }, {
+                name: "properties.description",
+                val_name: "properties_descriptions"
+            }, {
+                name: "properties.known_issues",
+                val_name: "properties_issues"
+            }];
+            let current_key = 0;
+            for (let i = 0; i < available_keys.length; i++) {
+                let current_val = desc_adv_p[available_keys[i].val_name];
+                if (current_val > 0) {
+                    keys[current_key++] = {
+                        name: available_keys[i].name,
+                        weight: current_val
+                    }
+                }
+            }
+
+
             let options = {
                 shouldSort: true,
                 //includeScore: true,
@@ -177,25 +244,7 @@ exports.get = async (req, res, next) => {
                 distance: 1000,
                 maxPatternLength: 32,
                 minMatchCharLength: 1,
-                keys: [{
-                    name: "details",
-                    weight: 0.7
-                }, {
-                    name: "downloader",
-                    weight: 0.5
-                }, {
-                    name: "known_issues",
-                    weight: 0.3
-                }, {
-                    name: "properties.type",
-                    weight: 1
-                }, {
-                    name: "properties.description",
-                    weight: 0.7
-                }, {
-                    name: "properties.known_issues",
-                    weight: 0.5
-                }]
+                keys: keys
             };
             let fuse = new Fuse(sorted_versions, options);
             versions = fuse.search(target_description);
