@@ -1,6 +1,6 @@
 angular.module("versionsM", [])
     .service("versions_s", function () {
-        this.init = ($scope, $http, modals_s) => {
+        this.init = ($scope, $http, modals_s, timers_manager_s) => {
             $scope.new_version = () => {
                 let new_version_id = $scope.new_version_version_id;
                 let prev_version_id =    $scope.new_version_prev_version_id
@@ -31,7 +31,7 @@ angular.module("versionsM", [])
                     response = response.data;
                     alertify.success(response.message);
                     $scope.clear_new_version_data();
-                    $scope.search(true, true);
+                    $scope.clear_and_close_search();
                     scroll_to_top();
                 }, (response) => {
                     response = response.data;
@@ -40,11 +40,9 @@ angular.module("versionsM", [])
             };
 
             $scope.clear_new_version_data = () => {
-                $scope.new_version_version_id =
-                    $scope.new_version_prev_version_id =
-                        $scope.new_version_version_details =
-                            $scope.new_version_version_downloader =
-                                $scope.new_version_version_known_issues = "";
+                $scope.new_version_version_id = $scope.new_version_prev_version_id = $scope.new_version_version_details =
+                    $scope.new_version_version_downloader = $scope.new_version_version_known_issues = "";
+
                 $("input")
                     .filter(function() {
                         return this.id.match(/new_version*/) && !this.placeholder;
@@ -69,8 +67,7 @@ angular.module("versionsM", [])
                             }).then((response) => {
                                 response = response.data;
                                 alertify.success(response.message);
-                                $scope.clear_search();
-                                $scope.search(true, true);
+                                $scope.clear_and_close_search();
                             }, (response) => {
                                 response = response.data;
                                 alertify.error(response.message);
@@ -166,7 +163,7 @@ angular.module("versionsM", [])
                     $scope.version_data_filter_model = new_version_id;
                     $scope.versions_table_conf.version_update_lock = false;
                     $scope.modify_version_view_state(version_data, true);
-                    $scope.search(true, true);
+                    $scope.clear_and_close_search();
                 }, (response) => {
                     response = response.data;
                     alertify.error(response.message);

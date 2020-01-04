@@ -269,6 +269,11 @@ angular.module("searchM", [])
                 return deferred.promise();
             };
 
+            _$scope.clear_and_close_search = () => {
+                _$scope.clear_search();
+                _$scope.close_search();
+            };
+
             _$scope.clear_search = () => {
                 _$scope.version_data_filter_model = "";
                 _$scope.version_date_data_filter_model = "";

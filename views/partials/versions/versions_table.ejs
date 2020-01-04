@@ -159,6 +159,7 @@
                 </div>
             </div>
             <% if (access_level >= min_access_required.modify_version) { /* >= Manager */ %>
+                <!--Modification-->
                 <div ng-hide="version_data.view_state" class="col s12">
                     <span class="input-field col s12">
                         <input id="modify_version_details_{{version_data.version}}" type="text">
