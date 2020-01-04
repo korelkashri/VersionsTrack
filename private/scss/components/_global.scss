@@ -133,3 +133,8 @@ body {
 .selected-row {
   background-color: rgba(137, 206, 255, 0.46);
 }
+
+.accept-color {
+  @extend .teal;
+  @extend .lighten-1;
+}

@@ -71,6 +71,23 @@
     padding: 0 $gutter-width / 2;
     min-height: 1px;
 
+    // Grid doc styles
+
+    &.grid-example {
+      border: 3px solid;
+      //margin: 7px 0;
+      text-align: center;
+      //line-height: 50px;
+      //font-size: 28px;
+      color: white;
+      padding: 0;
+
+      span {
+        font-weight: 100;
+        line-height: 50px;
+      }
+    }
+
     &[class*="push-"],
     &[class*="pull-"] {
       position: relative;
