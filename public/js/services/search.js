@@ -465,16 +465,50 @@ angular.module("searchM", [])
                             };
                         });
                     },
-                    select_all: _ => {
-                        $("#advanced_search_by_description input[type='checkbox']").checked(true);
+                    select_all: function() {
+                        //$("#advanced_search_by_description input[type='checkbox']").prop('checked', true);
+                        this.parent.params.available_params(_$scope.versions_filter_type_select_model).forEach((param) => {
+                            let current_param = this.parent.params.get_param_value(param);
+                            current_param.checkbox = true;
+                            this.update_sliders(true, "search_in_" + this.parent.params.get_param_name(param) + "_slider");
+                        });
                     },
-                    deselect_all: _ => {
-                        $("#advanced_search_by_description input[type='checkbox']").checked(false);
+                    deselect_all: function() {
+                        this.parent.params.available_params(_$scope.versions_filter_type_select_model).forEach((param) => {
+                            let current_param = this.parent.params.get_param_value(param);
+                            current_param.checkbox = false;
+                            this.update_sliders(false, "search_in_" + this.parent.params.get_param_name(param) + "_slider");
+                        });
+                    },
+                    set_weight: function(new_wight, set_to_all) {
+                        this.parent.params.available_params(_$scope.versions_filter_type_select_model).forEach((param) => {
+                            let current_param = this.parent.params.get_param_value(param);
+                            if (set_to_all || current_param.checkbox) {
+                                let current_slider = $("#search_in_" + this.parent.params.get_param_name(param) + "_slider");
+                                current_slider.val(new_wight);
+                                current_param.slider = new_wight;
+                                current_slider.trigger("input.custom");
+                            }
+                        });
+                    },
+                    reset_weight: function() {
+                        this.set_weight(0, true);
                     },
                     equal_weight: function() {
-                        let selected_elements = $("#advanced_search_by_description input[type='checkbox']:checked");
-                        let weight = 1 / selected_elements.length;
-                        
+                        let elements_count = 0;
+                        let weight;
+                        // elements_count = $("#advanced_search_by_description input[type='checkbox']:checked").length;
+                        // For case that the checkbox have not updated yet.
+                        this.parent.params.available_params(_$scope.versions_filter_type_select_model).forEach((param) => {
+                            let current_param = this.parent.params.get_param_value(param);
+                            if (current_param.checkbox) {
+                                elements_count++;
+                            }
+                        });
+                        weight = elements_count ? 1 / elements_count : 0;
+                        weight = Math.floor(weight * 100) / 100;
+                        this.reset_weight();
+                        this.set_weight(weight, false)
                     },
                     update_sliders: (is_add, current_slider_id) => {
                         let sliders = $("#" + current_slider_id);
