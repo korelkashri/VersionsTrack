@@ -26,9 +26,9 @@ angular.module("timersM", [])
 
         this.start_timer = (id) => {
             if (this.is_exists(id)) {
-                if (!timers[id].is_ended) {
+                //if (!timers[id].is_ended) {
                     this.pause_timer(id);
-                }
+                //}
 
                 timers[id].ref = _$timeout(() => {
                     timers[id].func();
