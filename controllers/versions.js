@@ -118,7 +118,7 @@ exports.modify_property = async (req, res, next) => {
 // View
 exports.view_versions = async (req, res, next) => {
     try {
-        res.render("pages/home", {
+        res.render("pages/versions", {
             access_level: req.session.user ? req.session.user.role : 1,
             is_logged_in: !!req.session.user,
             username: req.session.user && req.session.user.username,

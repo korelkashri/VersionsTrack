@@ -59,6 +59,14 @@ let init_projects_schema = async _ => {
             type: String,
             required: true
         },
+        description: {
+            type: String,
+            default: ""
+        },
+        parent_project: { // Must exists in current projects list / Be "" for main project
+            type: String,
+            default: ""
+        },
         git_repository: {
             type: String,
             required: false
