@@ -12,5 +12,8 @@ exports.min_access_required = {
     create_new_user_with_specific_role: 4,
     modify_all_users: 4,
     delete_different_users: 4,
-    delete_all_users: 4 // Delete all users in one shot -- Recreate admin user (admin@admin)
+    delete_all_users: 4, // Delete all users in one shot -- Recreate admin user (admin@admin)
+    create_project: 5,
+    delete_project: 5,
+    modify_project: 5
 };

@@ -13,6 +13,15 @@ exports.get_projects = async (req, res, next) => {
     }
 };
 
+exports.get_project = async (req, res, next) => {
+    try {
+        let projects = await projects_model.get(req, res, next);
+        return responses_gen.generate_response(res, 200, projects, "projects successfully restored");
+    } catch (e) {
+        return responses_gen.generate_response(res, 400, null, e.message);
+    }
+};
+
 exports.add_project = async (req, res, next) => {
     try {
         await projects_model.add_project(req, res, next);

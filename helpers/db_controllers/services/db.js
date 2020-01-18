@@ -65,7 +65,7 @@ let init_projects_schema = async _ => {
         },
         parent_project: { // Must exists in current projects list / Be "" for main project
             type: String,
-            default: ""
+            required: false
         },
         git_repository: {
             type: String,
@@ -73,6 +73,25 @@ let init_projects_schema = async _ => {
         },
         versions: [
             version_schema
+        ],
+        members_list: [
+            {
+                username: {
+                    type: String,
+                    required: true
+                },
+                role: {
+                    type: Number,
+                    // 4 -> Admin    -> Full access + Admin panel access.
+                    // 3 -> Manager  -> Create / Delete / Modify versions/properties access.
+                    // 2 -> User     -> Watch & Comment for issues in versions.
+                    // 1 -> Guest    -> Watch access.
+                    // 0 -> Banned   -> No access at all.
+                    //enum: ['Admin', 'Manager', 'User', 'Guest', 'Banned'],
+                    default: 1,
+                    required: true
+                }
+            }
         ]
     });
 
@@ -126,13 +145,11 @@ let init_users_schema = _ => {
             type: String,
             required: true
         },
-        role: {
+        role: { // TODO move to [specific project] -> [members list] -> [specific member] -> [role]
             type: Number,
-            // 4 -> Admin    -> Full access + Admin panel access.
-            // 3 -> Manager  -> Create / Delete / Modify versions/properties access.
-            // 2 -> User     -> Watch & Comment for issues in versions.
-            // 1 -> Guest    -> Watch access.
-            // 0 -> Banned   -> No access at all.
+            // 2 -> System Admin    -> Full access + Admin panel access.
+            // 1 -> Member          -> Watch access.
+            // 0 -> Banned          -> No access at all.
             //enum: ['Admin', 'Manager', 'User', 'Guest', 'Banned'],
             default: 1,
             required: true
