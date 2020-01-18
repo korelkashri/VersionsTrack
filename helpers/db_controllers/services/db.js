@@ -82,11 +82,10 @@ let init_projects_schema = async _ => {
                 },
                 role: {
                     type: Number,
-                    // 4 -> Admin    -> Full access + Admin panel access.
+                    // 4 -> Admin    -> Full access to this project + This project admin panel access.
                     // 3 -> Manager  -> Create / Delete / Modify versions/properties access.
                     // 2 -> User     -> Watch & Comment for issues in versions.
                     // 1 -> Guest    -> Watch access.
-                    // 0 -> Banned   -> No access at all.
                     //enum: ['Admin', 'Manager', 'User', 'Guest', 'Banned'],
                     default: 1,
                     required: true
@@ -147,9 +146,9 @@ let init_users_schema = _ => {
         },
         role: { // TODO move to [specific project] -> [members list] -> [specific member] -> [role]
             type: Number,
-            // 2 -> System Admin    -> Full access + Admin panel access.
-            // 1 -> Member          -> Watch access.
-            // 0 -> Banned          -> No access at all.
+            // 2 -> System Admin    -> Full access to all of the projects & Create/Delete/Modify projects access.
+            // 1 -> Member          -> Access according projects' members_list.
+            // 0 -> Banned          -> Automatically remove this user from all of the projects' members_list.
             //enum: ['Admin', 'Manager', 'User', 'Guest', 'Banned'],
             default: 1,
             required: true
