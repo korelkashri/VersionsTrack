@@ -7,7 +7,7 @@ const access_limitations = require('../../helpers/configurations/access_limitati
 // GET routes
 
 router.get("/profile", (req, res, next) => { // View self user profile
-    req.required_level = access_limitations.min_access_required.view_profile;
+    req.required_level = access_limitations.system_min_access_required.view_profile;
     req.action_on_reject = _ => {
         res.redirect('/');
     };

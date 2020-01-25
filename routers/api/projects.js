@@ -15,7 +15,7 @@ router.get("/p:project_name", projects_controller.get_project); // Display speci
 // POST routes
 
 router.post("/create/:project_name", (req, res, next) => {
-    req.required_level = access_limitations.min_access_required.create_project;
+    req.required_level = access_limitations.system_min_access_required.create_project;
     req.action_on_reject = _ => {
         res.redirect('/403');
     };
@@ -23,7 +23,7 @@ router.post("/create/:project_name", (req, res, next) => {
 }, con_validator.require_access_level, projects_controller.add_project); // Create new project
 
 router.post("/delete/:project_name", (req, res, next) => {
-    req.required_level = access_limitations.min_access_required.delete_project;
+    req.required_level = access_limitations.system_min_access_required.delete_project;
     req.action_on_reject = _ => {
         res.redirect('/403');
     };
@@ -31,7 +31,7 @@ router.post("/delete/:project_name", (req, res, next) => {
 }, con_validator.require_access_level, projects_controller.remove_project); // Delete project
 
 router.post("/modify/:project_name", (req, res, next) => {
-    req.required_level = access_limitations.min_access_required.modify_project;
+    req.required_level = access_limitations.system_min_access_required.modify_project;
     req.action_on_reject = _ => {
         res.redirect('/403');
     };

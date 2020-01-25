@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const con_validator = require('../../middlewares/validate_connection');
 
-// Get routs
 let versions = require('./versions');
+let projects = require('./projects');
 let users = require('./users');
 let connections = require('./connections');
 
@@ -10,8 +11,10 @@ let connections = require('./connections');
 
 router.use('/', connections);
 
-router.use('/versions', versions);
+router.use('/', projects);
 
-router.use('/users', users);
+router.use('/p:project_name/versions', con_validator.require_login, versions);
+
+router.use('/users', con_validator.require_login, users);
 
 module.exports = router;

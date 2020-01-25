@@ -149,7 +149,7 @@ let init_users_schema = _ => {
             // 2 -> System Admin    -> Full access to all of the projects & Create/Delete/Modify projects access.
             // 1 -> Member          -> Access according projects' members_list.
             // 0 -> Banned          -> Automatically remove this user from all of the projects' members_list.
-            //enum: ['Admin', 'Manager', 'User', 'Guest', 'Banned'],
+            //enum: ['Banned', 'Member', 'System Admin'],
             default: 1,
             required: true
         },

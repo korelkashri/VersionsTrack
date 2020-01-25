@@ -7,12 +7,17 @@ const access_limitations = require('../../helpers/configurations/access_limitati
 
 // GET routes
 
-router.get("/", (req, res) => res.redirect('/view/admin-panel/index'));
+router.get("/", (req, res) => {
+    let requests_handler = require('../../helpers/requests_handler');
+    let project_name = requests_handler.require_param(req, 'route','project_name');
+    let new_route = "/view/" + project_name + "/admin-panel/index";
+    res.redirect(new_route);
+});
 
 router.get("/:category_name", admin_controller.view_admin_panel);
 
-router.get("/users-management/u:username", admin_controller.view_user_management_panel);
+// TODO add user to project and set user role page
 
-router.get("/users-management/new-user", admin_controller.view_user_management_panel);
+// TODO remove user from project option
 
 module.exports = router;

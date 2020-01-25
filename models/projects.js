@@ -22,9 +22,10 @@ let is_project_exists = async (req, res, next) => {
 
 exports.get = async (req, res, next) => {
     // TODO
-    //  If [route_params][project_name] not empty -> Return al projects that the current user have an access to.
+    //  If [route_params][project_name] empty -> Return all projects that the current user have an access to.
     //  Else if the current user have an access to this project, return that project.
-    //  Return also the sub projects of the selected project, that this user have an access to.
+    //      Return also the sub projects of the selected one, that this user have an access to.
+    let projects_db_model = database.projects_model();
 
     let project_name;
     let projects;
