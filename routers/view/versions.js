@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router({mergeParams: true});
 const versions_controller = require("../../controllers/versions");
 
 // GET routes

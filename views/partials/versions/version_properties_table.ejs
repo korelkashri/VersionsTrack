@@ -42,7 +42,7 @@
                     <td>
                         <div class="row" style="min-width: 90px; margin-bottom: -10px;">
                             <div class="col l4 s2">
-                                <% if (access_level >= min_access_required.modify_property) { /* >= Manager */ %>
+                                <% if (access_level >= min_access_required.project_min_access_required.modify_property) { /* >= Manager */ %>
                                     <button class="btn-small blue btn-floating waves-effect waves-light" ng-click="modify_property_view_state(property, false)" ng-show="property.view_state"> <!--Edit-->
                                         <i class="material-icons">create</i>
                                     </button>
@@ -52,12 +52,12 @@
                                 <% } %>
                             </div>
                             <div class="col l4 offset-l2 s2">
-                                <% if (access_level >= min_access_required.delete_property) { /* >= Manager */ %>
+                                <% if (access_level >= min_access_required.project_min_access_required.delete_property) { /* >= Manager */ %>
                                     <button class="btn-small red btn-floating waves-effect waves-light" ng-click="remove_property(version_data.version, property._id)" ng-show="property.view_state"> <!--Remove-->
                                         <i class="material-icons">delete_forever</i>
                                     </button>
                                 <% } %>
-                                <% if (access_level >= min_access_required.modify_property) { /* >= Manager */ %>
+                                <% if (access_level >= min_access_required.project_min_access_required.modify_property) { /* >= Manager */ %>
                                     <button class="btn-small red btn-floating waves-effect waves-light" ng-click="modify_property_view_state(property, true)" ng-show="!property.view_state"> <!--Cancel modifying-->
                                         <i class="material-icons">clear</i>
                                     </button>
@@ -68,7 +68,7 @@
 
                     <!--Type-->
                     <td ng-show="property.view_state">{{property.type}}</td>
-                    <% if (access_level >= min_access_required.modify_property) { /* >= Manager */ %>
+                    <% if (access_level >= min_access_required.project_min_access_required.modify_property) { /* >= Manager */ %>
                         <td ng-hide="property.view_state">
                             <div class="input-field inline">
                                 <select id="modify_property_type_{{property._id}}">
@@ -85,7 +85,7 @@
 
                     <!--Description-->
                     <td ng-show="property.view_state" ng-bind-html="property.description"></td>
-                    <% if (access_level >= min_access_required.modify_property) { /* >= Manager */ %>
+                    <% if (access_level >= min_access_required.project_min_access_required.modify_property) { /* >= Manager */ %>
                         <td ng-hide="property.view_state">
                             <div class="input-field inline">
                                 <input id="modify_property_description_{{property._id}}" type="text">
@@ -96,7 +96,7 @@
 
                     <!--Tests Scope-->
                     <td ng-show="property.view_state">{{property.tests_scope}}</td>
-                    <% if (access_level >= min_access_required.modify_property) { /* >= Manager */ %>
+                    <% if (access_level >= min_access_required.project_min_access_required.modify_property) { /* >= Manager */ %>
                         <td ng-hide="property.view_state">
                             <div class="input-field inline">
                                 <select id="modify_property_tests_scope_{{property._id}}">
@@ -112,7 +112,7 @@
 
                     <!--Tests Details-->
                     <td ng-show="property.view_state" ng-bind-html="property.tests_details || '-'"></td>
-                    <% if (access_level >= min_access_required.modify_property) { /* >= Manager */ %>
+                    <% if (access_level >= min_access_required.project_min_access_required.modify_property) { /* >= Manager */ %>
                         <td ng-hide="property.view_state">
                             <div class="input-field inline">
                                 <input id="modify_property_tests_details_{{property._id}}" type="text">
@@ -123,7 +123,7 @@
 
                     <!--Known Issues-->
                     <td ng-show="property.view_state" class="lighten-4" ng-class="[{red: property.known_issues != ''}]" ng-bind-html="property.known_issues || '-'"></td>
-                    <% if (access_level >= min_access_required.modify_property) { /* >= Manager */ %>
+                    <% if (access_level >= min_access_required.project_min_access_required.modify_property) { /* >= Manager */ %>
                         <td ng-hide="property.view_state">
                             <div class="input-field inline">
                                 <input id="modify_property_known_issues_{{property._id}}" type="text">
@@ -137,7 +137,7 @@
             <div class="center pages-bg" name="properties_paging_v{{version_data.version}}" ng-show="version_data.properties_pages_count > 1"></div>
         </div>
     </li>
-    <% if (access_level >= min_access_required.create_new_property) { /* >= Manager */ %>
+    <% if (access_level >= min_access_required.project_min_access_required.create_new_property) { /* >= Manager */ %>
         <li ng-class="{'active': !version_data.properties.length}" ng-init="!version_data.properties.length ? toggle_active_class_properties(version_data) : undefined" id="{{version_data.version}}_properties_new">
             <div class="collapsible-header">Add New Version's Property</div>
             <div class="collapsible-body">

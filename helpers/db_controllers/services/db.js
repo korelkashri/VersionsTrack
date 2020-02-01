@@ -146,7 +146,7 @@ let init_users_schema = _ => {
         },
         role: { // TODO move to [specific project] -> [members list] -> [specific member] -> [role]
             type: Number,
-            // 2 -> System Admin    -> Full access to all of the projects & Create/Delete/Modify projects access.
+            // 2 -> System Admin    -> Create/Delete/Modify projects access & Full users list modification access & System panel admin access.
             // 1 -> Member          -> Access according projects' members_list.
             // 0 -> Banned          -> Automatically remove this user from all of the projects' members_list.
             //enum: ['Banned', 'Member', 'System Admin'],
@@ -204,7 +204,7 @@ let init_users_schema = _ => {
 
 let initDB = callback => {
     assert.ok(!is_initialize, "A try to initialize an initialized DB detected.");
-    let db_new = mongoose.connect('mongodb://localhost/versions_track', {
+    let db_new = mongoose.connect('mongodb://localhost/test_versions_track', {
     //let db_new = mongoose.connect('mongodb://localhost/test_versions_track', {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -264,6 +264,26 @@ let initDB = callback => {
                 }
             }
         });
+
+        // Update users roles:
+        let old_users = await users_model.find({ role: {$gte: 3} }).exec();
+        if (old_users.length) {
+            let users;
+            // 1-3  => 1
+            users = await users_model.update({role: {$gte: 1, $lte: 3}}, { $set: {role: 1} }).exec();
+            // 4    => 2
+            users = await users_model.update({role: 4}, { $set: {role: 2} }).exec();
+        }
+
+        // Set system admins as the admins of empty members projects
+        let admins_list = await users_model.find( { role: 2 }, 'username' ).exec();
+        admins_list.forEach(admin => admin.role = 4); // Set as project admin
+        let update = {
+            $set: {
+                members_list: admins_list
+            }
+        };
+        await projects_model.update({ $or: [{ members_list: null}, {members_list: []}]}, update).exec();
     });
 
     is_initialize = true;

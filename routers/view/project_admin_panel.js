@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router({mergeParams: true});
 const con_validator = require('../../middlewares/validate_connection');
 const users_controller = require("../../controllers/users");
 const admin_controller = require("../../controllers/admin");

@@ -28,7 +28,7 @@ router.use('/p:project_name/versions', con_validator.require_login, (req, res, n
 // GET routes
 router.get('/', projects_controller.view_projects);
 
-router.get('/:project_name', con_validator.require_login, (req, res, next) => { // Project Admin Require
+router.get('/p:project_name', con_validator.require_login, (req, res, next) => { // Project Admin Require
     req.project_action_required_level = access_limitations.project_min_access_required.view_project;
     req.action_on_reject = _ => {
         res.redirect('/404');

@@ -66,7 +66,7 @@
     <li>
         <a href="/view/versions"><i class="fa fa-stream"></i>Versions List</a>
     </li>
-    <% if (is_logged_in && access_level >= min_access_required.view_admin_panel) { %>
+    <% if (is_logged_in && access_level >= min_access_required.project_min_access_required.view_admin_panel) { %>
         <li>
             <a href="/view/admin-panel"><i class="fa fa-toolbox"></i>Admin Panel</a>
         </li>
@@ -162,7 +162,7 @@
         </span>
     </div>
     <div class="nav-content">
-        <% if (page == "versions" && access_level >= min_access_required.create_new_version) { /* >= Manager */ %>
+        <% if (page == "versions" && access_level >= min_access_required.project_min_access_required.create_new_version) { /* >= Manager */ %>
             <!--Open a version addition form [modal]-->
             <a class="btn-large btn-floating modal-trigger halfway-fab waves-effect waves-light accept-color" href="#new_version_modal" ng-hide="version_edit_progress.is_active"><i class="material-icons">add</i></a>
         <% } %>

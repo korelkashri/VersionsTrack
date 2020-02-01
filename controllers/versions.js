@@ -1,6 +1,8 @@
 const responses_gen = require('../helpers/responses');
 let versions_model = require('../models/versions');
 const access_limitations = require('../helpers/configurations/access_limitations');
+let projects_model = require('../models/projects');
+let requests_handler = require('../helpers/requests_handler');
 
 // API
 
@@ -118,11 +120,22 @@ exports.modify_property = async (req, res, next) => {
 // View
 exports.view_versions = async (req, res, next) => {
     try {
+        // Assumptions at this point:
+        // - The project exists.
+        // - The user found as member in this project.
+
+        let project_name = requests_handler.require_param(req, 'route','project_name');
+        let user_project_role = await projects_model.get_user_project_access(req.session.user.username, project_name);
         res.render("pages/versions", {
-            access_level: req.session.user ? req.session.user.role : 1,
-            is_logged_in: !!req.session.user,
-            username: req.session.user && req.session.user.username,
-            min_access_required: access_limitations.min_access_required
+            // is_logged_in: !!req.session.user,
+            // access_level: req.session.user ? user_project_role : 1,
+            // username: req.session.user && req.session.user.username,
+
+            is_logged_in: true, // See assumptions
+            access_level: user_project_role,  // See assumptions
+            username: req.session.user.username, // See assumptions
+            min_access_required: access_limitations,
+            selected_project: project_name
         });
     } catch (e) {
         return responses_gen.generate_response(res, 400, null, e.message);
