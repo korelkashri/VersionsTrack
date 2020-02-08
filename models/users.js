@@ -79,7 +79,7 @@ exports.get = async (req, res, next) => {
         }
         return res;
     } catch (e) {
-        throw new Error(e)
+        throw new Error(e);
     }
 };
 

@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router({mergeParams: true});
 const versions_controller = require("../../controllers/versions");
 const versions_middleware = require("../../middlewares/versions");
 const con_validator = require('../../middlewares/validate_connection');
@@ -16,8 +16,8 @@ router.get("/", (req, res, next) => {
 }, con_validator.require_project_access_level, (req, res) => {
     let requests_handler = require('../helpers/requests_handler');
     let project_name = requests_handler.require_param(req, 'route','project_name');
-    let new_route = "/api/" + project_name + "/versions/all";
-    res.redirect(new_route)
+    let new_route = "/api/projects/" + project_name + "/versions/all";
+    res.redirect(new_route);
 });
 
 router.get("/all", (req, res, next) => {

@@ -4,6 +4,12 @@ const projects_controller = require("../../controllers/projects");
 const con_validator = require('../../middlewares/validate_connection');
 const access_limitations = require('../../helpers/configurations/access_limitations');
 
+// Extended routes
+let versions = require('./versions');
+
+router.use('/p:project_name/versions', con_validator.require_login, versions);
+
+
 // GET routes
 
 router.get("/", (req, res) => res.redirect('/api/projects/all'));
@@ -11,6 +17,7 @@ router.get("/", (req, res) => res.redirect('/api/projects/all'));
 router.get("/all", projects_controller.get_projects); // Display all projects [That the current user have an access to]
 
 router.get("/p:project_name", projects_controller.get_project); // Display specified project
+
 
 // POST routes
 

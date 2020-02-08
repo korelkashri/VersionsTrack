@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 /**
  *
  * @param req
@@ -12,7 +14,8 @@ exports.require_param = (req, param_type, param_name) => {
         case "route": param_type = "params"; break;
     }
     const value = req[param_type][param_name];
-    if (value === undefined) throw new Error("Missing " + param_name + " param.");
+    assert.notEqual(value, undefined, "Missing " + param_name + " param.");
+    //if (value === undefined) throw new Error("Missing " + param_name + " param.");
     return value;
 };
 
